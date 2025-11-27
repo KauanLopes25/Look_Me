@@ -1,0 +1,160 @@
+/* Reset */
+*{  
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    -moz-box-sizing: border-box; 
+    -webkit-box-sizing: border-box;   
+    font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+body { 
+  background: linear-gradient(to bottom, #0171A3, #48C7ED);
+  height: 100vh;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+}
+
+.content-login {
+
+  border-radius: 20px 20px 20px 20px;
+  background-color: rgba(255,228,210,0.5);
+  padding: 30px;
+  width: 95%;
+  max-width: 320px;
+  height: 400px;
+  position: relative;
+  padding: 0px;
+  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  justify-content: center;
+  color: rgba(0,0,0,0.5);
+
+}
+
+.logo {
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+}
+
+.box-login { 
+  
+  width: 75%;
+  float: left;
+  padding: 10px;
+ 
+}
+
+.input-login {
+  position: relative;
+}
+
+.input-login i {
+  position: absolute;
+  right: 12px;
+  padding-top: 0.5rem;
+  color: rgba(0,0,0,0.5);
+}
+
+.input-senha {
+  position: relative;
+}
+
+.input-senha i {
+  position: absolute;
+  right: 12px;
+  padding-top: 3.7rem;
+  color: rgba(0,0,0,0.5);
+}
+
+.criar-cadastro {
+  padding: 25px;
+  text-align: center;
+}
+
+
+.botao {
+  
+  width:100%;
+  display: block;
+  float:left;
+  background-color: #FFFFFF;
+  border: none;
+  color: #8AA2A4;
+  cursor: pointer;
+  padding: 15px 80px;
+  text-align: center;
+  font-size:18px;
+  border-radius:10px;
+  transition: 0.3s;
+  font-family: "Poetsen One", sans-serif;
+
+}
+
+.botao:hover  { 
+  background-color: #8AA2A4; 
+  color: #FFFFFF;
+}
+
+.campo {
+  border: none;
+  outline: none;
+  padding: 10px 5px;
+  text-decoration: none;
+  font-size: 16px;
+  margin-bottom: 10px;
+  width: 100%;
+  border-radius: 4px;
+  float: left;
+  transition: 0.3s;
+  border-radius:10px;
+
+}
+
+.campo:focus {
+ 
+  background-color: #fff;
+  color:#FFFFFF;
+
+}
+
+.campo:placeholder {
+
+  color: #cccccc;
+
+}
+
+.link {
+    
+  color: #FFFFFF;
+  display:inline-block;
+  text-decoration: none;
+  transition: 0.3s;
+
+}
+
+.link:hover { color:#8AA2A4; }
+
+@media (min-width: 1280px) {
+
+  body {
+    background-image: url(../img/wallpaper-login.png);
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
+  }
+
+  .wrapper {
+    padding-right: 60rem;
+  }
+}
