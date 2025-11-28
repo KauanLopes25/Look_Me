@@ -10,7 +10,7 @@
 
 body { 
   background: linear-gradient(to bottom, #0171A3, #48C7ED);
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .botao-voltar {
@@ -18,7 +18,7 @@ body {
     top: 30px;
     left: 30px;
     text-decoration: none;
-    color: #ffffff;
+    color: #FFFFFF;
     font-size: 20px;
     background: #80ABBB;
     width: 42px;
@@ -42,94 +42,35 @@ body {
   justify-content: center;
   width: 100%;
   min-height: 100%;
+  margin-top: 8.5rem;
+  margin-bottom: 5rem;
 }
 
 .content-login {
-
-  border-radius: 20px 20px 20px 20px;
+  border-radius: 20px;
   background-color: #80ABBB;
-  padding: 30px;
   width: 95%;
   max-width: 320px;
-  height: 400px;
-  position: relative;
-  padding: 0px;
-  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  padding: 30px 0;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
   text-align: center;
   display: flex;
   align-items: center;
   flex-direction: column; 
-  justify-content: center;
+  justify-content: flex-start;
   color: rgba(0,0,0,0.5);
-
 }
 
 .logo {
-  padding-top: 3rem;
-  padding-bottom: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 1.5rem;
 }
 
 .box-login { 
-  
   width: 75%;
-  float: left;
-  padding: 10px;
- 
-}
-
-.input-login {
-  position: relative;
-}
-
-.input-login i {
-  position: absolute;
-  right: 12px;
-  padding-top: 0.5rem;
-  color: rgba(0,0,0,0.5);
-}
-
-.input-senha {
-  position: relative;
-}
-
-.input-senha i {
-  position: absolute;
-  right: 12px;
-  margin-top: 3.7rem;
-  color: rgba(0,0,0,0.5);
-}
-
-#icon-senha:hover {
-  cursor: pointer;
-}
-
-.criar-cadastro {
-  padding: 25px;
-  text-align: center;
-}
-
-
-.botao {
-  
-  width:100%;
-  display: block;
-  float:left;
-  background-color: #FFFFFF;
-  border: none;
-  color: #8AA2A4;
-  cursor: pointer;
-  padding: 15px 80px;
-  text-align: center;
-  font-size:18px;
-  border-radius:10px;
-  transition: 0.3s;
-  font-family: "Poetsen One", sans-serif;
-
-}
-
-.botao:hover  { 
-  background-color: #434d4e; 
-  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .campo {
@@ -137,44 +78,87 @@ body {
   outline: none;
   padding: 10px 5px;
   padding-right: 40px;
-  text-decoration: none;
   font-size: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   width: 100%;
-  float: left;
+  border-radius: 10px;
   transition: 0.3s;
-  border-radius:10px;
-
 }
 
 .campo:focus {
- 
   background-color: #fff;
-  color: #000000;
-
+  color: #000;
 }
 
-.campo:placeholder {
-
-  color: #000000;
-
+.input-login,
+.input-senha {
+  width: 100%;
+  position: relative;
 }
 
-.link {
-    
-  color: #FFFFFF;
-  display:inline-block;
-  text-decoration: none;
+.input-login i,
+.input-senha i {
+  position: absolute;
+  right: 12px;
+  top: 40%;
+  transform: translateY(-50%);
+  color: rgba(0,0,0,0.5);
+}
+
+.icon-criar-senha:hover,
+.icon-confirmar-senha:hover {
+  cursor: pointer;
+}
+
+.botao {
+  width: 100%;
+  background-color: #FFFFFF;
+  border: none;
+  color: #8AA2A4;
+  cursor: pointer;
+  padding: 15px 0;
+  font-size: 18px;
+  border-radius: 10px;
   transition: 0.3s;
-
+  font-family: "Poetsen One", sans-serif;
+  margin-top: 10px;
 }
 
-.link:hover { color:#434d4e; }
+.botao:hover { 
+  background-color: #434d4e; 
+  color: #FFFFFF;
+}
+
+.titulo-secao {
+    width: 100%;
+    text-align: left;
+    font-size: 12px;
+    font-weight: bold;
+    color: rgba(0,0,0,0.6);
+    margin: 10px 0 6px 0;
+    padding-left: 5px;
+}
+
+.grupo-radios {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: rgba(0,0,0,0.7);
+}
+
+.grupo-radios label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
 
 @media (min-width: 1280px) {
 
   body {
-    background-image: url(../img/wallpaper-login.png);
+    background-image: url(../img/wallpaper-cadastro.png);
     background-size: cover; 
     background-repeat: no-repeat; 
     background-position: center;
@@ -182,5 +166,8 @@ body {
 
   .card {
     padding-right: 60rem;
+    margin-top: 0;
+    padding-top: 2rem;
+    margin-bottom: 0;
   }
 }

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./img/icon-dog.png">
+    <link rel="stylesheet" href="./css/cadastro.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>@import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');</style>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poetsen+One&display=swap');</style>
+    <script src="./js/cadastro.js" defer type="module"></script>
+    <title>LooK Me! - Cadastro</title>
+</head>
+
+<body>
+
+    <a href="./login.html" class="botao-voltar">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+
+    <div class="card">
+
+        <div class="content-login">
+
+            <img class="logo" src="./img/logo.png" alt="Logo do Site">
+
+            <form class="box-login">
+
+                <h3 class="titulo-secao">INFORMAÇÕES</h3>
+
+                <div class="input-login">
+                    <input type="text" class="campo" placeholder="Usuário">
+                    <i class="bi bi-person"></i>
+                </div>
+
+                <div class="input-login">
+                    <input type="email" class="campo" placeholder="Email">
+                    <i class="bi bi-envelope"></i>
+                </div>
+
+                <div class="input-senha">
+                    <input id="criar-senha" type="password" class="campo" placeholder="Crie uma senha">
+                    <i id="icon-criar-senha" class="bi bi-eye teste"></i>
+                </div>
+
+                <div class="input-senha">
+                    <input id="confirmar-senha" type="password" class="campo" placeholder="Confirme a senha">
+                    <i id="icon-confirmar-senha" class="bi bi-eye teste"></i>
+                </div>
+
+                <div class="input-login">
+                    <input type="text" class="campo" placeholder="Telefone">
+                    <i class="bi bi-telephone"></i>
+                </div>
+
+                <h3 class="titulo-secao">PREFERÊNCIA DE PETS</h3>
+
+                <div class="grupo-radios">
+                    <label><input type="radio" name="pet"> Cachorro</label>
+                    <label><input type="radio" name="pet"> Gato</label>
+                    <label><input type="radio" name="pet"> Outros</label>
+                </div>
+
+                <h3 class="titulo-secao">ENDEREÇO</h3>
+
+                <div class="input-login">
+                    <input type="text" class="campo" placeholder="Digite seu CEP">
+                </div>
+
+                <div class="input-login">
+                    <input type="text" class="campo" placeholder="Logradouro">
+                </div>
+
+                <div class="input-login">
+                    <input type="text" class="campo" placeholder="Cidade">
+                </div>
+
+                <div class="input-login">
+                    <input type="text" class="campo" placeholder="Estado">
+                </div>
+
+                <input type="submit" class="botao" value="CADASTRAR">
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+</body>
