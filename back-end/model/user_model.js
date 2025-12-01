@@ -27,3 +27,31 @@ Injection
 ******************************** BIBLIOTECAS UTILIZADAS *************************************
 ********************************************************************************************/
 
+// Import da dependência do Prisma que permite a execução de script SQL no BD
+const { PrismaClient } = require('../../generated/prisma')
+
+// Cria um novo objeto baseado na classe do PrismaClient
+const prisma = new PrismaClient()
+
+async function getSelectAllUsers() {
+    try {
+        // Variavel com o comando sql para buscar toda a tabela de filme
+        let sql = `select * from tbl_usuario order by usuario_id desc`
+        // Variavel para inserir o comando no banco de dados
+        let result = await prisma.$queryRawUnsafe(sql)
+        if (Array.isArray(result))
+            return result
+
+        else
+            return false
+
+
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
+module.exports = {
+    getSelectAllUsers
+}
