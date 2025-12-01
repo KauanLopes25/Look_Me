@@ -41,8 +41,9 @@ const express = require('express')
 const cors = require('cors')
 // Responsável por gerenciar a chegada dos dados da api com o front
 const bodyParser = require('body-parser')
-// Importação do arquivo de funcões da API
-const dados = require('./modulo/funcoes.js')
+// Import das rotas
+const userRoute = require('./router/user_router.js')
+
 
 // Retorna a porta do servidor local ou colocamos uma porta local
 const PORT = process.PORT || 8080
@@ -57,6 +58,10 @@ app.use((request, response, next)=>{
     app.use(cors()) // Carrega as configurações no Cors da API
     next() // Próximo, carregar os proximos endpoints
 })
+
+// ENDPOINT's
+app.use('/v1/lookme/user/', userRoute)
+
 // Mensagem de operação da API
 app.listen(PORT, function(){
     console.log('API aguardando requisições...')
