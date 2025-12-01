@@ -1,0 +1,141 @@
+/* este arquivo sera o style de FAVORITOS, MEUS PETS e PEDIDOS */
+
+/* reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    background: linear-gradient(to bottom, #007fc5, #34a7d6);
+    min-height: 100vh;
+    color: white;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 100%;
+    padding: 25px 20px;
+}
+
+.cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.logo img {
+    width: 120px;
+}
+
+h1 {
+    color: white;
+    font-size: 19px;
+    font-family: "Poetsen One", sans-serif;
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.icons-header {
+    display: flex;
+    gap: 8px;
+    font-size: 22px;
+}
+
+i {
+    color: white;
+    cursor: pointer;
+}
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.container {
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.25);
+    margin-bottom: 20px;
+    padding: 18px 10px;
+    width: 320px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-titulo {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.botao {
+    background: #0475A8;
+    padding: 10px 22px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 12px;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    transition: 0.2s ease;
+}
+
+.botao:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+
+@media (min-width: 1200px) {
+
+    .cabecalho {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding-right: 1.5rem;
+    }
+
+    .logo img {
+        width: 200px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+
+    .icons-header {
+        display: flex;
+        color: white;
+        gap: 8px;
+        font-size: 30px;
+    }
+
+    .card {
+        width: 360px;
+    }
+
+}

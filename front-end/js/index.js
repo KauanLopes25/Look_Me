@@ -8,6 +8,8 @@
 
 //ANIMAÇÕES
 
+//menu filtros
+
 const botaoFiltro = document.querySelector(".botao-mobile-filter")
 const sidebar = document.querySelector(".filtros")
 
