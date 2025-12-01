@@ -147,8 +147,6 @@ INSERT INTO tbl_porte (nome_porte) VALUES
 ('Médio'),
 ('Grande');
 
-select * from tbl_porte;
-
 -- INSERTS TBL_RACA
 
 INSERT INTO tbl_raca (nome_raca) VALUES
@@ -158,15 +156,11 @@ INSERT INTO tbl_raca (nome_raca) VALUES
 ('Persa'),
 ('Siamês');
 
-select * from tbl_raca;
-
 -- INSERTS TBL_ESPECIE
 
 INSERT INTO tbl_especie (nome_especie) VALUES
 ('Cão'),
 ('Gato');
-
-select * from tbl_especie;
 
 -- INSERTS TBL_IDADE
 
@@ -175,24 +169,18 @@ INSERT INTO tbl_idade (descricao) VALUES
 ('Adulto'),
 ('Idoso');
 
-select * from tbl_idade;
-
 -- INSERTS TBL_SEXO
 
 INSERT INTO tbl_sexo (descricao) VALUES
 ('Macho'),
 ('Fêmea');
 
-select * from tbl_sexo;
-
 -- INSERTS TBL_USUARIO
 
-INSERT INTO tbl_usuario (nome, cpf, data_nascimento, telefone, email, foto_url, senha, status_cadastro) VALUES
-('Mariana Silva', '12345678900', '1990-05-20', '(11)90000-1000', 'mariana@gmail.com', 'mariana@gmail.com', 'senha123', TRUE),
-('João Pereira', '98765432100', '1985-10-12', '(21)98888-2222', 'joao@gmail.com', 'mariana@gmail.com', '12345abc', TRUE),
-('Luana Bomfim', '45678912300', '2007-03-14', '(71)97777-3333', 'luana@gmail.com', 'mariana@gmail.com', 'minhasenha', TRUE);
-
-select * from tbl_usuario;
+INSERT INTO tbl_usuario (nome, data_nascimento, telefone, email, foto_url, senha, status_cadastro) VALUES
+('Mariana Silva', '1990-05-20', '(11)90000-1000', 'mariana@gmail.com', 'mariana@gmail.com', 'senha123', TRUE),
+('João Pereira', '1985-10-12', '(21)98888-2222', 'joao@gmail.com', 'mariana@gmail.com', '12345abc', TRUE),
+('Luana Bomfim', '2007-03-14', '(71)97777-3333', 'luana@gmail.com', 'mariana@gmail.com', 'minhasenha', TRUE);
 
 -- INSERTS TBL_ANIMAL
 
@@ -360,4 +348,5 @@ BEGIN
     END IF;
 END $$
 DELIMITER ;
+
 
