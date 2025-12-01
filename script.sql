@@ -1,6 +1,6 @@
-CREATE DATABASE lookme;
+CREATE DATABASE db_lookme;
 
-USE lookme;
+USE db_lookme;
 
 -- TABELAS SEM CHAVES ESTRANGEIRAS
 
@@ -32,11 +32,11 @@ CREATE TABLE tbl_sexo (
 CREATE TABLE tbl_usuario (
     usuario_id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    cpf VARCHAR(11),
     data_nascimento DATE NOT NULL,
     telefone VARCHAR(20) NOT NULL,
     email VARCHAR(100) NOT NULL,
-	foto_url VARCHAR(200) NOT NULL,
+	foto_url VARCHAR(200),
+	status_cadastro BOOLEAN NOT NULL,
     senha VARCHAR(200) NOT NULL
 );
 
@@ -50,6 +50,7 @@ CREATE TABLE tbl_animal (
     foto_url VARCHAR(200) NOT NULL,
     status_adocao BOOLEAN NOT NULL,
     status_castracao BOOLEAN NOT NULL,
+    status_cadastro BOOLEAN NOT NULL,
     porte_id INT NOT NULL,
     raca_id INT NOT NULL,
     especie_id INT NOT NULL,
@@ -89,6 +90,13 @@ CREATE TABLE tbl_endereco_animal (
     animal_id INT NOT NULL,
     FOREIGN KEY (animal_id) REFERENCES tbl_animal(animal_id)
 );
+
+ALTER TABLE tbl_endereco_usuario
+ADD COLUMN regiao VARCHAR(20) NOT NULL;
+
+ALTER TABLE tbl_endereco_animal
+ADD COLUMN regiao VARCHAR(20) NOT NULL;
+
 
 -- TABELAS RELACIONADAS A ADOÇÃO / FAVORITOS
 
@@ -179,10 +187,10 @@ select * from tbl_sexo;
 
 -- INSERTS TBL_USUARIO
 
-INSERT INTO tbl_usuario (nome, cpf, data_nascimento, telefone, email, foto_url, senha) VALUES
-('Mariana Silva', '12345678900', '1990-05-20', '(11)90000-1000', 'mariana@gmail.com', 'mariana@gmail.com', 'senha123'),
-('João Pereira', '98765432100', '1985-10-12', '(21)98888-2222', 'joao@gmail.com', 'mariana@gmail.com', '12345abc'),
-('Luana Bomfim', '45678912300', '2007-03-14', '(71)97777-3333', 'luana@gmail.com', 'mariana@gmail.com', 'minhasenha');
+INSERT INTO tbl_usuario (nome, cpf, data_nascimento, telefone, email, foto_url, senha, status_cadastro) VALUES
+('Mariana Silva', '12345678900', '1990-05-20', '(11)90000-1000', 'mariana@gmail.com', 'mariana@gmail.com', 'senha123', TRUE),
+('João Pereira', '98765432100', '1985-10-12', '(21)98888-2222', 'joao@gmail.com', 'mariana@gmail.com', '12345abc', TRUE),
+('Luana Bomfim', '45678912300', '2007-03-14', '(71)97777-3333', 'luana@gmail.com', 'mariana@gmail.com', 'minhasenha', TRUE);
 
 select * from tbl_usuario;
 
@@ -190,7 +198,7 @@ select * from tbl_usuario;
 
 INSERT INTO tbl_animal (
     nome, temperamento, informacoes_veterinarias, descricao, adaptabilidade,
-    foto_url, status_adocao, status_castracao,
+    foto_url, status_adocao, status_castracao, status_cadastro,
     porte_id, raca_id, especie_id, idade_id, sexo_id, usuario_id
 ) VALUES
 -- 1) Cachorro pequeno, filhote, energético
@@ -201,6 +209,7 @@ INSERT INTO tbl_animal (
  'Adapta-se bem a espaços pequenos.',
  'https://site.com/fotos/bolt.jpg',
  FALSE,
+ TRUE,
  TRUE,
  1,  -- porte pequeno
  2,  -- labrador
@@ -219,6 +228,7 @@ INSERT INTO tbl_animal (
  'https://site.com/fotos/misty.jpg',
  FALSE,
  TRUE,
+ TRUE,
  1,  -- porte pequeno
  4,  -- persa
  2,  -- gato
@@ -236,6 +246,7 @@ INSERT INTO tbl_animal (
  'https://site.com/fotos/thor.jpg',
  TRUE,
  FALSE,
+ TRUE,
  3,  -- porte grande
  1,  -- vira-lata
  1,  -- cão
@@ -249,26 +260,104 @@ select * from tbl_animal;
 -- INSERTS TBL_ENDERECO_USUARIO
 
 INSERT INTO tbl_endereco_usuario (
-    logradouro, numero, bairro, cidade, uf, cep, usuario_id
+    logradouro, numero, bairro, cidade, uf, cep, usuario_id, regiao
 ) VALUES
-('Rua das Flores', '120', 'Centro', 'São Paulo', 'SP', '01010-000', 1),
-('Av. Atlântica', '450', 'Copacabana', 'Rio de Janeiro', 'RJ', '22021-001', 2),
-('Rua Bahia', '88', 'Pituba', 'Salvador', 'BA', '41830-160', 3);
+('Rua das Flores', '120', 'Centro', 'São Paulo', 'SP', '01010-000', 1, 'Sudeste'),
+('Av. Atlântica', '450', 'Copacabana', 'Rio de Janeiro', 'RJ', '22021-001', 2, 'Sudeste'),
+('Rua Bahia', '88', 'Pituba', 'Salvador', 'BA', '41830-160', 3, 'Nordeste');
 
 -- INSERTS TBL_ENDERECO_ANIMAL
 
 INSERT INTO tbl_endereco_animal (
-    logradouro, numero, bairro, cidade, uf, cep, animal_id
+    logradouro, numero, bairro, cidade, uf, cep, animal_id, regiao
 ) VALUES
-('Rua das Acácias', '35', 'Jardins', 'São Paulo', 'SP', '01420-030', 1),  -- Bolt
-('Rua Aurora', '210', 'Lapa', 'São Paulo', 'SP', '01210-050', 2),        -- Misty
-('Estrada Velha', '900', 'Cajazeiras', 'Salvador', 'BA', '41330-000', 3); -- Thor
+('Rua das Acácias', '35', 'Jardins', 'São Paulo', 'SP', '01420-030', 1, 'Sudeste'),  -- Bolt
+('Rua Aurora', '210', 'Lapa', 'São Paulo', 'SP', '01210-050', 2, 'Sudeste'),        -- Misty
+('Estrada Velha', '900', 'Cajazeiras', 'Salvador', 'BA', '41330-000', 3, 'Nordeste'); -- Thor
 
 -- INSERTS TBL_PEDIDO_ADOCAO
 
 INSERT INTO tbl_pedido_adocao (
     data_solicitacao, status_pedido, animal_id, usuario_id
 ) VALUES
-('2025-11-20', 'Pendente', 1, 2),  -- João pediu adoção do Bolt
-('2025-11-21', 'Aprovado', 2, 1),  -- Mariana adotou a Misty
-('2025-11-21', 'Recusado', 3, 2);  -- João tentou adotar o Thor
+('2025-11-20', 'PENDENTE', 1, 2),  -- João pediu adoção do Bolt
+('2025-11-21', 'APROVADO', 2, 1),  -- Mariana adotou a Misty
+('2025-11-21', 'RECUSADO', 3, 2);  -- João tentou adotar o Thor
+
+-- INSERTS TBL_FAVORITOS
+
+INSERT INTO tbl_favoritos (usuario_id, animal_id) VALUES
+(2, 2),  -- João favoritou Misty
+(1, 1),  -- Mariana favoritou Bolt
+(3, 1),  -- Luana favoritou Bolt
+(3, 2),  -- Luana favoritou Misty
+(3, 3);  -- Luana favoritou Thor
+
+-- INSERTS TBL_HISTORICO_ADOCAO
+
+INSERT INTO tbl_historico_adocao (data_adocao, usuario_id, animal_id) VALUES
+('2025-11-21', 1, 2);  -- Mariana adotou a Misty
+
+-- INSERTS TBL_NOTIFICACAO 
+
+INSERT INTO tbl_notificacao (
+    mensagem, titulo, data_notificacao, usuario_id, pedido_id
+) VALUES
+-- Pedido 1: João pediu o Bolt (Mariana é dona)
+('Você recebeu um novo pedido de adoção para o Bolt.', 
+ 'Novo Pedido', '2025-11-20', 1, 1),
+
+-- Pedido 2: Mariana pediu a Misty (João é dono)
+('Você recebeu um novo pedido de adoção para a Misty.', 
+ 'Novo Pedido', '2025-11-21', 2, 2),
+
+-- Pedido 2 aprovado (notificação para Mariana)
+('Seu pedido de adoção da Misty foi aprovado!', 
+ 'Pedido Aprovado', '2025-11-21', 1, 2),
+
+-- Pedido 3 recusado (João pediu Thor)
+('Seu pedido de adoção do Thor foi recusado.', 
+ 'Pedido Recusado', '2025-11-21', 2, 3);
+
+-- CRIANDO PROCEDURE DE ATUALIZAÇÃO DE STATUS DE ADOÇÃO NA TBL_ANIMAL
+
+DELIMITER $$
+CREATE PROCEDURE atualizar_stts_adocao( IN a_id INT)
+BEGIN
+    UPDATE tbl_animal SET status_adocao = TRUE WHERE animal_id = a_id;
+END $$
+DELIMITER ;
+
+CALL atualizar_stts_adocao(2);
+
+-- CRIANDO PROCEDURE DE INSERÇÃO DE UM NOVO ITEM NA TBL_HISTORICO
+
+DELIMITER $$
+CREATE PROCEDURE registrar_historico( IN a_id INT, user_id INT, data_adocao DATE)
+BEGIN
+   INSERT INTO tbl_historico_adocao (animal_id, usuario_id, data_adocao) VALUES
+( a_id, user_id, data_adocao);
+END $$
+DELIMITER ;
+
+CALL registrar_historico(1, 3, CURDATE());
+
+-- CRIANDO TRIGGER QUE CHAMA AS 2 PROCEDURES EM CASO DE PEDIDO APROVADO
+
+ DELIMITER $$
+CREATE TRIGGER trg_pedido_aceito 
+AFTER UPDATE ON tbl_pedido_adocao 
+FOR EACH ROW
+BEGIN
+	-- Só entra se o status do pedido for APROVADO
+    IF UPPER(NEW.status_pedido) = 'APROVADO' THEN
+		CALL atualizar_stts_adocao(NEW.animal_id);
+		CALL registrar_historico(
+			NEW.animal_id,
+			NEW.usuario_id,
+			CURDATE()
+		);    
+    END IF;
+END $$
+DELIMITER ;
+
