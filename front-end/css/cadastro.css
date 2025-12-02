@@ -1,0 +1,173 @@
+/* Reset */
+*{  
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    -moz-box-sizing: border-box; 
+    -webkit-box-sizing: border-box;   
+    font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+body { 
+  background: linear-gradient(to bottom, #0171A3, #48C7ED);
+  min-height: 100vh;
+}
+
+.botao-voltar {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: 20px;
+    background: #80ABBB;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    transition: 0.2s;
+}
+
+.botao-voltar:hover {
+    transform: scale(1.08);
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  margin-top: 8.5rem;
+  margin-bottom: 5rem;
+}
+
+.content-login {
+  border-radius: 20px;
+  background-color: #80ABBB;
+  width: 95%;
+  max-width: 320px;
+  padding: 30px 0;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  justify-content: flex-start;
+  color: rgba(0,0,0,0.5);
+}
+
+.logo {
+  padding-top: 2rem;
+  padding-bottom: 1.5rem;
+}
+
+.box-login { 
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.campo {
+  border: none;
+  outline: none;
+  padding: 10px 5px;
+  padding-right: 40px;
+  font-size: 16px;
+  margin-bottom: 12px;
+  width: 100%;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.campo:focus {
+  background-color: #fff;
+  color: #000;
+}
+
+.input-login,
+.input-senha {
+  width: 100%;
+  position: relative;
+}
+
+.input-login i,
+.input-senha i {
+  position: absolute;
+  right: 12px;
+  top: 40%;
+  transform: translateY(-50%);
+  color: rgba(0,0,0,0.5);
+}
+
+.icon-criar-senha:hover,
+.icon-confirmar-senha:hover {
+  cursor: pointer;
+}
+
+.botao {
+  width: 100%;
+  background-color: #FFFFFF;
+  border: none;
+  color: #8AA2A4;
+  cursor: pointer;
+  padding: 15px 0;
+  font-size: 18px;
+  border-radius: 10px;
+  transition: 0.3s;
+  font-family: "Poetsen One", sans-serif;
+  margin-top: 10px;
+}
+
+.botao:hover { 
+  background-color: #434d4e; 
+  color: #FFFFFF;
+}
+
+.titulo-secao {
+    width: 100%;
+    text-align: left;
+    font-size: 12px;
+    font-weight: bold;
+    color: rgba(0,0,0,0.6);
+    margin: 10px 0 6px 0;
+    padding-left: 5px;
+}
+
+.grupo-radios {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: rgba(0,0,0,0.7);
+}
+
+.grupo-radios label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+@media (min-width: 1280px) {
+
+  body {
+    background-image: url(../img/wallpaper-cadastro.png);
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
+  }
+
+  .card {
+    padding-right: 60rem;
+    margin-top: 0;
+    padding-top: 2rem;
+    margin-bottom: 0;
+  }
+}
