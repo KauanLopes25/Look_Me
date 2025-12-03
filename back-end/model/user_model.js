@@ -36,7 +36,26 @@ const prisma = new PrismaClient()
 async function getSelectAllUsers() {
     try {
         // Variavel com o comando sql para buscar toda a tabela de filme
-        let sql = `select * from tbl_usuario order by usuario_id desc`
+        let sql = `SELECT * FROM tbl_usuario ORDER BY usuario_id DESC`
+        // Variavel para inserir o comando no banco de dados
+        let result = await prisma.$queryRawUnsafe(sql)
+        if (Array.isArray(result))
+            return result
+
+        else
+            return false
+
+
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
+async function getSelectUserById(id_user) {
+    try {
+        // Variavel com o comando sql para buscar toda a tabela de filme
+        let sql = `SELECT * FROM tbl_usuario WHERE usuario_id = ${id_user}`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result))
