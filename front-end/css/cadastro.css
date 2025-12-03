@@ -105,6 +105,11 @@ body {
   color: rgba(0,0,0,0.5);
 }
 
+.bi-eye,
+.bi-eye-slash {
+  cursor: pointer;
+}
+
 .icon-criar-senha:hover,
 .icon-confirmar-senha:hover {
   cursor: pointer;

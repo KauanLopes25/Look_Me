@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./img/icon-dog.png">
+    <link rel="stylesheet" href="./css/home.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+    </style>
+    <script src="./js/home.js" defer type="module"></script>
+    <title>LooK Me!</title>
+</head>
+
+<body>
+
+    <header>
+        <div class="cabecalho-principal">
+            <div class="logo">
+                <a href="./home.html">
+                    <img src="./img/logo.png" alt="Logo Look me">
+                </a>
+            </div> 
+
+            <div class="icons-header">
+                <a href="./favoritos.html">
+                    <i class="bi bi-heart"></i>
+                </a>
+                <a href="./notificacoes.html">
+                    <i class="bi bi-bell"></i>
+                </a>
+                <a href="./perfil.html">
+                    <i class="bi bi-person"></i>
+                </a>
+            </div>
+        </div>
+
+        <h1>NOSSOS PETS</h1>
+
+        <div class="cabecalho-secundario">
+            <button class="botao-mobile-filter">
+                <i class="bi bi-sliders"></i>
+            </button>
+            <a href="./anunciar.html">
+                <button class="botao-anunciar">ANUNCIAR PET</button>
+            </a>
+        </div>
+    </header>
+
+    <main>
+
+        <aside class="filtros">
+            <h2>FILTROS</h2>
+
+            <div class="grupo">
+                <h3>Região</h3>
+                <label><input type="checkbox"> Sudeste</label>
+                <label><input type="checkbox"> Nordeste</label>
+                <label><input type="checkbox"> Norte</label>
+                <label><input type="checkbox"> Sul</label>
+                <label><input type="checkbox"> Centro-Oeste</label>
+            </div>
+
+            <div class="grupo">
+                <h3>Espécie</h3>
+                <label><input type="checkbox"> Cachorro</label>
+                <label><input type="checkbox"> Gato</label>
+                <label><input type="checkbox"> Outros</label>
+            </div>
+
+            <div class="grupo">
+                <h3>Raça</h3>
+                <select class="select-raca">
+                    <option value="">Selecione uma raça</option>
+                    <option value="sem-raca">Sem raça definida</option>
+                    <option value="poodle">Poodle</option>
+                    <option value="bulldog">Bulldog</option>
+                    <option value="siames">Siamês</option>
+                    <option value="persa">Persa</option>
+                    <option value="outros">Outros</option>
+                </select>
+            </div>
+
+            <div class="grupo">
+                <h3>Porte</h3>
+                <label><input type="checkbox"> Pequeno</label>
+                <label><input type="checkbox"> Médio</label>
+                <label><input type="checkbox"> Grande</label>
+            </div>
+
+            <div class="grupo">
+                <h3>Idade</h3>
+                <label><input type="checkbox"> Filhote</label>
+                <label><input type="checkbox"> Adulto</label>
+                <label><input type="checkbox"> Idoso</label>
+            </div>
+
+            <div class="grupo">
+                <h3>Sexo</h3>
+                <label><input type="checkbox"> Macho</label>
+                <label><input type="checkbox"> Fêmea</label>
+            </div>
+
+            <div class="grupo">
+                <h3>Status</h3>
+                <label><input type="checkbox"> Adotado</label>
+                <label><input type="checkbox"> Disponível</label>
+                <label><input type="checkbox"> Em processo de adoção</label>
+            </div>
+
+        </aside>
+
+        <section class="cards">
+
+            <!-- card exemplo de como devera ser criado no JAVASCRIPT ao consumir a API do BACKEND -->
+            <div class="card">
+                <img src="./img/pet-teste.jpg" alt="">
+                <h3>Nome vai aqui</h3>
+                <p>Disponível</p>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

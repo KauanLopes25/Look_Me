@@ -1,6 +1,6 @@
 /* *****************************************************************************************
 * Objetivo: animações e funcionalidades da pagina de cadastro
-* Data: 27/11/2025
+* Data de inicio: 27/11/2025
 * Versão: 1.0
 * *****************************************************************************************/
 
@@ -47,3 +47,62 @@ iconConfirmarSenha.addEventListener("click", () => {
     }
 })
 
+/***************************************/
+/***************************************/
+
+// FUNCIONALIDADES
+
+//preencher automaticamente os campos de endereço ao digitar o cep, consumindo a api publica viacep
+
+const limparFormulario = () => {
+
+    document.getElementById('logradouro').value = ''
+    document.getElementById('cidade').value = ''
+    document.getElementById('estado').value = ''
+
+}
+
+const preencherFormulario = (endereco) => {
+
+    //selecionando os elementos e adicionando as informações do json referentes a cada um
+    document.getElementById('logradouro').value = endereco.logradouro
+    document.getElementById('cidade').value = endereco.localidade
+    document.getElementById('estado').value = endereco.uf
+    
+}
+
+const verificarNumero = (numero) => /^[0-9]+$/.test(numero)
+//verifica se é numero
+
+const cepValido = (cep) => cep.length == 8 && verificarNumero(cep)
+//verifica se o digitado no campo de cep tem 8 digitos e se é um numero chamando a function que verifica se é numero
+
+const pesquisarCep = async() => {
+
+    limparFormulario()
+
+    const cep = document.getElementById('cep').value.replace("-","")
+    const url = `https://viacep.com.br/ws/${cep}/json/`
+
+    if (cepValido(cep)) {
+
+        const dados = await fetch(url)
+        const endereco = await dados.json()
+
+        if (endereco.hasOwnProperty('erro')) {
+        // se o json tem a propriedade erro (ou seja, caso o cep seja invalido), então mensagem de erro, se não, preencher o formulario
+            document.getElementById('cep').value = 'CEP não encontrado!'
+        } else {
+            preencherFormulario(endereco)
+            //acionar a function de preencher os elementos
+        }
+
+    } else {
+        document.getElementById('cep').value = 'CEP incorreto!'
+    }
+  
+}
+
+document.getElementById('cep').addEventListener('focusout', pesquisarCep)
+
+/***************************************/
