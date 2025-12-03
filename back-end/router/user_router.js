@@ -1,5 +1,5 @@
 /********************************************************************************************
-* Objetivo: Arquivo responsavel pela configuração das rotas para a tabela filme.
+* Objetivo: Arquivo responsavel pela configuração das rotas para a tabela user.
 * Autor: Kauan Lopes Pereira
 * Data: 01/12/2025
 * Versão: 1.0
@@ -40,7 +40,7 @@ router.get('/', cors(), async function (request, response){
     response.json(user)
     console.log('ENDPOINT 1° - Requisitado na tbl_usuario')
 })
-// 2° BUSCAR por ID
+// 2° BUSCAR POR ID
 router.get('/:id', cors(), async function (request, response){
     // Recebe o ID encaminhado via parametro na requisição
     let idUser = request.params.id
@@ -50,5 +50,16 @@ router.get('/:id', cors(), async function (request, response){
     response.json(user)
     console.log('ENDPOINT 2° - Requisitado na tbl_usuario')
 })
-
+// 3° INSERIR NOVO USUARIO
+router.post('/', cors(), bodyParserJSON, async function (request, response){
+    // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
+    let dadosBody = request.body
+    let contentType = request.headers['content-type']
+    // Chama a função de inserir o novo usuario, encaminha os dados e o content-type
+    let user = await userController.inserirUser(dadosBody, contentType)
+    
+    response.status(user.status_code)
+    response.json(user)
+    console.log('ENDPOINT 3° - Requisitado na tbl_usuario')
+})
 module.exports = router

@@ -35,7 +35,7 @@ const prisma = new PrismaClient()
 
 async function getSelectAllUsers() {
     try {
-        // Variavel com o comando sql para buscar toda a tabela de filme
+        // Variavel com o comando sql para buscar toda a tabela de Usuário
         let sql = `SELECT * FROM tbl_usuario ORDER BY usuario_id DESC`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
@@ -54,8 +54,38 @@ async function getSelectAllUsers() {
 
 async function getSelectUserById(id_user) {
     try {
-        // Variavel com o comando sql para buscar toda a tabela de filme
+        // Variavel com o comando sql para buscar toda a tabela de Usuário
         let sql = `SELECT * FROM tbl_usuario WHERE usuario_id = ${id_user}`
+        // Variavel para inserir o comando no banco de dados
+        let result = await prisma.$queryRawUnsafe(sql)
+        if (Array.isArray(result))
+            return result
+
+        else
+            return false
+
+
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
+async function setInsertUser(user) {
+    try {
+        // Variavel com o comando sql para buscar toda a tabela de usuário
+        let sql = `
+        insert into tbl_usuario 
+        (nome, cpf, data_nascimento, telefone, email, foto_url, senha)
+        values (
+                '${user.nome}',
+                '${user.cpf}',
+                '${user.data_nascimento}',
+                '${user.telefone}',
+                '${user.email}',
+                '${user.foto_url}',
+                '${user.senha}'  
+        );`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result))
@@ -73,5 +103,6 @@ async function getSelectUserById(id_user) {
 
 module.exports = {
     getSelectAllUsers,
-    getSelectUserById
+    getSelectUserById,
+    setInsertUser
 }

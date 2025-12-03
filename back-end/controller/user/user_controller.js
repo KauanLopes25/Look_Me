@@ -75,6 +75,28 @@ async function searchUserById(id_user) {
     }
 }
 
+async function insertUser(user) {
+    // Criando copia do objeto mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    try {
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+            // Processamento
+            // Chama a função para update um novo filme no BD
+            let resultfilme = await filmeDAO.setInsertMovie(filme)
+
+            MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code;
+            MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message;
+        } else {
+            return MESSAGES.ERROR_CONTENT_TYPE //415
+        }
+
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+
+}
+
 
 
 module.exports = {
