@@ -75,23 +75,29 @@ async function searchUserById(id_user) {
     }
 }
 
-async function insertUser(user) {
+async function insertUser(user, contentType) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
             // Processamento
-            // Chama a função para update um novo filme no BD
-            let resultfilme = await filmeDAO.setInsertMovie(filme)
+            // Chama a função para update um novo usuario no BD
+            let resultUser = await userDAO.setInsertUser(user)
 
+            MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status;
             MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code;
             MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message;
+            
+            MESSAGES.DEFAULT_HEADER.items = user
+            return MESSAGES.DEFAULT_HEADER //201
+
         } else {
             return MESSAGES.ERROR_CONTENT_TYPE //415
         }
 
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 
@@ -101,5 +107,6 @@ async function insertUser(user) {
 
 module.exports = {
     listUsers,
-    searchUserById
+    searchUserById,
+    insertUser
 }

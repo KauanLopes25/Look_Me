@@ -56,7 +56,7 @@ router.post('/', cors(), bodyParserJSON, async function (request, response){
     let dadosBody = request.body
     let contentType = request.headers['content-type']
     // Chama a função de inserir o novo usuario, encaminha os dados e o content-type
-    let user = await userController.inserirUser(dadosBody, contentType)
+    let user = await userController.insertUser(dadosBody, contentType)
     
     response.status(user.status_code)
     response.json(user)

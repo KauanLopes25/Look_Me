@@ -76,15 +76,15 @@ async function setInsertUser(user) {
         // Variavel com o comando sql para buscar toda a tabela de usuário
         let sql = `
         insert into tbl_usuario 
-        (nome, cpf, data_nascimento, telefone, email, foto_url, senha)
+        (nome, data_nascimento, telefone, email, foto_url, senha, status_cadastro)
         values (
                 '${user.nome}',
-                '${user.cpf}',
                 '${user.data_nascimento}',
                 '${user.telefone}',
                 '${user.email}',
                 '${user.foto_url}',
-                '${user.senha}'  
+                '${user.senha}', 
+                '${user.status_cadastro}' 
         );`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
