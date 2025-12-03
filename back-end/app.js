@@ -36,19 +36,19 @@ utilizarmos o projeto em outro computador.
 * Body-parser
 ********************************************************************************************/
 // Responsável pela API
-const express = require('express')
-// Responsável pelas permissões da API (APP)
-const cors = require('cors')
-// Responsável por gerenciar a chegada dos dados da api com o front
-const bodyParser = require('body-parser')
-// Import das rotas
-const userRoute = require('./router/user_router.js')
+const express = require('express')  // Responsável pelas permissões da API (APP)
+const cors = require('cors') // Responsável por gerenciar a chegada dos dados da api com o front
+const bodyParser = require('body-parser') // Import das rotas
 
+
+//Criando um objeto especialista no formato JSON para obter dados via POST e PUT
+const bodyParserJSON = bodyParser.json() 
+
+// Criando uma instancia de uma classe do express
+const app = express()
 
 // Retorna a porta do servidor local ou colocamos uma porta local
 const PORT = process.PORT || 8080
-// Criando uma instancia de uma classe do express
-const app = express()
 
 // Configuração de permissões
 // next ?
@@ -59,7 +59,89 @@ app.use((request, response, next)=>{
     next() // Próximo, carregar os proximos endpoints
 })
 
-// ENDPOINT's
+
+//Import das contollers
+const userRoute = require('./router/user_router.js')
+const controllerPorte = require('./controller/sizes/size_controller.js')
+
+
+// ENDPOINT'S de porte
+
+//função 01 - lista todos os portes
+app.get('/v1/lookme/portes', cors(), async function(request, response){
+
+    //chama a função para listar os portes do BD
+    let porte =  await controllerPorte.listarPortes()
+
+    response.status(porte.status_code)
+
+    response.json(porte)
+
+})
+
+//função 02 - filtra um porte pelo ID
+app.get('/v1/lookme/porte/:id', cors(), async function(request, response){
+
+    let idPorte = request.params.id
+
+    //chama a função para listar os filmes do DB
+    let porte =  await controllerPorte.buscarPorteID(idPorte)
+
+    response.status(porte.status_code)
+
+    response.json(porte)
+})
+
+
+//função 03 - insere um novo porte
+app.post('/v1/lookme/porte', cors(), bodyParserJSON, async function(request, response){
+
+    //recebe os dados do corpo (body) da requisição
+    //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
+    let dadosBody = request.body
+    
+    //recebe o tipo de dados da requisição (JSON, XML, etc)
+    let contentType = request.headers['content-type']
+
+    //chama a função para inserir novos filmes do DB, encaminha os dados do body e o content-type
+    let porte =  await controllerPorte.inserirPorte(dadosBody, contentType)
+
+    response.status(porte.status_code)
+
+    response.json(porte)
+})
+
+//função 04 - atualiza um porte
+app.put('/v1/lookme/porte/:id', cors(), bodyParserJSON, async function(request, response){
+
+    //recebe os dados do corpo (body) da requisição
+    //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
+    let dadosBody = request.body
+
+    let idPorte = request.params.id
+ 
+    let contentType = request.headers['content-type']
+
+
+    //chama a função para atualizar generos do DB, encaminha os dados do body, do id e o content-type
+    let porte =  await controllerPorte.atualizarPorte(dadosBody, idPorte, contentType)
+
+    response.status(porte.status_code)
+
+    response.json(porte)
+})
+
+//função 05 - exclui um porte
+app.delete('/v1/lookme/porte/:id', cors(), async function (request, response) {
+    let idPorte = request.params.id
+
+    let porte = await controllerPorte.excluirPorte(idPorte)
+
+    response.status(porte.status_code)
+    response.json(porte)
+})
+
+// ENDPOINT's de usuário
 app.use('/v1/lookme/user/', userRoute)
 
 // Mensagem de operação da API

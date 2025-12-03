@@ -18,7 +18,7 @@ requisições e respostas para a tabela usuarios.
 
 ********************************************************************************************/
 // Importação do arquivo model da tbl_usuario
-const userDAO = require('../../model/user_model.js')
+const userDAO = require('../../model/DAO/user_model.js')
 const DEFAULT_MESSAGES = require('../menssages/config_menssages.js')
 // Mostra todos os usuarios do banco
 async function listUsers() {
