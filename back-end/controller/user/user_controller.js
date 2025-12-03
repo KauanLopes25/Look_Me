@@ -18,7 +18,7 @@ requisições e respostas para a tabela usuarios.
 
 ********************************************************************************************/
 // Importação do arquivo model da tbl_usuario
-const userDAO = require('../../model/user_model.js')
+const userDAO = require('../../model/DAO/user_model.js')
 const DEFAULT_MESSAGES = require('../menssages/config_menssages.js')
 // Mostra todos os usuarios do banco
 async function listUsers() {
@@ -48,6 +48,36 @@ async function listUsers() {
     }
 }
 
+async function searchUserById(id_user) {
+    // Criando copia do objeto mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    try {
+        // Chama a função do DAO para retornar a lista de usuarios do BD
+        let resultUser = await userDAO.getSelectUserById(Number(id_user))
+        if (resultUser) {
+            if (resultUser.length > 0) {
+
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.message
+                MESSAGES.DEFAULT_HEADER.items.usuarios = resultUser
+
+                return MESSAGES.DEFAULT_HEADER // 200
+            } else {
+                return MESSAGES.ERROR_NOT_FOUND // 404
+            }
+        } else {
+            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+        }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+}
+
+
+
 module.exports = {
-    listUsers
+    listUsers,
+    searchUserById
 }

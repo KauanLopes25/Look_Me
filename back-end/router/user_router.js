@@ -40,4 +40,15 @@ router.get('/', cors(), async function (request, response){
     response.json(user)
     console.log('ENDPOINT 1° - Requisitado na tbl_usuario')
 })
+// 2° BUSCAR por ID
+router.get('/:id', cors(), async function (request, response){
+    // Recebe o ID encaminhado via parametro na requisição
+    let idUser = request.params.id
+    // Chama a função para listar os usuarios do BD
+    let user = await userController.searchUserById(idUser)
+    response.status(user.status_code)
+    response.json(user)
+    console.log('ENDPOINT 2° - Requisitado na tbl_usuario')
+})
+
 module.exports = router
