@@ -1,4 +1,3 @@
-/*reset*/
 * {
     margin: 0;
     padding: 0;
@@ -19,8 +18,8 @@ body {
 .container {
     width: 100%;
     max-width: 1000px;
-    margin: 3rem auto;
-    padding: 0 30px; 
+    margin: 2rem auto;
+    padding: 0 30px;
 }
 
 header {
@@ -28,7 +27,7 @@ header {
     flex-direction: column;
     gap: 40px;
     width: 100%;
-    padding: 25px 0; 
+    padding: 25px 0;
 }
 
 .cabecalho {
@@ -36,11 +35,11 @@ header {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding-right: 1.5rem; 
+    padding-right: 1.5rem;
 }
 
 .logo img {
-    width: 120px; 
+    width: 120px;
 }
 
 h1 {
@@ -50,13 +49,17 @@ h1 {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 30px; 
+    font-size: 30px;
 }
 
 .icons-header {
     display: flex;
-    gap: 8px;
+    gap: 15px;
     font-size: 22px;
+}
+
+.icons-header a {
+    text-decoration: none;
 }
 
 i {
@@ -68,7 +71,7 @@ i {
     color: #8cf0e7;
 }
 
-input, select, textarea {
+input {
     width: 100%;
     padding: 12px;
     border: none;
@@ -77,19 +80,18 @@ input, select, textarea {
     color: #575757;
     font-size: 14px;
     outline: none;
-    resize: none;
 }
 
 ::placeholder {
-    color: #999;
+    color: #8f8f8f;
 }
 
-.top-section {
+.perfil-section {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
 .photo-upload {
@@ -99,21 +101,16 @@ input, select, textarea {
     justify-content: center;
     align-items: center;
     height: 180px;
+    width: 180px;
     cursor: pointer;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
-    
-    width: 180px;
-    margin-bottom: 10px;
 }
 
 .upload-icon {
     width: 60px;
     height: 60px;
-    fill: #fff;
     background: #fff;
     border-radius: 50%;
-    padding: 15px;
-    box-sizing: content-box;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -121,72 +118,49 @@ input, select, textarea {
 }
 
 .upload-icon i {
-    font-size: 40px;
+    font-size: 35px;
     color: #84b7cc;
+    line-height: 1;
 }
 
-.info-basica {
+.container-dados {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    width: 100%;
-}
-
-.input-selecao {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.description-box {
-    width: 100%;
-}
-
-.description-box textarea {
-    height: 120px;
-}
-
-.details-section {
-    display: grid;
-    grid-template-columns: 1fr;
     gap: 15px;
-    margin-bottom: 25px;
-}
-
-.details-section textarea {
-    height: 120px;
 }
 
 .actions-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
-}
-
-.botao {
-    padding: 15px;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    text-transform: uppercase;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s;
     width: 100%;
 }
 
-.botao-salvar,
-.botao-editar,
-.botao-excluir,
-.botao-cancelar { 
-    background-color: #0475A8; 
+.botao {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s, transform 0.2s;
+    width: 100%;
+    background-color: #0475A8;
 }
 
 .botao:hover {
     opacity: 0.9;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+}
+
+.btn-logout {
+    grid-column: span 2;
+    width: 50%;
+    justify-self: center;
 }
 
 @media (min-width: 900px) {
@@ -194,7 +168,7 @@ input, select, textarea {
     header {
         padding: 25px 20px;
     }
-    
+
     .cabecalho {
         padding-right: 0;
     }
@@ -203,43 +177,43 @@ input, select, textarea {
         width: 200px;
     }
 
-    h1 {
-        font-size: 19px;
-    }
-
     .icons-header {
-        font-size: 30px; 
+        font-size: 30px;
     }
 
-    .top-section {
-        grid-template-columns: 180px 300px 1fr;
+    .perfil-section {
+        grid-template-columns: 180px 1fr;
         justify-items: start;
+        gap: 30px;
+        align-items: start;
     }
 
     .photo-upload {
         width: 100%;
         margin-bottom: 0;
     }
-    
-    .description-box {
-        height: 100%;
-    }
 
-    .description-box textarea {
-        height: 100%;
-    }
-
-    .details-section {
-        grid-template-columns: 1fr 1fr 1fr;
+    .container-dados {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
     }
 
     .actions-section {
         display: flex;
-        justify-content: space-between;
-        gap: 20px;
+        justify-content: flex-start;
+        gap: 15px;
+        margin-top: 20px;
     }
 
     .botao {
-        flex: 1;
+        width: auto;
+        padding: 12px 25px;
+    }
+
+    .botao-logout {
+        grid-column: auto;
+        width: auto;
+        margin-left: auto;
     }
 }

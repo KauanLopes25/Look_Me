@@ -1,0 +1,248 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    background: linear-gradient(to bottom, #007fc5, #34a7d6);
+    min-height: 100vh;
+    color: white;
+    background-image: url(../img/26574.jpg);
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 20px;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 100%;
+    padding: 25px 0;
+}
+
+.cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 1.5rem;
+}
+
+.logo img {
+    width: 120px;
+}
+
+.icons-header {
+    display: flex;
+    gap: 15px;
+    font-size: 22px;
+}
+
+.icons-header a {
+    text-decoration: none;
+}
+
+i {
+    color: white;
+    cursor: pointer;
+}
+
+.icons-header i:hover {
+    color: #8cf0e7;
+}
+
+h1 {
+    color: white;
+    font-size: 19px;
+    font-family: "Poetsen One", sans-serif;
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.card-solicitacao {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin: 3rem 0;
+}
+
+.pet-area {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pet-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.pet-area h3 {
+    font-weight: 600;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.pet-area p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.interessado-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.interessado-area img {
+    width: 150px;
+    border-radius: 10px;
+}
+
+.interessado-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.interessado-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.interessado-detalhes h4 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.interessado-detalhes p {
+    font-size: 11px;
+    line-height: 1.4;
+    opacity: 0.9;
+}
+
+.botoes-acao {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.botao {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    background-color: #0475A8;
+    transition: 0.5s;
+}
+
+.botoes-acao:hover {
+    opacity: 0.8;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.botao-aceitar:hover {
+    background-color: rgb(4, 104, 52);
+}
+
+.botao-recusar:hover {
+    background-color: rgb(122, 3, 3);
+}
+
+@media (min-width: 700px) {
+
+    header {
+        padding: 25px 20px;
+    }
+
+    .cabecalho {
+        padding-right: 0;
+    }
+
+    .logo img {
+        width: 200px;
+    }
+
+    .icons-header {
+        font-size: 30px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+
+    .card-solicitacao {
+        display: grid;
+        max-width: 900px;
+        grid-template-columns: 320px 1fr;
+        gap: 30px;
+        padding: 30px;
+        align-items: start;
+        margin: 5rem 0;
+    }
+
+    .interessado-area {
+        height: 100%;
+        justify-content: center;
+    }
+
+    .interessado-info {
+        margin-bottom: 30px;
+        align-items: center;
+    }
+
+    .interessado-avatar {
+        width: 90px;
+        height: 90px;
+    }
+
+    .interessado-detalhes h4 {
+        font-size: 24px;
+    }
+
+    .interessado-detalhes p {
+        font-size: 13px;
+    }
+
+    .botoes-acao {
+        display: flex;
+        gap: 20px;
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .botao {
+        width: 150px;
+        padding: 15px;
+    }
+}

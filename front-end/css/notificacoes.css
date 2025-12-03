@@ -12,6 +12,10 @@ body {
     background: linear-gradient(to bottom, #007fc5, #34a7d6);
     min-height: 100vh;
     color: white;
+    background-image: url(../img/26574.jpg);
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
 }
 
 header {
@@ -49,6 +53,10 @@ h1 {
     font-size: 22px;
 }
 
+.icons-header i:hover {
+    color: #8cf0e7;
+}
+
 i {
     color: white;
     cursor: pointer;
@@ -84,6 +92,7 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    backdrop-filter: blur(15px);
 }
 
 .card-titulo {
