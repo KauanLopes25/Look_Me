@@ -1,5 +1,5 @@
 /* *********************************************************************
-* Objetivo: 
+* Objetivo: Comportamento dinâmico e a lógica central da aplicação
 * Data: 04/12/2025
 * Autor: Marcelo Vieira
 * Versão: 1.0
