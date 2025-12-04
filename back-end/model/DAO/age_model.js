@@ -1,5 +1,5 @@
 /********************************************************************************************
-* Objetivo:  Arquivo responsável pelo CRUD de dados no MySQL referente à raça de um animal.
+* Objetivo:  Arquivo responsável pelo CRUD de dados no MySQL referente à idade de um animal.
 * Autor: Luana Mariana Lopes Bomfim
 * Data: 04/12/2025
 * Versão: 1.0
@@ -9,9 +9,9 @@ const { PrismaClient } = require('../../generated/prisma')
 
 const prisma = new PrismaClient()
 
-const getSelectAllBreeds = async function () {
+const getSelectAllAges = async function () {
     try {
-        let sql = `select * from tbl_raca order by raca_id desc`
+        let sql = `select * from tbl_idade order by idade_id desc`
 
         let result = await prisma.$queryRawUnsafe(sql) 
         if  (Array.isArray(result))
@@ -25,10 +25,10 @@ const getSelectAllBreeds = async function () {
     }
 }
 
-const getSelectBreedsById = async function (id) {
+const getSelectAgesById = async function (id) {
 
     try {
-        let sql = `select * from tbl_raca where raca_id = ${id}` 
+        let sql = `select * from tbl_idade where idade_id = ${id}` 
         
         let result = await prisma.$queryRawUnsafe(sql)  
 
@@ -40,17 +40,16 @@ const getSelectBreedsById = async function (id) {
     } catch (error) {
         return false
     }
-
 }
 
-const setInsertBreeds = async function (raca) {
+
+const setInsertAges = async function (idade) {
     try {
         
-        let sql = `INSERT INTO tbl_raca (nome_raca) VALUES ('${raca.nome}')`
+        let sql = `INSERT INTO tbl_idade (descricao) VALUES ('${idade.descricao}')`
         
 
         let result = await prisma.$executeRawUnsafe(sql) 
-        console.log(result)
 
         if (result)
             return true
@@ -66,12 +65,12 @@ const setInsertBreeds = async function (raca) {
 const getSelectLastId = async function(){
     try {
 
-        let sql = `SElECT raca_id FROM tbl_raca ORDER BY raca_id DESC LIMIT 1`
+        let sql = `SElECT idade_id FROM tbl_idade ORDER BY idade_id DESC LIMIT 1`
 
         let result = await prisma.$queryRawUnsafe(sql)
 
         if  (Array.isArray(result))
-            return Number(result[0].raca_id)
+            return Number(result[0].idade_id)
         else
             return false
 
@@ -80,9 +79,9 @@ const getSelectLastId = async function(){
     }
 }
 
-const setUpdateBreeds = async function (raca) {
+const setUpdateAges = async function (idade) {
     try {
-        let sql = `UPDATE tbl_raca set nome_raca = '${raca.nome}' where raca_id = ${raca.id}`
+        let sql = `UPDATE tbl_idade set descricao = '${idade.descricao}' where idade_id = ${idade.id}`
 
         let result = await prisma.$executeRawUnsafe(sql) 
         
@@ -96,9 +95,9 @@ const setUpdateBreeds = async function (raca) {
     }
 }
 
-const setDeleteBreeds = async function (id) {
+const setDeleteAges = async function (id) {
     try {
-        let sql = `delete from tbl_raca where raca_id = ${id}`
+        let sql = `delete from tbl_idade where idade_id = ${id}`
 
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -113,10 +112,10 @@ const setDeleteBreeds = async function (id) {
 }
 
 module.exports = {
-    getSelectAllBreeds,
-    getSelectBreedsById,
-    setInsertBreeds,
+    getSelectAllAges,
+    getSelectAgesById,
+    setInsertAges,
     getSelectLastId,
-    setDeleteBreeds,
-    setUpdateBreeds
+    setDeleteAges,
+    setUpdateAges
 }

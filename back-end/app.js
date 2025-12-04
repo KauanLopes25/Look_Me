@@ -64,6 +64,8 @@ app.use((request, response, next)=>{
 const userRoute = require('./router/user_router.js')
 const controllerPorte = require('./controller/sizes/size_controller.js')
 const controllerEspecie = require('./controller/especies/especies_controller.js')
+const controllerRaca = require('./controller/breeds/breeds_controller.js')
+const controllerIdade = require('./controller/ages/ages_controller.js')
 
 
 
@@ -206,7 +208,7 @@ app.put('/v1/lookme/especie/:id', cors(), bodyParserJSON, async function(request
     response.json(especie)
 })
 
-//função 05 - exclui um porte
+//função 05 - exclui uma especie
 app.delete('/v1/lookme/especie/:id', cors(), async function (request, response) {
     let idEspecie = request.params.id
 
@@ -214,6 +216,151 @@ app.delete('/v1/lookme/especie/:id', cors(), async function (request, response) 
 
     response.status(especie.status_code)
     response.json(especie)
+})
+
+// ENDPOINT'S de raça
+
+//função 01 - lista todas as raças
+app.get('/v1/lookme/racas', cors(), async function(request, response){
+
+    //chama a função para listar os portes do BD
+    let raca =  await controllerRaca.listarRacas()
+
+    response.status(raca.status_code)
+
+    response.json(raca)
+
+})
+
+//função 02 - filtra uma raca pelo ID
+app.get('/v1/lookme/raca/:id', cors(), async function(request, response){
+
+    let idRaca = request.params.id
+
+    let raca =  await controllerRaca.buscarRacaID(idRaca)
+
+    response.status(raca.status_code)
+
+    response.json(raca)
+})
+
+
+//função 03 - insere uma nova raça
+app.post('/v1/lookme/raca', cors(), bodyParserJSON, async function(request, response){
+
+    //recebe os dados do corpo (body) da requisição
+    //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
+    let dadosBody = request.body
+    
+    //recebe o tipo de dados da requisição (JSON, XML, etc)
+    let contentType = request.headers['content-type']
+
+    let raca =  await controllerRaca.inserirRaca(dadosBody, contentType)
+
+    response.status(raca.status_code)
+
+    response.json(raca)
+})
+
+//função 04 - atualiza uma raça
+app.put('/v1/lookme/raca/:id', cors(), bodyParserJSON, async function(request, response){
+
+    //recebe os dados do corpo (body) da requisição
+    //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
+    let dadosBody = request.body
+
+    let idRaca = request.params.id
+ 
+    let contentType = request.headers['content-type']
+
+    let raca =  await controllerRaca.atualizarRaca(dadosBody, idRaca, contentType)
+
+    response.status(raca.status_code)
+
+    response.json(raca)
+})
+
+//função 05 - exclui uma raça
+app.delete('/v1/lookme/raca/:id', cors(), async function (request, response) {
+    let idRaca = request.params.id
+
+    let raca = await controllerRaca.excluirRaca(idRaca)
+
+    response.status(raca.status_code)
+    response.json(raca)
+})
+
+
+// ENDPOINT'S de idade
+
+//função 01 - lista todas as idades
+app.get('/v1/lookme/idades', cors(), async function(request, response){
+
+    //chama a função para listar as idades do BD
+    let idade =  await controllerIdade.listarIdades()
+
+    response.status(idade.status_code)
+
+    response.json(idade)
+
+})
+
+//função 02 - filtra uma idade pelo ID
+app.get('/v1/lookme/idade/:id', cors(), async function(request, response){
+
+    let idIdade = request.params.id
+
+    let idade =  await controllerIdade.buscarIdadeID(idIdade)
+
+    response.status(idade.status_code)
+
+    response.json(idade)
+})
+
+
+//função 03 - insere uma nova idade
+app.post('/v1/lookme/idade', cors(), bodyParserJSON, async function(request, response){
+
+    //recebe os dados do corpo (body) da requisição
+    //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
+    let dadosBody = request.body
+    
+    //recebe o tipo de dados da requisição (JSON, XML, etc)
+    let contentType = request.headers['content-type']
+
+    let idade =  await controllerIdade.inserirIdade(dadosBody, contentType)
+
+    response.status(idade.status_code)
+
+    response.json(idade)
+})
+
+//função 04 - atualiza uma idade
+app.put('/v1/lookme/idade/:id', cors(), bodyParserJSON, async function(request, response){
+
+    //recebe os dados do corpo (body) da requisição
+    //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
+    let dadosBody = request.body
+
+    let idIdade = request.params.id
+ 
+    let contentType = request.headers['content-type']
+
+    let idade =  await controllerIdade.atualizarIdade(dadosBody, idIdade, contentType)
+
+    response.status(idade.status_code)
+
+    response.json(idade)
+})
+
+//função 05 - exclui uma idade
+app.delete('/v1/lookme/idade/:id', cors(), async function (request, response) {
+    let idIdade = request.params.id
+
+    let idade = await controllerIdade.excluirIdade(idIdade)
+
+    response.status(idade.status_code)
+    response.json(idade)
 })
 
 // Mensagem de operação da API

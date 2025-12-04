@@ -60,7 +60,6 @@ const setInsertSize = async function (porte) {
 
 
     } catch (error) {
-        console.log(error)
         return false
     }
 }
