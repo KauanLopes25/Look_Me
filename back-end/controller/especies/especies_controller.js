@@ -1,30 +1,30 @@
 /********************************************************************************************
 * Objetivo: Arquivo responsavel pela manipulação de dados entre o APP e a Model
-requisições e respostas para a tabela porte.
+requisições e respostas para a tabela de espécie.
 * Autor: Luana Mariana Lopes Bomfim
 * Data: 03/12/2025
 * Versão: 1.0
 ********************************************************************************************/
 
-const porteDAO = require('../../model/DAO/size_model.js')
+const especieDAO = require('../../model/DAO/especies_model.js')
 
 const DEFAULT_MESSAGES = require('../menssages/config_menssages.js')
 
-const listarPortes = async function () {
+const listarEspecies = async function () {
 
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        //chama a função do DAO para retornar a lista de portes do BD
-        let resultSizes = await porteDAO.getSelectAllSizes()
+        //chama a função do DAO para retornar a lista de espécies do BD
+        let resultEspecies = await especieDAO.getSelectAllEspecies()
 
-        if (resultSizes) {
+        if (resultEspecies) {
 
-            if (resultSizes.length > 0) {
+            if (resultEspecies.length > 0) {
 
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
-                MESSAGES.DEFAULT_HEADER.items.porte = resultSizes
+                MESSAGES.DEFAULT_HEADER.items.especie = resultEspecies
 
 
                 return MESSAGES.DEFAULT_HEADER//200
@@ -41,21 +41,22 @@ const listarPortes = async function () {
     }
 }
 
-const buscarPorteID = async function (id) {
+
+const buscarEspecieID = async function (id) {
 
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         //Validação da chegada do ID
         if (!isNaN(id) && id != '' && id != null && id > 0) {
-            let resultSize = await porteDAO.getSelectSizeById(Number(id))
+            let resultEspecie = await especieDAO.getSelectEspeciesById(Number(id))
 
-            if (resultSize) {
-                if (resultSize.length > 0) {
+            if (resultEspecie) {
+                if (resultEspecie.length > 0) {
 
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
-                    MESSAGES.DEFAULT_HEADER.items.porte = resultSize
+                    MESSAGES.DEFAULT_HEADER.items.especie = resultEspecie
 
                     return MESSAGES.DEFAULT_HEADER //200
 
@@ -76,7 +77,7 @@ const buscarPorteID = async function (id) {
     }
 }
 
-const inserirPorte = async function (porte, contentType) {
+const inserirEspecie = async function (especie, contentType) {
 
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
@@ -84,22 +85,21 @@ const inserirPorte = async function (porte, contentType) {
 
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-            if (porte.nome != '' && porte.nome != undefined && porte.nome != null && porte.nome.length < 100) {
+            if (especie.nome != '' && especie.nome != undefined && especie.nome != null && especie.nome.length < 10) {
 
-                let resultSize = await porteDAO.setInsertSize(porte)
+                let resultEspecie = await especieDAO.setInsertEspecies(especie)
 
-                if (resultSize) {
-
-                
-                    let lastID = await porteDAO.getSelectLastId()
+                if (resultEspecie) {
+    
+                    let lastID = await especieDAO.getSelectLastId()
 
                     if (lastID) {
 
-                        porte.id = lastID
+                        especie.id = lastID
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items = porte
+                        MESSAGES.DEFAULT_HEADER.items = especie
 
                         return MESSAGES.DEFAULT_HEADER //201
                     } else {
@@ -124,7 +124,7 @@ const inserirPorte = async function (porte, contentType) {
 
 }
 
-const atualizarPorte = async function (porte, id, contentType) {
+const atualizarEspecie = async function (especie, id, contentType) {
 
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
@@ -132,26 +132,24 @@ const atualizarPorte = async function (porte, id, contentType) {
         //Validação do tipo da requisição (TEM QUE SER JSON)
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-            //validação dos dados do porte
-            if (porte.nome != '' && porte.nome != undefined && porte.nome != null && porte.nome.length < 100) {
+            if (especie.nome != '' && especie.nome != undefined && especie.nome != null && especie.nome.length < 10) {
 
                //validando a existência do ID no Banco de Dados
-                let validarID = await buscarPorteID(id)
+                let validarID = await buscarEspecieID(id)
 
                 if (validarID.status_code == 200) {
 
-                    //Adiciona o id do genero no JSON de dados para ser encaminhado ao DAO
-                    porte.id = Number(id)
+                    //Adiciona o id no JSON de dados para ser encaminhado ao DAO
+                    especie.id = Number(id)
 
                     //Processamento
-                    //chama a função do model para atualizar um genero no BD
-                    let resultSize = await porteDAO.setUpdateSize(porte)
-                    if (resultSize) {
+                    let resultEspecie = await especieDAO.setUpdateEspecies(especie)
+                    if (resultEspecie) {
 
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items.porte = porte
+                        MESSAGES.DEFAULT_HEADER.items.especie = especie
 
                         return MESSAGES.DEFAULT_HEADER //200
 
@@ -160,7 +158,7 @@ const atualizarPorte = async function (porte, id, contentType) {
                     }
 
                 } else {
-                    return validarID //retorna erros da função buscarGeneroID()
+                    return validarID 
                 }
 
             } else {
@@ -175,10 +173,9 @@ const atualizarPorte = async function (porte, id, contentType) {
     } catch (error) {
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
-
 }
 
-const excluirPorte = async function(id){
+const excluirEspecie = async function(id){
 
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
@@ -186,14 +183,14 @@ const excluirPorte = async function(id){
         //Validação da chegada do ID
         if(!isNaN(id) && id != '' && id != null && id > 0){
 
-            //Validação de ID válido, chama a função da controller que verifica no BD se o ID existe e valida o ID
-            let validarId = await buscarPorteID(id)
+            //Validação de ID válido
+            let validarId = await buscarEspecieID(id)
 
             if(validarId.status_code == 200){
 
-                let resultSize = await porteDAO.setDeleteSize(Number(id))
+                let resultEspecie = await especieDAO.setDeleteEspecies(Number(id))
 
-                if(resultSize){
+                if(resultEspecie){
 
                     MESSAGES.DEFAULT_HEADER.status          = DEFAULT_MESSAGES.SUCCESS_DELETE_ITEM.status
                     MESSAGES.DEFAULT_HEADER.status_code     = DEFAULT_MESSAGES.SUCCESS_DELETE_ITEM.status_code
@@ -218,9 +215,9 @@ const excluirPorte = async function(id){
 }
 
 module.exports = {
-    listarPortes,
-    buscarPorteID,
-    inserirPorte,
-    atualizarPorte,
-    excluirPorte
+    listarEspecies,
+    buscarEspecieID,
+    inserirEspecie,
+    atualizarEspecie,
+    excluirEspecie
 }

@@ -63,6 +63,8 @@ app.use((request, response, next)=>{
 //Import das contollers
 const userRoute = require('./router/user_router.js')
 const controllerPorte = require('./controller/sizes/size_controller.js')
+const controllerEspecie = require('./controller/especies/especies_controller.js')
+
 
 
 // ENDPOINT'S de porte
@@ -84,7 +86,6 @@ app.get('/v1/lookme/porte/:id', cors(), async function(request, response){
 
     let idPorte = request.params.id
 
-    //chama a função para listar os filmes do DB
     let porte =  await controllerPorte.buscarPorteID(idPorte)
 
     response.status(porte.status_code)
@@ -103,7 +104,6 @@ app.post('/v1/lookme/porte', cors(), bodyParserJSON, async function(request, res
     //recebe o tipo de dados da requisição (JSON, XML, etc)
     let contentType = request.headers['content-type']
 
-    //chama a função para inserir novos filmes do DB, encaminha os dados do body e o content-type
     let porte =  await controllerPorte.inserirPorte(dadosBody, contentType)
 
     response.status(porte.status_code)
@@ -122,8 +122,6 @@ app.put('/v1/lookme/porte/:id', cors(), bodyParserJSON, async function(request, 
  
     let contentType = request.headers['content-type']
 
-
-    //chama a função para atualizar generos do DB, encaminha os dados do body, do id e o content-type
     let porte =  await controllerPorte.atualizarPorte(dadosBody, idPorte, contentType)
 
     response.status(porte.status_code)
@@ -143,6 +141,80 @@ app.delete('/v1/lookme/porte/:id', cors(), async function (request, response) {
 
 // ENDPOINT's de usuário
 app.use('/v1/lookme/user/', userRoute)
+
+
+
+// ENDPOINT'S de espécie
+
+//função 01 - lista todas as espécies
+app.get('/v1/lookme/especies', cors(), async function(request, response){
+
+    //chama a função para listar os portes do BD
+    let especie =  await controllerEspecie.listarEspecies()
+
+    response.status(especie.status_code)
+
+    response.json(especie)
+
+})
+
+//função 02 - filtra uma espécie pelo ID
+app.get('/v1/lookme/especie/:id', cors(), async function(request, response){
+
+    let idEspecie = request.params.id
+
+    let especie =  await controllerEspecie.buscarEspecieID(idEspecie)
+
+    response.status(especie.status_code)
+
+    response.json(especie)
+})
+
+
+//função 03 - insere uma nova espécie
+app.post('/v1/lookme/especie', cors(), bodyParserJSON, async function(request, response){
+
+    //recebe os dados do corpo (body) da requisição
+    //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
+    let dadosBody = request.body
+    
+    //recebe o tipo de dados da requisição (JSON, XML, etc)
+    let contentType = request.headers['content-type']
+
+    let especie =  await controllerEspecie.inserirEspecie(dadosBody, contentType)
+
+    response.status(especie.status_code)
+
+    response.json(especie)
+})
+
+//função 04 - atualiza uma especie
+app.put('/v1/lookme/especie/:id', cors(), bodyParserJSON, async function(request, response){
+
+    //recebe os dados do corpo (body) da requisição
+    //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
+    let dadosBody = request.body
+
+    let idEspecie = request.params.id
+ 
+    let contentType = request.headers['content-type']
+
+    let especie =  await controllerEspecie.atualizarEspecie(dadosBody, idEspecie, contentType)
+
+    response.status(especie.status_code)
+
+    response.json(especie)
+})
+
+//função 05 - exclui um porte
+app.delete('/v1/lookme/especie/:id', cors(), async function (request, response) {
+    let idEspecie = request.params.id
+
+    let especie = await controllerEspecie.excluirEspecie(idEspecie)
+
+    response.status(especie.status_code)
+    response.json(especie)
+})
 
 // Mensagem de operação da API
 app.listen(PORT, function(){

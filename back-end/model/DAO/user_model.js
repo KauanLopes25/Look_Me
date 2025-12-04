@@ -30,6 +30,7 @@ Injection
 // Import da dependência do Prisma que permite a execução de script SQL no BD
 const { PrismaClient } = require('../../generated/prisma')
 
+
 // Cria um novo objeto baseado na classe do PrismaClient
 const prisma = new PrismaClient()
 
