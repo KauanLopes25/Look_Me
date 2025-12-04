@@ -108,7 +108,8 @@ async function setUpdateUserAddress(user_id, newDataUserAddress) {
                     cidade = '${newDataUserAddress.cidade}',
                     uf = '${newDataUserAddress.uf}',
                     cep = '${newDataUserAddress.cep}',
-                    regiao = '${userAddress.regiao}'
+                    usuario_id = ${newDataUserAddress.usuario_id},
+                    regiao = '${newDataUserAddress.regiao}'
                     WHERE usuario_id = '${user_id}';`
                     
 
@@ -122,6 +123,7 @@ async function setUpdateUserAddress(user_id, newDataUserAddress) {
         }
 
     } catch (error) {
+        console.log(error)
         return false
     }
 }

@@ -120,7 +120,7 @@ async function updateUserAddress(user_id, newDataUserAddress, contentType) {
     try {
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-            let dataValidation = await validation.userDataValidation(newDataUserAddress, contentType)
+            let dataValidation = await validation.userAddressDataValidation(newDataUserAddress, contentType)
 
             if (!dataValidation) {
                 let userAddressValidation = await searchUserAddressById(user_id)
@@ -128,6 +128,7 @@ async function updateUserAddress(user_id, newDataUserAddress, contentType) {
                     // Processamento
                     // Chama a função para update um novo endereço de usuario no BD"
                     let resultUserAddress = await userAddressDAO.setUpdateUserAddress(user_id, newDataUserAddress)
+                    console.log(resultUserAddress)
                     if (resultUserAddress) {
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
@@ -166,7 +167,7 @@ async function deleteUserAddress(user_id) {
 
             // Processamento
             // Chama a função para deletar endereço de usuario no BD
-            let resultUserAddress = await userAddressDAO.setDeleteUser(user_id)
+            let resultUserAddress = await userAddressDAO.setDeleteUserAddress(user_id)
             console.log(resultUserAddress)
 
             if (resultUserAddress) {

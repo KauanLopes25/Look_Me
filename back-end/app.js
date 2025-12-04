@@ -43,6 +43,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 // Import das rotas
 const userRoute = require('./router/user_router.js')
+const userAddressRoute = require('./router/userAddress_router.js')
 
 
 // Retorna a porta do servidor local ou colocamos uma porta local
@@ -60,8 +61,10 @@ app.use((request, response, next)=>{
 })
 
 // ENDPOINT's
+// USUÁRIOS
 app.use('/v1/lookme/user/', userRoute)
-
+// ENDEREÇO DE USUÁRIOS
+app.use('/v1/lookme/useraddress/', userAddressRoute)
 // Mensagem de operação da API
 app.listen(PORT, function(){
     console.log('API aguardando requisições...')
