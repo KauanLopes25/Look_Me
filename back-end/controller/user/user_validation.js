@@ -41,7 +41,7 @@ async function userDataValidation(user, contentType) {
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof user.nome !== "string" ||
+            typeof user.telefone !== "string" ||
             user.telefone == '' ||
             user.telefone == undefined ||
             user.telefone == null ||
@@ -72,7 +72,7 @@ async function userDataValidation(user, contentType) {
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof user.nome !== "string" ||
+            typeof user.senha !== "string" ||
             user.senha == undefined ||
             user.senha == null ||
             user.senha > 200) {

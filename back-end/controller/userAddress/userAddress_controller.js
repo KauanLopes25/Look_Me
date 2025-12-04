@@ -1,8 +1,8 @@
 /********************************************************************************************
 * Objetivo: Arquivo responsavel pela manipulação de dados entre o APP e a Model
-requisições e respostas para a tabela usuarios.
+requisições e respostas para a tabela endereço de usuarios.
 * Autor: Kauan Lopes Pereira
-* Data: 01/12/2025
+* Data: 04/12/2025
 * Versão: 1.0
 ********************************************************************************************/
 
@@ -18,26 +18,26 @@ requisições e respostas para a tabela usuarios.
 
 ********************************************************************************************/
 // Importação do arquivo model da tbl_usuario
-const userDAO = require('../../model/DAO/user_model.js')
+const userAddressDAO = require('../../model/DAO/userAddress_model.js')
 // Importação do arquivo de mensagens da API
 const DEFAULT_MESSAGES = require('../menssages/config_menssages.js')
 // Importação do arquivo de validação de dados de usuário
-const validation = require('./user_validation.js')
+const validation = require('./userAddress_validation.js')
 // Mostra todos os usuarios do banco
-async function listUsers() {
+async function listUsersAddress() {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        // Chama a função do DAO para retornar a lista de usuarios do BD
-        let resultUser = await userDAO.getSelectAllUsers()
-        if (resultUser) {
-            if (resultUser.length > 0) {
+        // Chama a função do DAO para retornar a lista de endereços de usuarios do BD
+        let resultUserAddress = await userAddressDAO.getSelectAllUsersAddress()
+        if (resultUserAddress) {
+            if (resultUserAddress.length > 0) {
 
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                 MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.message
-                MESSAGES.DEFAULT_HEADER.items.usuarios = resultUser
+                MESSAGES.DEFAULT_HEADER.items.usuarios = resultUserAddress
 
                 return MESSAGES.DEFAULT_HEADER // 200
             } else {
@@ -51,20 +51,20 @@ async function listUsers() {
     }
 }
 
-async function searchUserById(id_user) {
+async function searchUserAddressById(id_user) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        // Chama a função do DAO para retornar a lista de usuarios do BD
-        let resultUser = await userDAO.getSelectUserById(Number(id_user))
-        if (resultUser) {
-            if (resultUser.length > 0) {
+        // Chama a função do DAO para retornar um endereço de um  usuario do BD
+        let resultUserAddress = await userAddressDAO.getSelectUserAddressById(Number(id_user))
+        if (resultUserAddress) {
+            if (resultUserAddress.length > 0) {
 
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                 MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.message
-                MESSAGES.DEFAULT_HEADER.items.usuarios = resultUser
+                MESSAGES.DEFAULT_HEADER.items.usuarios = resultUserAddress
 
                 return MESSAGES.DEFAULT_HEADER // 200
             } else {
@@ -78,50 +78,24 @@ async function searchUserById(id_user) {
     }
 }
 
-async function searchUserByEmail(email) {
-    // Criando copia do objeto mensagens
-    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
-
-    try {
-        // Chama a função do DAO para retornar a lista de usuarios do BD
-        let resultUser = await userDAO.getSelectUserByEmail(email)
-        if (resultUser) {
-            if (resultUser.length > 0) {
-
-                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
-                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
-                MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.message
-                MESSAGES.DEFAULT_HEADER.items.usuarios = resultUser
-
-                return MESSAGES.DEFAULT_HEADER // 200
-            } else {
-                return MESSAGES.ERROR_NOT_FOUND // 404
-            }
-        } else {
-            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
-        }
-    } catch (error) {
-        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
-    }
-}
-async function insertUser(user, contentType) {
+async function insertUserAddress(userAddress, contentType) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-            let dataValidation = await validation.userDataValidation(user, contentType)
+            let dataValidation = await validation.userAddressDataValidation(userAddress, contentType)
 
             if (!dataValidation) {
                 // Processamento
-                // Chama a função para update um novo usuario no BD"
-                let resultUser = await userDAO.setInsertUser(user)
-                if (resultUser) {
+                // Chama a função para inserir um novo endereço de usuario no BD"
+                let resultUserAddress = await userAddressDAO.setInsertUserAddress(userAddress)
+                if (resultUserAddress) {
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status;
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code;
                     MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message;
-                    MESSAGES.DEFAULT_HEADER.items = user
+                    MESSAGES.DEFAULT_HEADER.items = userAddress
 
                     return MESSAGES.DEFAULT_HEADER //201
                 } else {
@@ -135,38 +109,37 @@ async function insertUser(user, contentType) {
         }
 
     } catch (error) {
-        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
-async function updateUser(email, newDataUser, contentType) {
+async function updateUserAddress(user_id, newDataUserAddress, contentType) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-            let dataValidation = await validation.userDataValidation(newDataUser, contentType)
+            let dataValidation = await validation.userDataValidation(newDataUserAddress, contentType)
 
             if (!dataValidation) {
-                let userValidation = await searchUserByEmail(email)
-                if (userValidation.status_code == 200) {
+                let userAddressValidation = await searchUserAddressById(user_id)
+                if (userAddressValidation.status_code == 200) {
                     // Processamento
-                    // Chama a função para update um novo usuario no BD"
-                    let resultUser = await userDAO.setUpdateUser(email, newDataUser)
-                    if (resultUser) {
+                    // Chama a função para update um novo endereço de usuario no BD"
+                    let resultUserAddress = await userAddressDAO.setUpdateUserAddress(user_id, newDataUserAddress)
+                    if (resultUserAddress) {
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items.usuario = newDataUser
+                        MESSAGES.DEFAULT_HEADER.items.usuario = newDataUserAddress
 
                         return MESSAGES.DEFAULT_HEADER //201
                     } else {
                         return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                     }
                 } else {
-                    return userValidation // A função searchUserByEmail poderá retornar (400 ou 404 ou 500)
+                    return userAddressValidation // A função searchUserByEmail poderá retornar (400 ou 404 ou 500)
                 }
 
             } else {
@@ -183,20 +156,20 @@ async function updateUser(email, newDataUser, contentType) {
 
 }
 
-async function deleteUser(email) {
+async function deleteUserAddress(user_id) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        let userValidation = await searchUserByEmail(email)
-        if (userValidation.status_code == 200) {
+        let userAddressValidation = await searchUserAddressById(user_id)
+        if (userAddressValidation.status_code == 200) {
 
             // Processamento
-            // Chama a função para deletar usuário no BD
-            let resultUser = await userDAO.setDeleteUser(email)
-            console.log(resultUser)
+            // Chama a função para deletar endereço de usuario no BD
+            let resultUserAddress = await userAddressDAO.setDeleteUser(user_id)
+            console.log(resultUserAddress)
 
-            if (resultUser) {
+            if (resultUserAddress) {
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_DELETE_ITEM.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_DELETE_ITEM.status_code
                 MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_DELETE_ITEM.message
@@ -206,7 +179,7 @@ async function deleteUser(email) {
                 return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
             }
         } else {
-            return validarID // A função searchUserByEmail poderá retornar (400 ou 404 ou 500)
+            return userAddressValidation // A função searchUserAddressById poderá retornar (400 ou 404 ou 500)
         }
 
     } catch (error) {
@@ -215,10 +188,9 @@ async function deleteUser(email) {
 }
 
 module.exports = {
-    listUsers,
-    searchUserById,
-    searchUserByEmail,
-    insertUser,
-    updateUser,
-    deleteUser
+    listUsersAddress,
+    searchUserAddressById,
+    insertUserAddress,
+    updateUserAddress,
+    deleteUserAddress
 }
