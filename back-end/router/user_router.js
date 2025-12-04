@@ -33,7 +33,7 @@ const userController = require('../controller/user/user_controller.js')
 const DEFAULT_MESSAGES = require('../controller/menssages/config_menssages.js')
 
 // 1° LISTAR
-router.get('/', cors(), async function (request, response){
+router.get('/', cors(), async function (request, response) {
     // Chama a função para listar os usuarios do BD
     let user = await userController.listUsers()
     response.status(user.status_code)
@@ -53,7 +53,7 @@ router.get('/:id', cors(), async function (request, response){
 })
 */
 // 3° BUSCAR POR EMAIL
-router.get('/:email', cors(), async function (request, response){
+router.get('/:email', cors(), async function (request, response) {
     // Recebe o email encaminhado via parametro na requisição
     let emailUser = request.params.email
     // Chama a função para buscar um usuario por email
@@ -64,7 +64,7 @@ router.get('/:email', cors(), async function (request, response){
 })
 
 // 4° INSERIR NOVO USUARIO
-router.post('/', cors(), bodyParserJSON, async function (request, response){
+router.post('/', cors(), bodyParserJSON, async function (request, response) {
     // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
     let dadosBody = request.body
     let contentType = request.headers['content-type']
@@ -73,5 +73,18 @@ router.post('/', cors(), bodyParserJSON, async function (request, response){
     response.status(user.status_code)
     response.json(user)
     console.log('ENDPOINT 4° - Requisitado na tbl_usuario')
+})
+// 5° ATUALIZAR NOVO USUARIO
+router.put('/:email', cors(), bodyParserJSON, async function (request, response) {
+    // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
+    let emailUser = request.params.email
+    // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
+    let dadosBody = request.body
+    let contentType = request.headers['content-type']
+    // Chama a função de inserir o novo usuario, encaminha os dados e o content-type
+    let user = await userController.updateUser(emailUser, dadosBody, contentType)
+    response.status(user.status_code)
+    response.json(user)
+    console.log('ENDPOINT 5° - Requisitado na tbl_usuario')
 })
 module.exports = router

@@ -119,10 +119,37 @@ async function setInsertUser(user) {
         return false
     }
 }
+// Altera um registro de um usuario no banco de dados
+async function setUpdateUser(email, newDataUser) {
+    try {
+        let sql = ` UPDATE tbl_usuario
+                    SET nome = '${newDataUser.nome}', 
+                    data_nascimento = '${newDataUser.data_nascimento}', 
+                    telefone = '${newDataUser.telefone}',
+                    email = '${newDataUser.email}',
+                    foto_url = '${newDataUser.foto_url}',
+                    senha = '${newDataUser.senha}',
+                    status_cadastro = '${newDataUser.status_cadastro}'
+                    WHERE email = '${email}';`
+
+        let result = await prisma.$executeRawUnsafe(sql)
+        if (result) {
+
+            return true
+        } else {
+
+            return false
+        }
+
+    } catch (error) {
+        return false
+    }
+}
 
 module.exports = {
     getSelectAllUsers,
     getSelectUserById,
     getSelectUserByEmail,
-    setInsertUser
+    setInsertUser,
+    setUpdateUser,
 }
