@@ -70,6 +70,26 @@ async function getSelectUserById(id_user) {
         return false
     }
 }
+// Retorna o ultimo id do banco de dados
+async function getSelectLastId() {
+    try {
+        // Variavel com o comando sql para retornar o ultimo id do banco de dados
+        let sql = 'select id_usuario from tbl_usuario order by usuario_id desc limit 1'
+        // Variavel para inserir o comando no banco de dados
+        let result = await prisma.$queryRawUnsafe(sql)
+        console.log(result)
+        if (Array.isArray(result))
+            return Number(result[0].id_user)
+
+        else
+            return false
+
+
+    } catch (error) {
+        console.log(error)
+        return false
+    }  
+}
 
 async function setInsertUser(user) {
     try {
@@ -104,5 +124,6 @@ async function setInsertUser(user) {
 module.exports = {
     getSelectAllUsers,
     getSelectUserById,
+    getSelectLastId,
     setInsertUser
 }
