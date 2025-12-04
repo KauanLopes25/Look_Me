@@ -1,7 +1,7 @@
 /********************************************************************************************
-* Objetivo:  Arquivo responsável pelo CRUD de dados no MySQL referente à espécie de um animal.
+* Objetivo:  Arquivo responsável pelo CRUD de dados no MySQL referente à raça de um animal.
 * Autor: Luana Mariana Lopes Bomfim
-* Data: 03/12/2025
+* Data: 04/12/2025
 * Versão: 1.0
 ********************************************************************************************/
 
@@ -9,10 +9,9 @@ const { PrismaClient } = require('../../generated/prisma')
 
 const prisma = new PrismaClient()
 
-const getSelectAllEspecies = async function () {
+const getSelectAllBreeds = async function () {
     try {
-
-        let sql = `select * from tbl_especie order by especie_id desc`
+        let sql = `select * from tbl_raca order by raca_id desc`
 
         let result = await prisma.$queryRawUnsafe(sql) 
         if  (Array.isArray(result))
@@ -26,11 +25,10 @@ const getSelectAllEspecies = async function () {
     }
 }
 
-const getSelectEspeciesById = async function (id) {
+const getSelectBreedsById = async function (id) {
 
     try {
-
-        let sql = `select * from tbl_especie where especie_id = ${id}` 
+        let sql = `select * from tbl_raca where raca_id = ${id}` 
         
         let result = await prisma.$queryRawUnsafe(sql)  
 
@@ -42,12 +40,13 @@ const getSelectEspeciesById = async function (id) {
     } catch (error) {
         return false
     }
+
 }
 
-const setInsertEspecies = async function (especie) {
+const setInsertBreeds = async function (raca) {
     try {
         
-        let sql = `INSERT INTO tbl_especie (nome_especie) VALUES ('${especie.nome}')`
+        let sql = `INSERT INTO tbl_raca (nome_raca) VALUES ('${raca.nome}')`
         
 
         let result = await prisma.$executeRawUnsafe(sql) 
@@ -63,11 +62,10 @@ const setInsertEspecies = async function (especie) {
     }
 }
 
-
 const getSelectLastId = async function(){
     try {
 
-        let sql = `SElECT especie_id FROM tbl_especie ORDER BY especie_id DESC LIMIT 1`
+        let sql = `SElECT raca_id FROM tbl_raca ORDER BY raca_id DESC LIMIT 1`
 
         let result = await prisma.$queryRawUnsafe(sql)
       
@@ -81,9 +79,9 @@ const getSelectLastId = async function(){
     }
 }
 
-const setUpdateEspecies = async function (especie) {
+const setUpdateBreeds = async function (raca) {
     try {
-        let sql = `UPDATE tbl_especie set nome_especie = '${especie.nome}' where especie_id = ${especie.id}`
+        let sql = `UPDATE tbl_raca set nome_raca = '${especie.nome}' where raca_id = ${especie.id}`
 
         let result = await prisma.$executeRawUnsafe(sql) 
         
@@ -97,9 +95,9 @@ const setUpdateEspecies = async function (especie) {
     }
 }
 
-const setDeleteEspecies = async function (id) {
+const setDeleteBreeds = async function (id) {
     try {
-        let sql = `delete from tbl_especie where especie_id = ${id}`
+        let sql = `delete from tbl_raca where raca_id = ${id}`
 
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -113,12 +111,11 @@ const setDeleteEspecies = async function (id) {
     }
 }
 
-
 module.exports = {
-    getSelectAllEspecies,
-    getSelectEspeciesById,
-    setInsertEspecies,
+    getSelectAllBreeds,
+    getSelectBreedsById,
+    setInsertBreeds,
     getSelectLastId,
-    setDeleteEspecies,
-    setUpdateEspecies
+    setDeleteBreeds,
+    setUpdateBreeds
 }
