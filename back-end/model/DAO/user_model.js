@@ -33,6 +33,7 @@ const { PrismaClient } = require('../../generated/prisma')
 // Cria um novo objeto baseado na classe do PrismaClient
 const prisma = new PrismaClient()
 
+// Buscar todos os usuários do banco
 async function getSelectAllUsers() {
     try {
         // Variavel com o comando sql para buscar toda a tabela de Usuário
@@ -51,7 +52,7 @@ async function getSelectAllUsers() {
         return false
     }
 }
-
+// Buscar um registro de usuário no banco pelo id
 async function getSelectUserById(id_user) {
     try {
         // Variavel com o comando sql para buscar toda a tabela de Usuário
@@ -70,27 +71,25 @@ async function getSelectUserById(id_user) {
         return false
     }
 }
-// Retorna o ultimo id do banco de dados
-async function getSelectLastId() {
+// Buscar um registro de usuário no banco pelo email
+async function getSelectUserByEmail(email) {
     try {
-        // Variavel com o comando sql para retornar o ultimo id do banco de dados
-        let sql = 'select id_usuario from tbl_usuario order by usuario_id desc limit 1'
+        // Variavel com o comando sql para buscar toda a tabela de Usuário
+        let sql = `SELECT * FROM tbl_usuario WHERE email = '${email}'`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
-        console.log(result)
         if (Array.isArray(result))
-            return Number(result[0].id_user)
+            return result
 
         else
             return false
 
-
     } catch (error) {
         console.log(error)
         return false
-    }  
+    }
 }
-
+// Inserir um registro de usuário no banco
 async function setInsertUser(user) {
     try {
         // Variavel com o comando sql para buscar toda a tabela de usuário
@@ -124,6 +123,6 @@ async function setInsertUser(user) {
 module.exports = {
     getSelectAllUsers,
     getSelectUserById,
-    getSelectLastId,
+    getSelectUserByEmail,
     setInsertUser
 }

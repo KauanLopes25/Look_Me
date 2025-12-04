@@ -41,25 +41,37 @@ router.get('/', cors(), async function (request, response){
     console.log('ENDPOINT 1° - Requisitado na tbl_usuario')
 })
 // 2° BUSCAR POR ID
+/*
 router.get('/:id', cors(), async function (request, response){
     // Recebe o ID encaminhado via parametro na requisição
     let idUser = request.params.id
-    // Chama a função para listar os usuarios do BD
+    // Chama a função para buscar um usuario por id
     let user = await userController.searchUserById(idUser)
     response.status(user.status_code)
     response.json(user)
     console.log('ENDPOINT 2° - Requisitado na tbl_usuario')
 })
-// 3° INSERIR NOVO USUARIO
+*/
+// 3° BUSCAR POR EMAIL
+router.get('/:email', cors(), async function (request, response){
+    // Recebe o email encaminhado via parametro na requisição
+    let emailUser = request.params.email
+    // Chama a função para buscar um usuario por email
+    let user = await userController.searchUserByEmail(emailUser)
+    response.status(user.status_code)
+    response.json(user)
+    console.log('ENDPOINT 3° - Requisitado na tbl_usuario')
+})
+
+// 4° INSERIR NOVO USUARIO
 router.post('/', cors(), bodyParserJSON, async function (request, response){
     // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
     let dadosBody = request.body
     let contentType = request.headers['content-type']
     // Chama a função de inserir o novo usuario, encaminha os dados e o content-type
     let user = await userController.insertUser(dadosBody, contentType)
-    
     response.status(user.status_code)
     response.json(user)
-    console.log('ENDPOINT 3° - Requisitado na tbl_usuario')
+    console.log('ENDPOINT 4° - Requisitado na tbl_usuario')
 })
 module.exports = router

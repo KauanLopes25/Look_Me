@@ -78,6 +78,32 @@ async function searchUserById(id_user) {
     }
 }
 
+async function searchUserByEmail(email) {
+    // Criando copia do objeto mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    try {
+        // Chama a função do DAO para retornar a lista de usuarios do BD
+        let resultUser = await userDAO.getSelectUserByEmail(email)
+        if (resultUser) {
+            if (resultUser.length > 0) {
+
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.message
+                MESSAGES.DEFAULT_HEADER.items.usuarios = resultUser
+
+                return MESSAGES.DEFAULT_HEADER // 200
+            } else {
+                return MESSAGES.ERROR_NOT_FOUND // 404
+            }
+        } else {
+            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+        }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+}
 async function insertUser(user, contentType) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -120,5 +146,6 @@ async function insertUser(user, contentType) {
 module.exports = {
     listUsers,
     searchUserById,
+    searchUserByEmail,
     insertUser
 }
