@@ -183,11 +183,43 @@ async function updateUser(email, newDataUser, contentType) {
 
 }
 
+async function deleteUser(email) {
+    // Criando copia do objeto mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    try {
+        let userValidation = await searchUserByEmail(email)
+        if (userValidation.status_code == 200) {
+
+            // Processamento
+            // Chama a função para deletar um filme no BD
+            let resultUser = await userDAO.setDeleteUser(email)
+            console.log(resultUser)
+
+            if (resultUser) {
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_DELETE_ITEM.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_DELETE_ITEM.status_code
+                MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_DELETE_ITEM.message
+                delete MESSAGES.DEFAULT_HEADER.items
+                return MESSAGES.DEFAULT_HEADER // 204
+            } else {
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+            }
+        } else {
+            return validarID // A função buscarFilmeID poderá retornar (400 ou 404 ou 500)
+        }
+
+    } catch (error) {
+        console.log(error)
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+}
 
 module.exports = {
     listUsers,
     searchUserById,
     searchUserByEmail,
     insertUser,
-    updateUser
+    updateUser,
+    deleteUser
 }

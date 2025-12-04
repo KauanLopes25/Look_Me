@@ -145,6 +145,25 @@ async function setUpdateUser(email, newDataUser) {
         return false
     }
 }
+// Excluir um registro de usuario no banco de dados
+async function setDeleteUser(email) {
+    try {
+        let sql = `DELETE FROM tbl_usuario
+                    WHERE email = '${email}';`
+
+        let result = await prisma.$executeRawUnsafe(sql)
+        if (result) {
+
+            return true
+        } else {
+            return false
+        }
+
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
 
 module.exports = {
     getSelectAllUsers,
@@ -152,4 +171,5 @@ module.exports = {
     getSelectUserByEmail,
     setInsertUser,
     setUpdateUser,
+    setDeleteUser
 }

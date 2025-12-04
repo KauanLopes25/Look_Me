@@ -87,4 +87,14 @@ router.put('/:email', cors(), bodyParserJSON, async function (request, response)
     response.json(user)
     console.log('ENDPOINT 5° - Requisitado na tbl_usuario')
 })
+// 6° DELETAR USUARIO
+router.delete('/:email', cors(), async function (request, response){
+    // Recebe o ID encaminhado via parametro na requisição
+    let emailUser = request.params.email
+    // Chama a função de deletar um usuario
+    let user = await userController.deleteUser(emailUser)
+    response.status(user.status_code)
+    response.json(user)
+    console.log('ENDPOINT 6° - Requisitado na tbl_usuario')
+})
 module.exports = router
