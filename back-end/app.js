@@ -29,6 +29,8 @@ utilizarmos o projeto em outro computador.
                                            pois ele pega e cria tabelas programadas no ORM schema.prisma)
     npx prisma generate                 -> Apenas realiza o sincronismo entre o prisma e o DB, geralmente
                                            usamos para rodar o projeto em um PC novo 
+    npm install multer                  -> Recebe arquivos enviados pelo front-end em requisições HTTP usando multipart/form-data.
+    npm install @azure/storage-blob     -> Realiza o de imagens para o Azure Blob Storage.
 ******************************** BIBLIOTECAS UTILIZADAS *************************************
 * Prisma
 * Express
@@ -41,6 +43,8 @@ const express = require('express')
 const cors = require('cors')
 // Responsável por gerenciar a chegada dos dados da api com o front
 const bodyParser = require('body-parser')
+// Carrega o .env do node
+require('dotenv').config();
 // Import das rotas
 const userRoute = require('./router/user_router.js')
 const userAddressRoute = require('./router/userAddress_router.js')

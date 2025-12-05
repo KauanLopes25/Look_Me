@@ -17,12 +17,39 @@ requisições e respostas para a tabela de animal.
 ******************************** BIBLIOTECAS UTILIZADAS *************************************
 
 ********************************************************************************************/
-// Importação do arquivo model da tbl_usuario
+// Importação do arquivo model da tbl_animal
 const animalDAO = require('../../model/DAO/animal_model.js')
 // Importação do arquivo de mensagens da API
 const DEFAULT_MESSAGES = require('../menssages/config_menssages.js')
 // Importação do arquivo de validação de dados de usuário
 const validation = require('./animal_validation.js')
+
+// Configuração da da azure para enviar arquivos
+const { BlobServiceClient } = require('@azure/storage-blob');
+
+const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
+const CONTAINER_NAME = "image";
+
+const blobService = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
+const containerClient = blobService.getContainerClient(CONTAINER_NAME);
+
+async function uploadToAzure(arquivo) {
+    // Nome único no Azure
+    const blobName = Date.now() + "-" + arquivo.originalname;
+
+    // Cria o blob
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+    // Envia o arquivo (arquivo.buffer só funciona se você usar storage memory, vou deixar o correto para multer.diskStorage)
+    const fs = require("fs");
+    const fileStream = fs.createReadStream(arquivo.path);
+
+    await blockBlobClient.uploadStream(fileStream);
+
+    // URL pública do blob
+    return blockBlobClient.url;
+}
+
 // Mostra todos os animal do banco
 async function listAnimal() {
     // Criando copia do objeto mensagens
@@ -104,18 +131,25 @@ async function searchAnimalByUser(idUser) {
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
-async function insertAnimal(animal, contentType) {
+async function insertAnimal(animal, arquivo) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+        if (animal) {
+            let dataValidation = await validation.animalDataValidation(animal)
 
-            let dataValidation = await validation.animalDataValidation(animal, contentType)
+            // Envia imagem para Azure
+            let imageUrl = null;
+            if (arquivo) {
+                imageUrl = await uploadToAzure(arquivo)
+                animal.foto_url = imageUrl
+            }
 
             if (!dataValidation) {
                 // Processamento
                 // Chama a função para inserir um novo animal no BD"
+                animal.foto_url = imageUrl
                 let resultAnimal = await animalDAO.setInsertAnimal(animal)
                 if (resultAnimal) {
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status;
@@ -140,15 +174,20 @@ async function insertAnimal(animal, contentType) {
     }
 }
 
-async function updateAnimal(idAnimal, newDataAnimal, contentType) {
+async function updateAnimal(idAnimal, newDataAnimal, arquivo) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+        if (newDataAnimal) {
 
-            let dataValidation = await validation.animalDataValidation(newDataAnimal, contentType)
-
+            let dataValidation = await validation.animalDataValidation(newDataAnimal)
+            // Envia imagem para Azure
+            let imageUrl = null;
+            if (arquivo) {
+                imageUrl = await uploadToAzure(arquivo)
+                newDataAnimal.foto_url = imageUrl
+            }
             if (!dataValidation) {
                 let animalValidation = await searchAnimalById(idAnimal)
                 if (animalValidation.status_code == 200) {
@@ -220,5 +259,5 @@ module.exports = {
     searchAnimalByUser,
     insertAnimal,
     updateAnimal,
-    deleteAnimal 
+    deleteAnimal
 }

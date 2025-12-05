@@ -23,6 +23,33 @@ const userDAO = require('../../model/DAO/user_model.js')
 const DEFAULT_MESSAGES = require('../menssages/config_menssages.js')
 // Importação do arquivo de validação de dados de usuário
 const validation = require('./user_validation.js')
+
+// Configuração da da azure para enviar arquivos
+const { BlobServiceClient } = require('@azure/storage-blob');
+
+const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
+const CONTAINER_NAME = "image";
+
+const blobService = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
+const containerClient = blobService.getContainerClient(CONTAINER_NAME);
+
+async function uploadToAzure(arquivo) {
+    // Nome único no Azure
+    const blobName = Date.now() + "-" + arquivo.originalname;
+
+    // Cria o blob
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+    // Envia o arquivo (arquivo.buffer só funciona se você usar storage memory, vou deixar o correto para multer.diskStorage)
+    const fs = require("fs");
+    const fileStream = fs.createReadStream(arquivo.path);
+
+    await blockBlobClient.uploadStream(fileStream);
+
+    // URL pública do blob
+    return blockBlobClient.url;
+}
+
 // Mostra todos os usuarios do banco
 async function listUsers() {
     // Criando copia do objeto mensagens
@@ -104,16 +131,22 @@ async function searchUserByEmail(email) {
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
-async function insertUser(user, contentType) {
+async function insertUser(user, arquivo) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+        if (user) {
 
-            let dataValidation = await validation.userDataValidation(user, contentType)
-
+            let dataValidation = await validation.userDataValidation(user)
+            // Envia imagem para Azure
+            let imageUrl = null;
+            if (arquivo) {
+                imageUrl = await uploadToAzure(arquivo)
+                user.foto_url = imageUrl
+            }
             if (!dataValidation) {
+
                 // Processamento
                 // Chama a função para update um novo usuario no BD"
                 let resultUser = await userDAO.setInsertUser(user)
@@ -140,15 +173,20 @@ async function insertUser(user, contentType) {
     }
 }
 
-async function updateUser(email, newDataUser, contentType) {
+async function updateUser(email, newDataUser, arquivo) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+        if (newDataUser) {
 
-            let dataValidation = await validation.userDataValidation(newDataUser, contentType)
-
+            let dataValidation = await validation.userDataValidation(newDataUser)
+            // Envia imagem para Azure
+            let imageUrl = null;
+            if (arquivo) {
+                imageUrl = await uploadToAzure(arquivo)
+                newDataUser.foto_url = imageUrl
+            }
             if (!dataValidation) {
                 let userValidation = await searchUserByEmail(email)
                 if (userValidation.status_code == 200) {
