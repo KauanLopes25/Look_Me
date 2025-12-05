@@ -1,7 +1,7 @@
 /********************************************************************************************
-* Objetivo: Arquivo para comunicação com a tabela de endereço de usuario.
+* Objetivo: Arquivo para comunicação com a tabela de endereço de animal.
 * Autor: Kauan Lopes Pereira
-* Data: 04/12/2025
+* Data: 05/12/2025
 * Versão: 1.0
 ********************************************************************************************/
 
@@ -32,11 +32,11 @@ const { PrismaClient } = require('../../generated/prisma')
 // Cria um novo objeto baseado na classe do PrismaClient
 const prisma = new PrismaClient()
 
-// Buscar todos os endereços de usuários do banco
-async function getSelectAllUsersAddress() {
+// Buscar todos os endereços de animal do banco
+async function getSelectAllAnimalAddress() {
     try {
-        // Variavel com o comando sql para buscar toda a tabela de endereço de Usuário
-        let sql = `SELECT * FROM tbl_endereco_usuario ORDER BY endereco_usuario_id DESC`
+        // Variavel com o comando sql para buscar toda a tabela de endereço de animal
+        let sql = `SELECT * FROM tbl_endereco_animal ORDER BY endereco_animal_id DESC`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result))
@@ -50,11 +50,29 @@ async function getSelectAllUsersAddress() {
         return false
     }
 }
-// Buscar um registro de endereço de usuário no banco pelo id
-async function getSelectUserAddressById(idUser) {
+// Buscar um registro de endereço de animal no banco pelo id
+async function getSelectAnimalAddressById(idAnimal) {
     try {
-        // Variavel com o comando sql para buscar um registro de endereço de usuário
-        let sql = `SELECT * FROM tbl_endereco_usuario WHERE usuario_id = ${idUser}`
+        // Variavel com o comando sql para buscar um registro de endereço de animal
+        let sql = `SELECT * FROM tbl_endereco_animal WHERE animal_id = ${idAnimal}`
+        // Variavel para inserir o comando no banco de dados
+        let result = await prisma.$queryRawUnsafe(sql)
+        if (Array.isArray(result))
+            return result
+
+        else
+            return false
+
+
+    } catch (error) {
+        return false
+    }
+}
+// Buscar um registro de endereço de animal no banco pelo id do endereço
+async function getSelectAnimalAddressByIdAddress(idAnimalAddress) {
+    try {
+        // Variavel com o comando sql para buscar um registro de endereço de animal
+        let sql = `SELECT * FROM tbl_endereco_animal WHERE endereco_animal_id = ${idAnimalAddress}`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result))
@@ -69,41 +87,22 @@ async function getSelectUserAddressById(idUser) {
     }
 }
 
-// Buscar um registro de endereço de usuário no banco pelo id do endereço
-async function getSelectUserAddressByIdAddress(idUserAddress) {
-    try {
-        // Variavel com o comando sql para buscar um registro de endereço de usuário
-        let sql = `SELECT * FROM tbl_endereco_usuario WHERE endereco_usuario_id = ${idUserAddress}`
-        // Variavel para inserir o comando no banco de dados
-        let result = await prisma.$queryRawUnsafe(sql)
-        if (Array.isArray(result))
-            return result
-
-        else
-            return false
-
-
-    } catch (error) {
-        return false
-    }
-}
-
-// Inserir um registro de endereço de um usuário no banco
-async function setInsertUserAddress(userAddress) {
+// Inserir um registro de endereço de um animal no banco
+async function setInsertAnimalAddress(AnimalAddress) {
     try {
         // Variavel com o comando sql para inserir um registro em uma tabela
         let sql = `
-        insert into tbl_endereco_usuario 
-        (logradouro, numero, bairro, cidade, uf, cep, usuario_id, regiao)
+        insert into tbl_endereco_animal 
+        (logradouro, numero, bairro, cidade, uf, cep, animal_id, regiao)
         values (
-                '${userAddress.logradouro}',
-                '${userAddress.numero}',
-                '${userAddress.bairro}',
-                '${userAddress.cidade}',
-                '${userAddress.uf}',
-                '${userAddress.cep}', 
-                '${userAddress.usuario_id}',
-                '${userAddress.regiao}'
+                '${AnimalAddress.logradouro}',
+                '${AnimalAddress.numero}',
+                '${AnimalAddress.bairro}',
+                '${AnimalAddress.cidade}',
+                '${AnimalAddress.uf}',
+                '${AnimalAddress.cep}', 
+                '${AnimalAddress.animal_id}',
+                '${AnimalAddress.regiao}'
         );`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
@@ -117,19 +116,19 @@ async function setInsertUserAddress(userAddress) {
         return false
     }
 }
-// Altera um registro de endereço de um usuario no banco de dados
-async function setUpdateUserAddress(idUserAddress, newDataUserAddress) {
+// Altera um registro de endereço de um animal no banco de dados
+async function setUpdateAnimalAddress(idAnimalAddress, newDataAnimalAddress) {
     try {
-        let sql = ` UPDATE tbl_endereco_usuario
-                    SET logradouro = '${newDataUserAddress.logradouro}', 
-                    numero = '${newDataUserAddress.numero}', 
-                    bairro = '${newDataUserAddress.bairro}',
-                    cidade = '${newDataUserAddress.cidade}',
-                    uf = '${newDataUserAddress.uf}',
-                    cep = '${newDataUserAddress.cep}',
-                    usuario_id = ${newDataUserAddress.usuario_id},
-                    regiao = '${newDataUserAddress.regiao}'
-                    WHERE endereco_usuario_id = '${idUserAddress}';`
+        let sql = ` UPDATE tbl_endereco_animal
+                    SET logradouro = '${newDataAnimalAddress.logradouro}', 
+                    numero = '${newDataAnimalAddress.numero}', 
+                    bairro = '${newDataAnimalAddress.bairro}',
+                    cidade = '${newDataAnimalAddress.cidade}',
+                    uf = '${newDataAnimalAddress.uf}',
+                    cep = '${newDataAnimalAddress.cep}',
+                    animal_id = ${newDataAnimalAddress.animal_id},
+                    regiao = '${newDataAnimalAddress.regiao}'
+                    WHERE endereco_animal_id = '${idAnimalAddress}';`
                     
 
         let result = await prisma.$executeRawUnsafe(sql)
@@ -146,11 +145,11 @@ async function setUpdateUserAddress(idUserAddress, newDataUserAddress) {
         return false
     }
 }
-// Excluir um registro de endereço de um usuario no banco de dados
-async function setDeleteUserAddress(idUserAddress) {
+// Excluir um registro de endereço de um animal no banco de dados
+async function setDeleteAnimalAddress(idAnimalAddress) {
     try {
-        let sql = `DELETE FROM tbl_endereco_usuario
-                    WHERE endereco_usuario_id = '${idUserAddress}';`
+        let sql = `DELETE FROM tbl_endereco_animal
+                    WHERE endereco_animal_id = '${idAnimalAddress}';`
 
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
@@ -167,10 +166,10 @@ async function setDeleteUserAddress(idUserAddress) {
 }
 
 module.exports = {
-    getSelectAllUsersAddress,
-    getSelectUserAddressById,
-    getSelectUserAddressByIdAddress,
-    setInsertUserAddress,
-    setUpdateUserAddress,
-    setDeleteUserAddress
+    getSelectAllAnimalAddress,
+    getSelectAnimalAddressById,
+    getSelectAnimalAddressByIdAddress,
+    setInsertAnimalAddress,
+    setUpdateAnimalAddress,
+    setDeleteAnimalAddress
 }
