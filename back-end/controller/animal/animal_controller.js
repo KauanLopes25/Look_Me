@@ -51,13 +51,13 @@ async function listAnimal() {
     }
 }
 
-async function searchAnimalById(animal_id) {
+async function searchAnimalById(idAnimal) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         // Chama a função do DAO para retornar a lista de animal do BD
-        let resultAnimal = await animalDAO.getSelectAnimalById(Number(animal_id))
+        let resultAnimal = await animalDAO.getSelectAnimalById(Number(idAnimal))
         if (resultAnimal) {
             if (resultAnimal.length > 0) {
 
@@ -78,13 +78,13 @@ async function searchAnimalById(animal_id) {
     }
 }
 
-async function searchAnimalByUser(user_id) {
+async function searchAnimalByUser(idUser) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         // Chama a função do DAO para retornar a lista de animal do BD
-        let resultAnimal = await animalDAO.getSelectAnimalByUser(user_id)
+        let resultAnimal = await animalDAO.getSelectAnimalByUser(idUser)
         if (resultAnimal) {
             if (resultAnimal.length > 0) {
 
@@ -140,7 +140,7 @@ async function insertAnimal(animal, contentType) {
     }
 }
 
-async function updateAnimal(animal_id, newDataAnimal, contentType) {
+async function updateAnimal(idAnimal, newDataAnimal, contentType) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
@@ -150,11 +150,11 @@ async function updateAnimal(animal_id, newDataAnimal, contentType) {
             let dataValidation = await validation.animalDataValidation(newDataAnimal, contentType)
 
             if (!dataValidation) {
-                let animalValidation = await searchAnimalById(animal_id)
+                let animalValidation = await searchAnimalById(idAnimal)
                 if (animalValidation.status_code == 200) {
                     // Processamento
                     // Chama a função para update um animal no BD"
-                    let resultAnimal = await animalDAO.setUpdateAnimal(animal_id, newDataAnimal)
+                    let resultAnimal = await animalDAO.setUpdateAnimal(idAnimal, newDataAnimal)
                     if (resultAnimal) {
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
@@ -183,17 +183,17 @@ async function updateAnimal(animal_id, newDataAnimal, contentType) {
 
 }
 
-async function deleteAnimal(animal_id) {
+async function deleteAnimal(idAnimal) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        let animalValidation = await searchAnimalById(animal_id)
+        let animalValidation = await searchAnimalById(idAnimal)
         if (animalValidation.status_code == 200) {
 
             // Processamento
             // Chama a função para deletar animal no BD
-            let resultAnimal = await animalDAO.setDeleteAnimal(animal_id)
+            let resultAnimal = await animalDAO.setDeleteAnimal(idAnimal)
             console.log(resultAnimal)
 
             if (resultAnimal) {

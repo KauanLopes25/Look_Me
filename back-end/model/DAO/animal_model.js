@@ -53,10 +53,10 @@ async function getSelectAllAnimals() {
     }
 }
 // Buscar um registro de animal no banco pelo id
-async function getSelectAnimalById(animal_id) {
+async function getSelectAnimalById(idAnimal) {
     try {
         // Variavel com o comando sql para buscar toda a tabela de animal
-        let sql = `SELECT * FROM tbl_animal WHERE animal_id = ${id_animal}`
+        let sql = `SELECT * FROM tbl_animal WHERE animal_id = ${idAnimal}`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result))
@@ -72,10 +72,10 @@ async function getSelectAnimalById(animal_id) {
     }
 }
 // Buscar um registro de animal no banco pelo protetor cadastrado
-async function getSelectAnimalByUser(user_id) {
+async function getSelectAnimalByUser(idUser) {
     try {
         // Variavel com o comando sql para buscar toda a tabela de animal
-        let sql = `SELECT * FROM tbl_animal WHERE usuario_id = ${id_animal}`
+        let sql = `SELECT * FROM tbl_animal WHERE usuario_id = ${idUser}`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result))
@@ -133,7 +133,7 @@ async function setInsertAnimal(animal) {
     }
 }
 // Altera um registro de um animal no banco de dados
-async function setUpdateAnimal(animal_id, newDataAnimal) {
+async function setUpdateAnimal(idAnimal, newDataAnimal) {
     try {
         let sql = ` UPDATE tbl_animal
                     SET nome = '${newDataAnimal.nome}', 
@@ -151,7 +151,7 @@ async function setUpdateAnimal(animal_id, newDataAnimal) {
                     idade_id = '${newDataAnimal.idade_id}',
                     sexo_id = '${newDataAnimal.sexo_id}',
                     usuario_id = '${newDataAnimal.usuario_id}'
-                    WHERE animal_id = '${animal_id}';`
+                    WHERE animal_id = '${idAnimal}';`
 
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
@@ -167,10 +167,10 @@ async function setUpdateAnimal(animal_id, newDataAnimal) {
     }
 }
 // Excluir um registro de animal no banco de dados
-async function setDeleteAnimal(animal_id) {
+async function setDeleteAnimal(idAnimal) {
     try {
         let sql = `DELETE FROM tbl_animal
-                    WHERE animal_id = '${animal_id}';`
+                    WHERE animal_id = '${idAnimal}';`
 
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
