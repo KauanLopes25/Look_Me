@@ -1,7 +1,8 @@
 /********************************************************************************************
-* Objetivo: Arquivo responsavel pela configuração das rotas para a tabela user.
+* Objetivo: Arquivo responsavel pela configuração das rotas para a tabela de endereços de
+Usuários.
 * Autor: Kauan Lopes Pereira
-* Data: 01/12/2025
+* Data: 04/12/2025
 * Versão: 1.0
 ********************************************************************************************/
 
@@ -28,73 +29,62 @@ const bodyParserJSON = bodyParser.json()
 
 const router = express.Router();
 
-// Importação do arquivo controller da tbl_usuario
-const userController = require('../controller/user/user_controller.js')
+// Importação do arquivo controller da tbl_endereco_usuario
+const userAddressController = require('../controller/userAddress/userAddress_controller.js')
 const DEFAULT_MESSAGES = require('../controller/menssages/config_menssages.js')
 
 // 1° LISTAR
 router.get('/', cors(), async function (request, response) {
-    // Chama a função para listar os usuarios do BD
-    let user = await userController.listUsers()
-    response.status(user.status_code)
-    response.json(user)
-    console.log('ENDPOINT 1° - Requisitado na tbl_usuario')
+    // Chama a função para listar os endereços de usuarios do BD
+    let userAddress = await userAddressController.listUsersAddress()
+    response.status(userAddress.status_code)
+    response.json(userAddress)
+    console.log('ENDPOINT 1° - Requisitado na tbl_endereco_usuario')
 })
 // 2° BUSCAR POR ID
-/*
 router.get('/:id', cors(), async function (request, response){
     // Recebe o ID encaminhado via parametro na requisição
     let idUser = request.params.id
-    // Chama a função para buscar um usuario por id
-    let user = await userController.searchUserById(idUser)
-    response.status(user.status_code)
-    response.json(user)
-    console.log('ENDPOINT 2° - Requisitado na tbl_usuario')
-})
-*/
-// 3° BUSCAR POR EMAIL
-router.get('/:email', cors(), async function (request, response) {
-    // Recebe o email encaminhado via parametro na requisição
-    let emailUser = request.params.email
-    // Chama a função para buscar um usuario por email
-    let user = await userController.searchUserByEmail(emailUser)
-    response.status(user.status_code)
-    response.json(user)
-    console.log('ENDPOINT 3° - Requisitado na tbl_usuario')
+    // Chama a função para buscar um endereço de usuario por id
+    let userAddress = await userAddressController.searchUserAddressById(idUser)
+    response.status(userAddress.status_code)
+    response.json(userAddress)
+    console.log('ENDPOINT 2° - Requisitado na tbl_endereco_usuario')
 })
 
-// 4° INSERIR NOVO USUARIO
+
+// 3° INSERIR NOVO ENDEREÇO DE USUARIO
 router.post('/', cors(), bodyParserJSON, async function (request, response) {
     // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
     let dadosBody = request.body
     let contentType = request.headers['content-type']
-    // Chama a função de inserir o novo usuario, encaminha os dados e o content-type
-    let user = await userController.insertUser(dadosBody, contentType)
+    // Chama a função de inserir o novo endereço de usuario, encaminha os dados e o content-type
+    let user = await userAddressController.insertUserAddress(dadosBody, contentType)
     response.status(user.status_code)
     response.json(user)
-    console.log('ENDPOINT 4° - Requisitado na tbl_usuario')
+    console.log('ENDPOINT 3° - Requisitado na tbl_endereco_usuario')
 })
-// 5° ATUALIZAR NOVO USUARIO
-router.put('/:email', cors(), bodyParserJSON, async function (request, response) {
+// 4° ATUALIZAR NOVO ENDEREÇO DE USUARIO
+router.put('/:id', cors(), bodyParserJSON, async function (request, response) {
     // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
-    let emailUser = request.params.email
+    let idUser = request.params.id
     // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
     let dadosBody = request.body
     let contentType = request.headers['content-type']
-    // Chama a função de inserir o novo usuario, encaminha os dados e o content-type
-    let user = await userController.updateUser(emailUser, dadosBody, contentType)
+    // Chama a função de inserir o novo endereço de usuario, encaminha os dados e o content-type
+    let user = await userAddressController.updateUserAddress(idUser, dadosBody, contentType)
     response.status(user.status_code)
     response.json(user)
-    console.log('ENDPOINT 5° - Requisitado na tbl_usuario')
+    console.log('ENDPOINT 4° - Requisitado na tbl_endereco_usuario')
 })
-// 6° DELETAR USUARIO
-router.delete('/:email', cors(), async function (request, response){
+// 5° DELETAR ENDEREÇO DE USUARIO
+router.delete('/:id', cors(), async function (request, response){
     // Recebe o ID encaminhado via parametro na requisição
-    let emailUser = request.params.email
+    let idUser = request.params.id
     // Chama a função de deletar um usuario
-    let user = await userController.deleteUser(emailUser)
-    response.status(user.status_code)
-    response.json(user)
-    console.log('ENDPOINT 6° - Requisitado na tbl_usuario')
+    let userAddress = await userAddressController.deleteUserAddress(idUser)
+    response.status(userAddress.status_code)
+    response.json(userAddress)
+    console.log('ENDPOINT 5° - Requisitado na tbl_endereco_usuario')
 })
 module.exports = router
