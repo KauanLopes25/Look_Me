@@ -41,7 +41,7 @@ router.get('/', cors(), async function (request, response) {
     response.json(userAddress)
     console.log('ENDPOINT 1° - Requisitado na tbl_endereco_usuario')
 })
-// 2° BUSCAR POR ID
+// 2° BUSCAR POR ID DO USUARIO
 router.get('/:id', cors(), async function (request, response){
     // Recebe o ID encaminhado via parametro na requisição
     let idUser = request.params.id
@@ -52,6 +52,16 @@ router.get('/:id', cors(), async function (request, response){
     console.log('ENDPOINT 2° - Requisitado na tbl_endereco_usuario')
 })
 
+// 3° BUSCAR POR ID DO endereço
+router.get('/address/:id', cors(), async function (request, response){
+    // Recebe o ID encaminhado via parametro na requisição
+    let idUserAddress = request.params.id
+    // Chama a função para buscar um endereço de usuario por id
+    let userAddress = await userAddressController.searchUserAddressByIdAddress(idUserAddress)
+    response.status(userAddress.status_code)
+    response.json(userAddress)
+    console.log('ENDPOINT 3° - Requisitado na tbl_endereco_usuario')
+})
 
 // 3° INSERIR NOVO ENDEREÇO DE USUARIO
 router.post('/', cors(), bodyParserJSON, async function (request, response) {

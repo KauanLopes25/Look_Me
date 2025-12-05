@@ -51,10 +51,29 @@ async function getSelectAllUsersAddress() {
     }
 }
 // Buscar um registro de endereço de usuário no banco pelo id
-async function getSelectUserAddressById(id_user) {
+async function getSelectUserAddressById(idUser) {
     try {
         // Variavel com o comando sql para buscar um registro de endereço de usuário
-        let sql = `SELECT * FROM tbl_endereco_usuario WHERE usuario_id = ${id_user}`
+        let sql = `SELECT * FROM tbl_endereco_usuario WHERE usuario_id = ${idUser}`
+        // Variavel para inserir o comando no banco de dados
+        let result = await prisma.$queryRawUnsafe(sql)
+        if (Array.isArray(result))
+            return result
+
+        else
+            return false
+
+
+    } catch (error) {
+        return false
+    }
+}
+
+// Buscar um registro de endereço de usuário no banco pelo id do endereço
+async function getSelectUserAddressByIdAddress(idUserAddress) {
+    try {
+        // Variavel com o comando sql para buscar um registro de endereço de usuário
+        let sql = `SELECT * FROM tbl_endereco_usuario WHERE endereco_usuario_id = ${idUserAddress}`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result))
@@ -99,7 +118,7 @@ async function setInsertUserAddress(userAddress) {
     }
 }
 // Altera um registro de endereço de um usuario no banco de dados
-async function setUpdateUserAddress(user_id, newDataUserAddress) {
+async function setUpdateUserAddress(idUserAddress, newDataUserAddress) {
     try {
         let sql = ` UPDATE tbl_endereco_usuario
                     SET logradouro = '${newDataUserAddress.logradouro}', 
@@ -110,7 +129,7 @@ async function setUpdateUserAddress(user_id, newDataUserAddress) {
                     cep = '${newDataUserAddress.cep}',
                     usuario_id = ${newDataUserAddress.usuario_id},
                     regiao = '${newDataUserAddress.regiao}'
-                    WHERE usuario_id = '${user_id}';`
+                    WHERE endereco_usuario_id = '${idUserAddress}';`
                     
 
         let result = await prisma.$executeRawUnsafe(sql)
@@ -128,10 +147,10 @@ async function setUpdateUserAddress(user_id, newDataUserAddress) {
     }
 }
 // Excluir um registro de endereço de um usuario no banco de dados
-async function setDeleteUserAddress(user_id) {
+async function setDeleteUserAddress(idUserAddress) {
     try {
         let sql = `DELETE FROM tbl_endereco_usuario
-                    WHERE usuario_id = '${user_id}';`
+                    WHERE endereco_usuario_id = '${idUserAddress}';`
 
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
@@ -150,6 +169,7 @@ async function setDeleteUserAddress(user_id) {
 module.exports = {
     getSelectAllUsersAddress,
     getSelectUserAddressById,
+    getSelectUserAddressByIdAddress,
     setInsertUserAddress,
     setUpdateUserAddress,
     setDeleteUserAddress

@@ -51,13 +51,40 @@ async function listUsersAddress() {
     }
 }
 
-async function searchUserAddressById(id_user) {
+async function searchUserAddressById(idUser) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        // Chama a função do DAO para retornar um endereço de um  usuario do BD
-        let resultUserAddress = await userAddressDAO.getSelectUserAddressById(Number(id_user))
+        // Chama a função do DAO para retornar um endereço de um usuario do BD
+        let resultUserAddress = await userAddressDAO.getSelectUserAddressById(Number(idUser))
+        if (resultUserAddress) {
+            if (resultUserAddress.length > 0) {
+
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.message
+                MESSAGES.DEFAULT_HEADER.items.usuarios = resultUserAddress
+
+                return MESSAGES.DEFAULT_HEADER // 200
+            } else {
+                return MESSAGES.ERROR_NOT_FOUND // 404
+            }
+        } else {
+            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+        }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+}
+
+async function searchUserAddressByIdAddress(idUserAddress) {
+    // Criando copia do objeto mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    try {
+        // Chama a função do DAO para retornar um endereço de um usuario do BD
+        let resultUserAddress = await userAddressDAO.getSelectUserAddressByIdAddress(Number(idUserAddress))
         if (resultUserAddress) {
             if (resultUserAddress.length > 0) {
 
@@ -113,7 +140,7 @@ async function insertUserAddress(userAddress, contentType) {
     }
 }
 
-async function updateUserAddress(user_id, newDataUserAddress, contentType) {
+async function updateUserAddress(idUserAddress, newDataUserAddress, contentType) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
@@ -123,11 +150,11 @@ async function updateUserAddress(user_id, newDataUserAddress, contentType) {
             let dataValidation = await validation.userAddressDataValidation(newDataUserAddress, contentType)
 
             if (!dataValidation) {
-                let userAddressValidation = await searchUserAddressById(user_id)
+                let userAddressValidation = await searchUserAddressByIdAddress(idUserAddress)
                 if (userAddressValidation.status_code == 200) {
                     // Processamento
                     // Chama a função para update um novo endereço de usuario no BD"
-                    let resultUserAddress = await userAddressDAO.setUpdateUserAddress(user_id, newDataUserAddress)
+                    let resultUserAddress = await userAddressDAO.setUpdateUserAddress(idUserAddress, newDataUserAddress)
                     console.log(resultUserAddress)
                     if (resultUserAddress) {
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
@@ -157,17 +184,17 @@ async function updateUserAddress(user_id, newDataUserAddress, contentType) {
 
 }
 
-async function deleteUserAddress(user_id) {
+async function deleteUserAddress(idUserAddress) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        let userAddressValidation = await searchUserAddressById(user_id)
+        let userAddressValidation = await searchUserAddressByIdAddress(idUserAddress)
         if (userAddressValidation.status_code == 200) {
 
             // Processamento
             // Chama a função para deletar endereço de usuario no BD
-            let resultUserAddress = await userAddressDAO.setDeleteUserAddress(user_id)
+            let resultUserAddress = await userAddressDAO.setDeleteUserAddress(idUserAddress)
             console.log(resultUserAddress)
 
             if (resultUserAddress) {
@@ -191,6 +218,7 @@ async function deleteUserAddress(user_id) {
 module.exports = {
     listUsersAddress,
     searchUserAddressById,
+    searchUserAddressByIdAddress,
     insertUserAddress,
     updateUserAddress,
     deleteUserAddress
