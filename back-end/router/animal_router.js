@@ -22,6 +22,10 @@ const express = require('express')
 const cors = require('cors')
 // Responsável por gerenciar a chegada dos dados da api com o front
 const bodyParser = require('body-parser')
+// Responsavel por receber arquivos enviados pelo front-end em requisições HTTP usando multipart/form-data.
+const multer = require("multer");
+// pasta onde os arquivos vão ser salvos temporariamente
+const upload = multer({ dest: 'uploads/' });
 
 // Criando um objeto especialista no formato JSON para receber dados via POST e PUT
 const bodyParserJSON = bodyParser.json()
@@ -63,25 +67,27 @@ router.get('/mypet/:id', cors(), async function (request, response){
 })
 
 // 4° INSERIR NOVO ANIMAL
-router.post('/', cors(), bodyParserJSON, async function (request, response) {
-    // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
-    let dadosBody = request.body
-    let contentType = request.headers['content-type']
+router.post('/', cors(), upload.single('image'), async function (request, response){
+    // JSON enviado como texto no form-data
+    let dadosBody = JSON.parse(request.body.data)
+    // Imagem enviada no form-data
+    let arquivo = request.file
     // Chama a função de inserir um novo animal, encaminha os dados e o content-type
-    let animal = await animalController.insertAnimal(dadosBody, contentType)
+    let animal = await animalController.insertAnimal(dadosBody, arquivo)
     response.status(animal.status_code)
     response.json(animal)
     console.log('ENDPOINT 4° - Requisitado na tbl_animal')
 })
 // 5° ATUALIZAR NOVO ANIMAL
-router.put('/:id', cors(), bodyParserJSON, async function (request, response) {
+router.put('/:id', cors(), upload.single('image'), async function (request, response) {
     // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
     let idAnimal = request.params.id
-    // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
-    let dadosBody = request.body
-    let contentType = request.headers['content-type']
+     // JSON enviado como texto no form-data
+    let dadosBody = JSON.parse(request.body.data)
+    // Imagem enviada no form-data
+    let arquivo = request.file
     // Chama a função de atualizar um animal, encaminha os dados e o content-type
-    let animal = await animalController.updateAnimal(idAnimal, dadosBody, contentType)
+    let animal = await animalController.updateAnimal(idAnimal, dadosBody, arquivo)
     response.status(animal.status_code)
     response.json(animal)
     console.log('ENDPOINT 5° - Requisitado na tbl_animal')

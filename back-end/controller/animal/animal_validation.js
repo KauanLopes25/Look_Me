@@ -19,11 +19,11 @@
 // Importação do arquivo de mensagens da API
 const DEFAULT_MESSAGES = require('../menssages/config_menssages.js')
 
-async function animalDataValidation(animal, contentType) {
+async function animalDataValidation(animal) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
-    if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+    if (animal) {
         // Validações de todas as entradas de dados
         if (
             typeof animal.nome !== "string" ||
@@ -68,15 +68,6 @@ async function animalDataValidation(animal, contentType) {
             animal.adaptabilidade == null ||
             animal.adaptabilidade.length > 500) {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de adaptabilidade incorreto]'
-            return MESSAGES.ERROR_REQUIRED_FIELDS
-        }
-        else if (
-            typeof animal.foto_url !== "string" ||
-            animal.foto_url == '' ||
-            animal.foto_url == undefined ||
-            animal.foto_url == null ||
-            animal.foto_url.length > 200) {
-            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de foto_url incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
