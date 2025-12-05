@@ -220,5 +220,5 @@ module.exports = {
     searchAnimalByUser,
     insertAnimal,
     updateAnimal,
-    deleteAnimal
+    deleteAnimal 
 }
