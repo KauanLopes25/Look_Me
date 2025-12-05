@@ -34,7 +34,7 @@ const { PrismaClient } = require('../../generated/prisma')
 const prisma = new PrismaClient()
 
 // Buscar todos os animais no banco
-async function getSelectAllanimalsAnimals() {
+async function getSelectAllAnimals() {
     try {
         // Variavel com o comando sql para buscar toda a tabela de animal
         let sql = `SELECT * FROM tbl_animal ORDER BY animal_id DESC`
@@ -187,7 +187,7 @@ async function setDeleteAnimal(animal_id) {
 }
 
 module.exports = {
-    getSelectAllanimalsAnimals,
+    getSelectAllAnimals,
     getSelectAnimalById,
     getSelectAnimalByUser,
     setInsertAnimal,
