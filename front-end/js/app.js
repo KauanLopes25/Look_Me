@@ -13,117 +13,191 @@ const routes = {
             
             <aside class="filtros">
                 <h2>FILTROS</h2>
+                
                 <div class="grupo">
-                    <h3>Região</h3>
-                    <div>
-                        <label><input type="checkbox"> Sudeste</label>
-                        <label><input type="checkbox"> Nordeste</label>
-                        <label><input type="checkbox"> Norte</label>
-                        <label><input type="checkbox"> Sul</label>
-                        <label><input type="checkbox"> Centro-Oeste</label>
+                    <h3>Status</h3>
+                    <div class="filter-group">
+                        <label><input type="checkbox" name="status" value="0"> Adotado</label>
+                        <label><input type="checkbox" name="status" value="1" checked> Disponível</label> 
                     </div>
                 </div>
 
                 <div class="grupo">
                     <h3>Espécie</h3>
-                    <div>
-                        <label><input type="checkbox"> Cachorro</label>
-                        <label><input type="checkbox"> Gato</label>
-                        <label><input type="checkbox"> Outros</label>
+                    <div class="filter-group">
+                        <label><input type="checkbox" name="especie" value="1"> Cachorro</label>
+                        <label><input type="checkbox" name="especie" value="2"> Gato</label>
+                        <label><input type="checkbox" name="especie" value="3"> Outros</label>
                     </div>
                 </div>
 
                 <div class="grupo">
                     <h3>Raça</h3>
-                    <select class="select-raca">
-                        <option value="">Selecione uma raça</option>
-                        <option value="sem-raca">Sem raça definida</option>
-                        <option value="poodle">Poodle</option>
-                        <option value="bulldog">Bulldog</option>
-                        <option value="siames">Siamês</option>
-                        <option value="persa">Persa</option>
-                        <option value="outros">Outros</option>
-                    </select>
+                     <select class="select-raca" id="filtro-raca">
+                        <option value="">Todas as raças</option>
+                        <option value="0">Sem raça definida</option>
+                        <option value="1">Poodle</option>
+                        <option value="2">Bulldog</option>
+                        <option value="3">Siamês</option>
+                        <option value="4">Persa</option>
+                        </select>
                 </div>
 
                 <div class="grupo">
                     <h3>Porte</h3>
-                    <div>
-                        <label><input type="checkbox"> Pequeno</label>
-                        <label><input type="checkbox"> Médio</label>
-                        <label><input type="checkbox"> Grande</label>
+                    <div class="filter-group">
+                        <label><input type="checkbox" name="porte" value="1"> Pequeno</label>
+                        <label><input type="checkbox" name="porte" value="2"> Médio</label>
+                        <label><input type="checkbox" name="porte" value="3"> Grande</label>
                     </div>
                 </div>
 
                 <div class="grupo">
                     <h3>Idade</h3>
-                    <div>
-                        <label><input type="checkbox"> Filhote</label>
-                        <label><input type="checkbox"> Adulto</label>
-                        <label><input type="checkbox"> Idoso</label>
+                    <div class="filter-group">
+                        <label><input type="checkbox" name="idade" value="1"> Filhote</label>
+                        <label><input type="checkbox" name="idade" value="2"> Adulto</label>
+                        <label><input type="checkbox" name="idade" value="3"> Idoso</label>
                     </div>
                 </div>
 
                 <div class="grupo">
                     <h3>Sexo</h3>
-                    <div>
-                        <label><input type="checkbox"> Macho</label>
-                        <label><input type="checkbox"> Fêmea</label>
+                    <div class="filter-group">
+                        <label><input type="checkbox" name="sexo" value="1"> Macho</label>
+                        <label><input type="checkbox" name="sexo" value="2"> Fêmea</label>
                     </div>
                 </div>
 
                 <div class="grupo">
-                    <h3>Status</h3>
-                    <div>
-                        <label><input type="checkbox"> Adotado</label>
-                        <label><input type="checkbox"> Disponível</label>
+                <h3>Região</h3>
+                    <div class="filter-group">
+                        <label><input type="checkbox" name="regiao" value="sudeste"> Sudeste</label>
+                        <label><input type="checkbox" name="regiao" value="nordeste"> Nordeste</label>
+                        <label><input type="checkbox" name="regiao" value="norte"> Norte</label>
+                        <label><input type="checkbox" name="regiao" value="sul"> Sul</label>
+                        <label><input type="checkbox" name="regiao" value="centro-oeste"> Centro-Oeste</label>
                     </div>
                 </div>
             </aside>
 
-            <section class="cards">
-                <div class="card" onclick="window.history.pushState({}, '', '/pet'); window.route();">
-                    <img src="./img/pet-teste.jpg" alt="Pet">
-                    <h3>teste</h3>
-                    <p>Disponível</p>
-                </div>
-                 <div class="card" onclick="window.history.pushState({}, '', '/pet'); window.route();">
-                    <img src="./img/pet-teste.jpg" alt="Pet">
-                    <h3>teste</h3>
-                    <p>Disponível</p>
-                </div>
-                 <div class="card" onclick="window.history.pushState({}, '', '/pet'); window.route();">
-                    <img src="./img/pet-teste.jpg" alt="Pet">
-                    <h3>teste</h3>
-                    <p>Disponível</p>
-                </div>
-                 <div class="card" onclick="window.history.pushState({}, '', '/pet'); window.route();">
-                    <img src="./img/pet-teste.jpg" alt="Pet">
-                    <h3>teste</h3>
-                    <p>Disponível</p>
+            <section class="cards" id="container-cards">
+                <div style="text-align: center; width: 100%; padding-top: 50px;">
+                    <p style="font-size: 20px;">Carregando pets...</p>
                 </div>
             </section>
         `,
-        //função específica para fazer os scripts da Home funcionarem
-        init: () => {
+        init: async () => {
+            //Lógica do Menu Mobile (Visual)
             const btnFilter = document.querySelector('.botao-mobile-filter');
             const menuFiltros = document.querySelector('.filtros');
             const overlay = document.querySelector('.overlay');
 
-            // adiciona o evento se os elementos existirem (proteção de erro)
             if (btnFilter && menuFiltros && overlay) {
-                
-                //abrir menu
                 btnFilter.addEventListener('click', () => {
                     menuFiltros.classList.add('ativo');
                     overlay.classList.add('ativo');
                 });
-
-                //fechar ao clicar no overlay
                 overlay.addEventListener('click', () => {
                     menuFiltros.classList.remove('ativo');
                     overlay.classList.remove('ativo');
                 });
+            }
+
+            // Variáveis de Estado 
+            const containerCards = document.getElementById('container-cards');
+            const apiUrl = 'http://localhost:8080/v1/lookme/animal/';
+            let todosOsPets = []; // Guarda a lista original para não precisar refazer o fetch
+
+            // Função de Renderização
+            const renderizarPets = (lista) => {
+                containerCards.innerHTML = ''; // Limpa a tela
+
+                if (!lista || lista.length === 0) {
+                    containerCards.innerHTML = '<p style="text-align:center; width:100%">Nenhum pet encontrado com esses filtros.</p>';
+                    return;
+                }
+
+                lista.forEach(pet => {
+                    const statusTexto = pet.status_adocao === 1 ? 'Disponível' : 'Adotado';
+                    const imagemPet = pet.foto_url ? pet.foto_url : './img/pet-teste.jpg';
+
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+                    
+                    // ID na URL
+                    card.onclick = () => {
+                        window.history.pushState({}, '', `/pet?id=${pet.animal_id}`); 
+                        window.route();
+                    };
+
+                    card.innerHTML = `
+                        <img src="${imagemPet}" alt="${pet.nome}" onerror="this.src='./img/pet-teste.jpg'">
+                        <h3>${pet.nome}</h3>
+                        <p>${statusTexto}</p>
+                    `;
+                    containerCards.appendChild(card);
+                });
+            };
+
+            // Função de Filtragem 
+            const aplicarFiltros = () => {
+                // Captura os valores marcados
+                const especiesSelecionadas = Array.from(document.querySelectorAll('input[name="especie"]:checked')).map(el => parseInt(el.value));
+                const portesSelecionados = Array.from(document.querySelectorAll('input[name="porte"]:checked')).map(el => parseInt(el.value));
+                const idadesSelecionadas = Array.from(document.querySelectorAll('input[name="idade"]:checked')).map(el => parseInt(el.value));
+                const sexosSelecionados = Array.from(document.querySelectorAll('input[name="sexo"]:checked')).map(el => parseInt(el.value));
+                const statusSelecionados = Array.from(document.querySelectorAll('input[name="status"]:checked')).map(el => parseInt(el.value));
+                
+                const racaSelecionada = document.getElementById('filtro-raca').value;
+
+                // Filtra o array original
+                const petsFiltrados = todosOsPets.filter(pet => {
+                    // Verifica Espécie (se nenhum marcado, aceita todos)
+                    if (especiesSelecionadas.length > 0 && !especiesSelecionadas.includes(pet.especie_id)) return false;
+                    
+                    // Verifica Porte
+                    if (portesSelecionados.length > 0 && !portesSelecionados.includes(pet.porte_id)) return false;
+
+                    // Verifica Idade
+                    if (idadesSelecionadas.length > 0 && !idadesSelecionadas.includes(pet.idade_id)) return false;
+
+                    // Verifica Sexo
+                    if (sexosSelecionados.length > 0 && !sexosSelecionados.includes(pet.sexo_id)) return false;
+
+                    // Verifica Status
+                    if (statusSelecionados.length > 0 && !statusSelecionados.includes(pet.status_adocao)) return false;
+
+                    // Verifica Raça
+                    if (racaSelecionada !== "" && pet.raca_id != racaSelecionada) return false;
+
+                    return true; // Passou em tudo
+                });
+
+                renderizarPets(petsFiltrados);
+            };
+
+            // Adicionar Event Listeners aos Inputs 
+            // Seleciona todos os checkboxes e selects dentro de .filtros e adiciona o evento 'change'
+            const inputsFiltro = document.querySelectorAll('.filtros input, .filtros select');
+            inputsFiltro.forEach(input => {
+                input.addEventListener('change', aplicarFiltros);
+            });
+
+            // Fetch Inicial 
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error(`Erro API: ${response.status}`);
+                
+                const dados = await response.json();
+                todosOsPets = dados.items.animal || []; // Salva na memória global da função
+
+                // Aplica o filtro inicial (para pegar o status "checked" do HTML, por exemplo)
+                aplicarFiltros(); 
+
+            } catch (error) {
+                console.error("Erro:", error);
+                containerCards.innerHTML = '<p style="text-align:center;">Erro ao carregar pets. Verifique a API.</p>';
             }
         }
     },
@@ -591,125 +665,142 @@ const routes = {
         title: "DETALHES DO PET",
         template: `
             <div class="detalhes-pet-container">
+                <div id="loading-message" style="text-align: center; padding: 50px;">
+                    <h2>Carregando informações do pet...</h2>
+                </div>
 
-                <div class="pet-card">
-                    <div class="pet-header">
-                        <div class="pet-image">
-                            <img src="./img/pet-teste.jpg" alt="Will - Gato para adoção">
-                        </div>
-                        <div class="pet-info">
-                            <h1 class="pet-nome">Will</h1>
-                            <div class="pet-detalhes">
-                                <p><strong>Espécie:</strong> Gato</p>
-                                <p><strong>Raça:</strong> Sem Informação</p>
-                                <p><strong>Porte:</strong> Médio</p>
-                                <p><strong>Idade:</strong> Adulto</p>
-                                <p><strong>Sexo:</strong> Macho</p>
-                                <p><strong>Castrado:</strong> Sem Informação</p>
-                                <p><strong>Status:</strong> Disponível</p>
-                                <p><strong>Responsável:</strong> Victor</p>
-                                <p><strong>Localização:</strong> São Paulo - SP</p>
-                                <p><strong>Telefone:</strong> 11 99447-6842</p>
-                                <p><strong>Email:</strong> vitchugo@gmail.com</p>
+                <div id="pet-content" style="display: none;">
+                    <div class="pet-card">
+                        <div class="pet-header">
+                            <div class="pet-image">
+                                <img id="detalhe-img" src="./img/pet-teste.jpg" alt="Foto do Pet">
                             </div>
-                            <button class="botao-adote">ADOTE</button>
-                        </div>
-                        <button class="botao-favorito">
-                            <i class="bi bi-heart"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="info-card descricao-card">
-                    <h2>Descrição</h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce varius eros quis nisi fermentum, sed
-                        placerat arcu dignissim. Lorem ipsum has been the industry's standard dummy text ever since the 1500s.
-                    </p>
-                </div>
-
-                <div class="bottom-cards">
-                    
-                    <div class="info-card expandable-card">
-                        <div class="card-header">
-                            <h2>Temperamento</h2>
-                            <i class="bi bi-chevron-down chevron-icon"></i>
-                        </div>
-                        <div class="card-conteudo">
-                            <p>Super dócil e brincalhão. Gosta de dormir no sofá e brincar com bolinhas de papel.</p>
+                            <div class="pet-info">
+                                <h1 class="pet-nome" id="detalhe-nome">Nome do Pet</h1>
+                                <div class="pet-detalhes">
+                                    <p><strong>Espécie:</strong> <span id="detalhe-especie">...</span></p>
+                                    <p><strong>Raça:</strong> <span id="detalhe-raca">...</span></p>
+                                    <p><strong>Porte:</strong> <span id="detalhe-porte">...</span></p>
+                                    <p><strong>Idade:</strong> <span id="detalhe-idade">...</span></p>
+                                    <p><strong>Sexo:</strong> <span id="detalhe-sexo">...</span></p>
+                                    <p><strong>Status:</strong> <span id="detalhe-status">...</span></p>
+                                </div>
+                                <button class="botao-adote">QUERO ADOTAR</button>
+                            </div>
+                            <button class="botao-favorito"><i class="bi bi-heart"></i></button>
                         </div>
                     </div>
 
-                    <div class="info-card expandable-card">
-                        <div class="card-header">
-                            <h2>Informações Veterinárias</h2>
-                            <i class="bi bi-chevron-down chevron-icon"></i>
-                        </div>
-                        <div class="card-conteudo">
-                            <p>Vacinas V4 e Antirrábica em dia. Vermifugado recentemente. Teste de FIV/FELV negativo.</p>
-                        </div>
+                    <div class="info-card descricao-card">
+                        <h2>Descrição</h2>
+                        <p id="detalhe-descricao">...</p>
                     </div>
 
-                    <div class="info-card expandable-card">
-                        <div class="card-header">
-                            <h2>Adaptabilidade</h2>
-                            <i class="bi bi-chevron-down chevron-icon"></i>
+                    <div class="bottom-cards">
+                        <div class="info-card expandable-card">
+                            <div class="card-header">
+                                <h2>Temperamento</h2>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="card-conteudo">
+                                <p id="detalhe-temperamento">...</p>
+                            </div>
                         </div>
-                        <div class="card-conteudo">
-                            <p>Convive bem com outros gatos e cães de porte pequeno. Gosta de crianças respeitosas.</p>
+
+                        <div class="info-card expandable-card">
+                            <div class="card-header">
+                                <h2>Informações Veterinárias</h2>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="card-conteudo">
+                                <p id="detalhe-vet">...</p>
+                            </div>
+                        </div>
+
+                        <div class="info-card expandable-card">
+                            <div class="card-header">
+                                <h2>Adaptabilidade</h2>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="card-conteudo">
+                                <p id="detalhe-adaptabilidade">...</p>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         `,
-        init: () => {
-            //lógica do botão Favoritar
-            const btnFavContainer = document.querySelector('.botao-favorito');
-            if(btnFavContainer) {
-                const btnFav = btnFavContainer.querySelector('i');
-                btnFavContainer.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Previne comportamentos estranhos
-                    if(btnFav.classList.contains('bi-heart')) {
-                        btnFav.classList.remove('bi-heart');
-                        btnFav.classList.add('bi-heart-fill');
-                        btnFav.style.color = 'red';
-                    } else {
-                        btnFav.classList.remove('bi-heart-fill');
-                        btnFav.classList.add('bi-heart');
-                        btnFav.style.color = '#0475A8';
-                    }
-                });
+        init: async () => {
+            //Pega o ID da URL
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+
+            if (!id) {
+                alert("Pet não identificado!");
+                return;
             }
 
-            // logica do botão Adote
-            const btnAdote = document.querySelector('.botao-adote');
-            if(btnAdote) {
-                btnAdote.addEventListener('click', () => {
-                    alert('Interesse registrado! O responsável entrará em contato.');
-                });
+            // Mapas para traduzir os IDs 
+            const mapEspecie = { 1: 'Cachorro', 2: 'Gato', 3: 'Outros' };
+            const mapPorte = { 1: 'Pequeno', 2: 'Médio', 3: 'Grande' };
+            const mapIdade = { 1: 'Filhote', 2: 'Adulto', 3: 'Idoso' };
+            const mapSexo = { 1: 'Macho', 2: 'Fêmea' };
+            const mapRaca = { 1: 'Sem raça definida', 2: 'Poodle', 3: 'Bulldog', 4: 'Siamês' }; // Exemplo
+
+            // Busca os dados na API
+            try {
+                // Tenta buscar no endpoint específico: .../animal/3
+                const response = await fetch(`http://localhost:8080/v1/lookme/animal/${id}`);
+                
+                if (!response.ok) throw new Error('Erro ao buscar detalhes do pet');
+                
+                const dados = await response.json();
+                
+                let pet = dados;
+                
+                if (dados.items && dados.items.animal) pet = dados.items.animal[0];
+                else if (Array.isArray(dados)) pet = dados[0];
+
+                // Preenche o HTML
+                document.getElementById('detalhe-nome').innerText = pet.nome;
+                document.getElementById('detalhe-descricao').innerText = pet.descricao || "Sem descrição.";
+                document.getElementById('detalhe-temperamento').innerText = pet.temperamento || "Não informado.";
+                document.getElementById('detalhe-vet').innerText = pet.informacoes_veterinarias || "Não informado.";
+                document.getElementById('detalhe-adaptabilidade').innerText = pet.adaptabilidade || "Não informado.";
+                
+                // Tradução dos IDs usando os mapas
+                document.getElementById('detalhe-especie').innerText = mapEspecie[pet.especie_id] || 'Desconhecido';
+                document.getElementById('detalhe-raca').innerText = mapRaca[pet.raca_id] || 'Outra';
+                document.getElementById('detalhe-porte').innerText = mapPorte[pet.porte_id] || 'Desconhecido';
+                document.getElementById('detalhe-idade').innerText = mapIdade[pet.idade_id] || 'Desconhecido';
+                document.getElementById('detalhe-sexo').innerText = mapSexo[pet.sexo_id] || 'Desconhecido';
+                
+                document.getElementById('detalhe-status').innerText = pet.status_adocao === 1 ? 'Disponível' : 'Indisponível';
+                
+                // Imagem
+                const imgEl = document.getElementById('detalhe-img');
+                imgEl.src = pet.foto_url || './img/pet-teste.jpg';
+                imgEl.onerror = () => imgEl.src = './img/pet-teste.jpg';
+
+                // Mostra o conteúdo e esconde o loading
+                document.getElementById('loading-message').style.display = 'none';
+                document.getElementById('pet-content').style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('loading-message').innerHTML = '<h3 style="color:red">Erro ao carregar detalhes. Tente novamente.</h3>';
             }
 
-            // lógica do Accordion
-            // cabeçalhos clicaveis
+            // Accordions
             const headers = document.querySelectorAll('.expandable-card .card-header');
-
             headers.forEach(header => {
-                // remover listeners antigos
                 const newHeader = header.cloneNode(true);
                 header.parentNode.replaceChild(newHeader, header);
-
                 newHeader.addEventListener('click', (e) => {
-                    e.stopPropagation(); // impedir que o clique se propague
-
-                    //encontra o card PAI específico deste cabeçalho clicado
+                    e.stopPropagation();
                     const currentCard = newHeader.closest('.expandable-card');
                     const currentContent = currentCard.querySelector('.card-conteudo');
-
-                    // alterna a classe APENAS neste card
                     currentCard.classList.toggle('active');
-
-                    // aplica a animação APENAS neste conteúdo
                     if (currentCard.classList.contains('active')) {
                         currentContent.style.maxHeight = currentContent.scrollHeight + "px";
                         currentContent.style.marginTop = "15px";
@@ -721,6 +812,23 @@ const routes = {
                     }
                 });
             });
+
+            // Lógica do botão favorito
+            const btnFav = document.querySelector('.botao-favorito');
+            if(btnFav) {
+                btnFav.addEventListener('click', () => {
+                    const icon = btnFav.querySelector('i');
+                    if(icon.classList.contains('bi-heart')) {
+                        icon.classList.remove('bi-heart');
+                        icon.classList.add('bi-heart-fill');
+                        icon.style.color = 'red';
+                    } else {
+                        icon.classList.remove('bi-heart-fill');
+                        icon.classList.add('bi-heart');
+                        icon.style.color = '#0475A8';
+                    }
+                });
+            }
         }
     },
     "/meus-pets": {
