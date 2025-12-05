@@ -1,4 +1,4 @@
-CREATE DATABASE db_lookme;
+ CREATE DATABASE db_lookme;
 
 USE db_lookme;
 
@@ -62,7 +62,7 @@ CREATE TABLE tbl_animal (
     FOREIGN KEY (especie_id) REFERENCES tbl_especie(especie_id),
     FOREIGN KEY (idade_id) REFERENCES tbl_idade(idade_id),
     FOREIGN KEY (sexo_id) REFERENCES tbl_sexo(sexo_id),
-    FOREIGN KEY (usuario_id) REFERENCES tbl_usuario(usuario_id)
+    FOREIGN KEY (usuario_id) REFERENCES tbl_usuario(usuario_id) ON DELETE CASCADE
 );
 
 -- TABELAS COM FKs QUE DEPENDEM DE tbl_usuario E tbl_animal
@@ -76,7 +76,7 @@ CREATE TABLE tbl_endereco_usuario (
     uf VARCHAR(2) NOT NULL,
     cep VARCHAR(9) NOT NULL,
     usuario_id INT NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES tbl_usuario(usuario_id)
+    FOREIGN KEY (usuario_id) REFERENCES tbl_usuario(usuario_id) ON DELETE CASCADE
 );
 
 CREATE TABLE tbl_endereco_animal (
@@ -88,7 +88,7 @@ CREATE TABLE tbl_endereco_animal (
     uf VARCHAR(2),
     cep VARCHAR(9) NOT NULL,
     animal_id INT NOT NULL,
-    FOREIGN KEY (animal_id) REFERENCES tbl_animal(animal_id)
+    FOREIGN KEY (animal_id) REFERENCES tbl_animal(animal_id) ON DELETE CASCADE
 );
 
 ALTER TABLE tbl_endereco_usuario
@@ -106,16 +106,16 @@ CREATE TABLE tbl_pedido_adocao (
     data_solicitacao DATE NOT NULL,
     usuario_id INT NOT NULL,
     animal_id INT NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES tbl_usuario(usuario_id),
-    FOREIGN KEY (animal_id) REFERENCES tbl_animal(animal_id)
+    FOREIGN KEY (usuario_id) REFERENCES tbl_usuario(usuario_id) ON DELETE CASCADE,
+    FOREIGN KEY (animal_id) REFERENCES tbl_animal(animal_id) ON DELETE CASCADE
 );
 
 CREATE TABLE tbl_favoritos (
     favorito_id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     animal_id INT NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES tbl_usuario(usuario_id),
-    FOREIGN KEY (animal_id) REFERENCES tbl_animal(animal_id)
+    FOREIGN KEY (usuario_id) REFERENCES tbl_usuario(usuario_id) ON DELETE CASCADE,
+    FOREIGN KEY (animal_id) REFERENCES tbl_animal(animal_id) ON DELETE CASCADE
 );
 
 CREATE TABLE tbl_historico_adocao (
@@ -123,8 +123,8 @@ CREATE TABLE tbl_historico_adocao (
     data_adocao DATE NOT NULL,
     usuario_id INT NOT NULL,
     animal_id INT NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES tbl_usuario(usuario_id),
-    FOREIGN KEY (animal_id) REFERENCES tbl_animal(animal_id)
+    FOREIGN KEY (usuario_id) REFERENCES tbl_usuario(usuario_id) ON DELETE CASCADE,
+    FOREIGN KEY (animal_id) REFERENCES tbl_animal(animal_id) ON DELETE CASCADE
 );
 
 --  TABELA DE NOTIFICAÇÕES
@@ -136,8 +136,8 @@ CREATE TABLE tbl_notificacao (
     data_notificacao DATE NOT NULL,
     usuario_id INT NOT NULL,
     pedido_id INT NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES tbl_usuario(usuario_id),
-    FOREIGN KEY (pedido_id) REFERENCES tbl_pedido_adocao(pedido_id)
+    FOREIGN KEY (usuario_id) REFERENCES tbl_usuario(usuario_id) ON DELETE CASCADE,
+    FOREIGN KEY (pedido_id) REFERENCES tbl_pedido_adocao(pedido_id) ON DELETE CASCADE
 );
 
 -- INSERTS TBL_PORTE
@@ -348,5 +348,3 @@ BEGIN
     END IF;
 END $$
 DELIMITER ;
-
-
