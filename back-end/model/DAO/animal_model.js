@@ -53,7 +53,7 @@ async function getSelectAllanimalsAnimals() {
     }
 }
 // Buscar um registro de animal no banco pelo id
-async function getSelectAnimalById(id_animal) {
+async function getSelectAnimalById(animal_id) {
     try {
         // Variavel com o comando sql para buscar toda a tabela de animal
         let sql = `SELECT * FROM tbl_animal WHERE animal_id = ${id_animal}`
@@ -72,7 +72,7 @@ async function getSelectAnimalById(id_animal) {
     }
 }
 // Buscar um registro de animal no banco pelo protetor cadastrado
-async function getSelectAnimalByanimal(id_animal) {
+async function getSelectAnimalByUser(user_id) {
     try {
         // Variavel com o comando sql para buscar toda a tabela de animal
         let sql = `SELECT * FROM tbl_animal WHERE usuario_id = ${id_animal}`
@@ -189,7 +189,7 @@ async function setDeleteAnimal(animal_id) {
 module.exports = {
     getSelectAllanimalsAnimals,
     getSelectAnimalById,
-    getSelectAnimalByanimal,
+    getSelectAnimalByUser,
     setInsertAnimal,
     setUpdateAnimal,
     setDeleteAnimal
