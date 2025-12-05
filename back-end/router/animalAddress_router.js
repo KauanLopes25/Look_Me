@@ -41,7 +41,8 @@ router.get('/', cors(), async function (request, response) {
     response.json(animalAddress)
     console.log('ENDPOINT 1° - Requisitado na tbl_endereco_animal')
 })
-// 2° BUSCAR POR ID
+
+// 2° BUSCAR POR ID ANIMAl
 router.get('/:id', cors(), async function (request, response){
     // Recebe o ID encaminhado via parametro na requisição
     let idAnimal = request.params.id
@@ -52,8 +53,19 @@ router.get('/:id', cors(), async function (request, response){
     console.log('ENDPOINT 2° - Requisitado na tbl_endereco_animal')
 })
 
+// 3° BUSCAR POR ID ENDEREÇO
+router.get('/address/:id', cors(), async function (request, response){
+    // Recebe o ID encaminhado via parametro na requisição
+    let idAnimal = request.params.id
+    // Chama a função para buscar um endereço de animal por id
+    let animalAddress = await animalAddressController.searchAnimalAddressByIdAddress(idAnimal)
+    response.status(animalAddress.status_code)
+    response.json(animalAddress)
+    console.log('ENDPOINT 3° - Requisitado na tbl_endereco_animal')
+})
 
-// 3° INSERIR NOVO ENDEREÇO DE ANIMAL
+
+// 4° INSERIR NOVO ENDEREÇO DE ANIMAL
 router.post('/', cors(), bodyParserJSON, async function (request, response) {
     // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
     let dadosBody = request.body
@@ -62,10 +74,10 @@ router.post('/', cors(), bodyParserJSON, async function (request, response) {
     let animal = await animalAddressController.insertAnimalAddress(dadosBody, contentType)
     response.status(animal.status_code)
     response.json(animal)
-    console.log('ENDPOINT 3° - Requisitado na tbl_endereco_animal')
+    console.log('ENDPOINT 4° - Requisitado na tbl_endereco_animal')
 })
 
-// 4° ATUALIZAR NOVO ENDEREÇO DE USUARIO
+// 5° ATUALIZAR NOVO ENDEREÇO DE ANIMAL
 router.put('/:id', cors(), bodyParserJSON, async function (request, response) {
     // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
     let idAnimal = request.params.id
@@ -76,16 +88,16 @@ router.put('/:id', cors(), bodyParserJSON, async function (request, response) {
     let animal = await animalAddressController.updateAnimalAddress(idAnimal, dadosBody, contentType)
     response.status(animal.status_code)
     response.json(animal)
-    console.log('ENDPOINT 4° - Requisitado na tbl_endereco_animal')
+    console.log('ENDPOINT 5° - Requisitado na tbl_endereco_animal')
 })
-// 5° DELETAR ENDEREÇO DE USUARIO
+// 6° DELETAR ENDEREÇO DE ANIMAL
 router.delete('/:id', cors(), async function (request, response){
     // Recebe o ID encaminhado via parametro na requisição
-    let idAnimal = request.params.id
+    let idAnimalAddress = request.params.id
     // Chama a função de deletar um endereço de animal
-    let animalAddress = await animalAddressController.deleteAnimalAddress(idAnimal)
+    let animalAddress = await animalAddressController.deleteAnimalAddress(idAnimalAddress)
     response.status(animalAddress.status_code)
     response.json(animalAddress)
-    console.log('ENDPOINT 5° - Requisitado na tbl_endereco_animal')
+    console.log('ENDPOINT 6° - Requisitado na tbl_endereco_animal')
 })
 module.exports = router

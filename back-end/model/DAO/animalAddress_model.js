@@ -68,6 +68,24 @@ async function getSelectAnimalAddressById(idAnimal) {
         return false
     }
 }
+// Buscar um registro de endereço de animal no banco pelo id do endereço
+async function getSelectAnimalAddressByIdAddress(idAnimalAddress) {
+    try {
+        // Variavel com o comando sql para buscar um registro de endereço de animal
+        let sql = `SELECT * FROM tbl_endereco_animal WHERE endereco_animal_id = ${idAnimalAddress}`
+        // Variavel para inserir o comando no banco de dados
+        let result = await prisma.$queryRawUnsafe(sql)
+        if (Array.isArray(result))
+            return result
+
+        else
+            return false
+
+
+    } catch (error) {
+        return false
+    }
+}
 
 // Inserir um registro de endereço de um animal no banco
 async function setInsertAnimalAddress(AnimalAddress) {
@@ -99,7 +117,7 @@ async function setInsertAnimalAddress(AnimalAddress) {
     }
 }
 // Altera um registro de endereço de um animal no banco de dados
-async function setUpdateAnimalAddress(idAnimal, newDataAnimalAddress) {
+async function setUpdateAnimalAddress(idAnimalAddress, newDataAnimalAddress) {
     try {
         let sql = ` UPDATE tbl_endereco_animal
                     SET logradouro = '${newDataAnimalAddress.logradouro}', 
@@ -110,7 +128,7 @@ async function setUpdateAnimalAddress(idAnimal, newDataAnimalAddress) {
                     cep = '${newDataAnimalAddress.cep}',
                     animal_id = ${newDataAnimalAddress.animal_id},
                     regiao = '${newDataAnimalAddress.regiao}'
-                    WHERE animal_id = '${idAnimal}';`
+                    WHERE endereco_animal_id = '${idAnimalAddress}';`
                     
 
         let result = await prisma.$executeRawUnsafe(sql)
@@ -128,10 +146,10 @@ async function setUpdateAnimalAddress(idAnimal, newDataAnimalAddress) {
     }
 }
 // Excluir um registro de endereço de um animal no banco de dados
-async function setDeleteAnimalAddress(idAnimal) {
+async function setDeleteAnimalAddress(idAnimalAddress) {
     try {
         let sql = `DELETE FROM tbl_endereco_animal
-                    WHERE animal_id = '${idAnimal}';`
+                    WHERE endereco_animal_id = '${idAnimalAddress}';`
 
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
@@ -150,6 +168,7 @@ async function setDeleteAnimalAddress(idAnimal) {
 module.exports = {
     getSelectAllAnimalAddress,
     getSelectAnimalAddressById,
+    getSelectAnimalAddressByIdAddress,
     setInsertAnimalAddress,
     setUpdateAnimalAddress,
     setDeleteAnimalAddress

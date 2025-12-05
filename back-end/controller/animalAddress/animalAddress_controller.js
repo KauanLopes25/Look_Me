@@ -78,6 +78,33 @@ async function searchAnimalAddressById(idAnimal) {
     }
 }
 
+async function searchAnimalAddressByIdAddress(idAnimalAddress) {
+    // Criando copia do objeto mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    try {
+        // Chama a função do DAO para retornar um endereço de um animal do BD
+        let resultAnimalAddress = await animalAddressDAO.getSelectAnimalAddressByIdAddress(Number(idAnimalAddress))
+        if (resultAnimalAddress) {
+            if (resultAnimalAddress.length > 0) {
+
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.message
+                MESSAGES.DEFAULT_HEADER.items.animal = resultAnimalAddress
+
+                return MESSAGES.DEFAULT_HEADER // 200
+            } else {
+                return MESSAGES.ERROR_NOT_FOUND // 404
+            }
+        } else {
+            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+        }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+}
+
 async function insertAnimalAddress(animalAddress, contentType) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -123,7 +150,7 @@ async function updateAnimalAddress(idAnimalAddress, newDataAnimalAddress, conten
             let dataValidation = await validation.animalAddressDataValidation(newDataAnimalAddress, contentType)
 
             if (!dataValidation) {
-                let animalAddressValidation = await searchAnimalAddressById(idAnimalAddress)
+                let animalAddressValidation = await searchAnimalAddressByIdAddress(idAnimalAddress)
                 if (animalAddressValidation.status_code == 200) {
                     // Processamento
                     // Chama a função para update um novo endereço de animal no BD"
@@ -162,7 +189,7 @@ async function deleteAnimalAddress(idAnimalAddress) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        let animalAddressValidation = await searchAnimalAddressById(idAnimalAddress)
+        let animalAddressValidation = await searchAnimalAddressByIdAddress(idAnimalAddress)
         if (animalAddressValidation.status_code == 200) {
 
             // Processamento
@@ -191,6 +218,7 @@ async function deleteAnimalAddress(idAnimalAddress) {
 module.exports = {
     listAnimalAddress,
     searchAnimalAddressById,
+    searchAnimalAddressByIdAddress,
     insertAnimalAddress,
     updateAnimalAddress,
     deleteAnimalAddress

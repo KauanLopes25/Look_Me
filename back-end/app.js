@@ -45,6 +45,7 @@ const bodyParser = require('body-parser')
 const userRoute = require('./router/user_router.js')
 const userAddressRoute = require('./router/userAddress_router.js')
 const animalRoute = require('./router/animal_router.js')
+const animalAddressRoute = require('./router/animalAddress_router.js')
 
 
 // Retorna a porta do servidor local ou colocamos uma porta local
@@ -64,10 +65,12 @@ app.use((request, response, next)=>{
 // ENDPOINT's
 // USUÁRIOS
 app.use('/v1/lookme/user/', userRoute)
-// ENDEREÇO DE USUÁRIOS
+// ENDEREÇO DE USUÁRIO
 app.use('/v1/lookme/useraddress/', userAddressRoute)
 // ANIMAL
 app.use('/v1/lookme/animal/', animalRoute)
+// ENDEREÇo DE ANIMAL
+app.use('/v1/lookme/animaladdress/', animalAddressRoute)
 // Mensagem de operação da API
 app.listen(PORT, function(){
     console.log('API aguardando requisições...')
