@@ -197,12 +197,9 @@ const routes = {
                     <div class="container-dados">
                         <input type="text" placeholder="Nome" class="input-padrao">
                         <input type="text" placeholder="CEP" class="input-padrao">
-                        
                         <input type="date" placeholder="Idade" class="input-padrao">
                         <input type="email" placeholder="Email" class="input-padrao">
-                        
                         <input type="tel" placeholder="Telefone" class="input-padrao">
-                        <input type="text" placeholder="Preferencia de pet" class="input-padrao">
                     </div>
                 </div>
 
