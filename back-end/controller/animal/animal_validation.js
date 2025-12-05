@@ -62,12 +62,12 @@ async function animalDataValidation(animal, contentType) {
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof animal.adaptabildiade !== "string" ||
-            animal.adaptabildiade == '' ||
-            animal.adaptabildiade == undefined ||
-            animal.adaptabildiade == null ||
-            animal.adaptabildiade.length > 500) {
-            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de adaptabildiade incorreto]'
+            typeof animal.adaptabilidade !== "string" ||
+            animal.adaptabilidade == '' ||
+            animal.adaptabilidade == undefined ||
+            animal.adaptabilidade == null ||
+            animal.adaptabilidade.length > 500) {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de adaptabilidade incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
@@ -75,14 +75,12 @@ async function animalDataValidation(animal, contentType) {
             animal.foto_url == '' ||
             animal.foto_url == undefined ||
             animal.foto_url == null ||
-            animal.cep.length > 200) {
+            animal.foto_url.length > 200) {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de foto_url incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
             typeof animal.status_adocao !== "number" ||
-            animal.status_adocao == '' ||
-            animal.status_adocao == undefined ||
             animal.status_adocao == null ) {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de status_adocao incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
