@@ -22,11 +22,16 @@ const express = require('express')
 const cors = require('cors')
 // Responsável por gerenciar a chegada dos dados da api com o front
 const bodyParser = require('body-parser')
+
 // Responsavel por receber arquivos enviados pelo front-end em requisições HTTP usando multipart/form-data.
 const multer = require("multer");
 // pasta onde os arquivos vão ser salvos temporariamente
-const upload = multer({ dest: 'uploads/' });
+// const upload = multer({ dest: 'uploads/' });
 
+// Define variavel para upload sem salvar no disco
+const upload = multer({
+    storage: multer.memoryStorage()
+});
 // Criando um objeto especialista no formato JSON para receber dados via POST e PUT
 const bodyParserJSON = bodyParser.json()
 
