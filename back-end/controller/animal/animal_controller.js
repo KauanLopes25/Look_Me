@@ -40,13 +40,14 @@ async function uploadToAzure(arquivo) {
     // Cria o blob
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
-    // Envia o arquivo (arquivo.buffer só funciona se você usar storage memory, vou deixar o correto para multer.diskStorage)
-    const fs = require("fs");
-    const fileStream = fs.createReadStream(arquivo.path);
+    // Upload direto do buffer para o Azure
+    await blockBlobClient.uploadData(arquivo.buffer, {
+        blobHTTPHeaders: {
+            blobContentType: arquivo.mimetype  // mantém o tipo correto
+        }
+    });
 
-    await blockBlobClient.uploadStream(fileStream);
-
-    // URL pública do blob
+    // Retorna URL pública
     return blockBlobClient.url;
 }
 
