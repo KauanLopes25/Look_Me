@@ -79,6 +79,33 @@ async function searchNotificationById(idUser) {
     }
 }
 
+async function searchNotificationByIdNotification(idNotification) {
+    // Criando copia do objeto mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    try {
+        // Chama a função do DAO para retornar uma notificação do BD
+        let resultNotification = await notificationDAO.getSelectNotificationByIdNotification(Number(idNotification))
+        if (resultNotification) {
+            if (resultNotification.length > 0) {
+
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.message
+                MESSAGES.DEFAULT_HEADER.items.notification = resultNotification
+
+                return MESSAGES.DEFAULT_HEADER // 200
+            } else {
+                return MESSAGES.ERROR_NOT_FOUND // 404
+            }
+        } else {
+            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+        }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+}
+
 async function insertNotification(notification, contentType) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -122,11 +149,11 @@ async function updateNotification(idNotification, newDataNotification, contentTy
 
             let dataValidation = await validation.notificationDataValidation(newDataNotification, contentType)
             if (!dataValidation) {
-                let notificationValidation = await searchNotificationById(idNotification)
+                let notificationValidation = await searchNotificationByIdNotification(idNotification)
                 if (notificationValidation.status_code == 200) {
                     // Processamento
                     // Chama a função para update uma nova notificação no BD"
-                    let resultNotification = await notificationDAO.setUpdateNotification(email, newDataNotification)
+                    let resultNotification = await notificationDAO.setUpdateNotification(idNotification, newDataNotification)
                     if (resultNotification) {
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
@@ -159,7 +186,7 @@ async function deleteNotification(idNotification) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        let notificationValidation = await searchNotificationById(idNotification)
+        let notificationValidation = await searchNotificationByIdNotification(idNotification)
         if (notificationValidation.status_code == 200) {
 
             // Processamento
@@ -177,10 +204,11 @@ async function deleteNotification(idNotification) {
                 return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
             }
         } else {
-            return validarID // A função searchNotificationById poderá retornar (400 ou 404 ou 500)
+            return validarID // A função searchNotificationByIdNotification poderá retornar (400 ou 404 ou 500)
         }
 
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
@@ -188,6 +216,7 @@ async function deleteNotification(idNotification) {
 module.exports = {
     listNotifications,
     searchNotificationById,
+    searchNotificationByIdNotification,
     insertNotification,
     updateNotification,
     deleteNotification

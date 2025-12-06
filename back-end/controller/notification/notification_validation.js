@@ -44,7 +44,7 @@ async function notificationDataValidation(notification, contentType) {
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof notification.data_notificacao !== "number" ||
+            typeof notification.data_notificacao !== "string" ||
             notification.data_notificacao == '' ||
             notification.data_notificacao == undefined ||
             notification.data_notificacao == null ||

@@ -55,7 +55,7 @@ async function getSelectAllNotification() {
 async function getSelectNotificationById(idUser) {
     try {
         // Variavel com o comando sql para buscar toda a tabela de notificação
-        let sql = `SELECT * FROM tbl_notificacao WHERE notificacao_id = ${idUser}`
+        let sql = `SELECT * FROM tbl_notificacao WHERE usuario_id = ${idUser}`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result))
@@ -69,6 +69,26 @@ async function getSelectNotificationById(idUser) {
         return false
     }
 }
+
+// Buscar um registro de notificação no banco pelo id
+async function getSelectNotificationByIdNotification(idNotification) {
+    try {
+        // Variavel com o comando sql para buscar toda a tabela de notificação
+        let sql = `SELECT * FROM tbl_notificacao WHERE notificacao_id = ${idNotification}`
+        // Variavel para inserir o comando no banco de dados
+        let result = await prisma.$queryRawUnsafe(sql)
+        if (Array.isArray(result))
+            return result
+
+        else
+            return false
+
+
+    } catch (error) {
+        return false
+    }
+}
+
 // Inserir um registro de notificação no banco
 async function setInsertNotification(notification) {
     try {
@@ -142,6 +162,7 @@ async function setDeleteNotification(idNotification) {
 module.exports = {
     getSelectAllNotification,
     getSelectNotificationById,
+    getSelectNotificationByIdNotification,
     setInsertNotification,
     setUpdateNotification,
     setDeleteNotification
