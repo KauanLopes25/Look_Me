@@ -120,7 +120,7 @@ async function setUpdateFavorite(idFavorite, newDataFavorite) {
         let sql = ` UPDATE tbl_favoritos
                     SET usuario_id = '${newDataFavorite.usuario_id}', 
                     animal_id = '${newDataFavorite.animal_id}'
-                    WHERE notificacao_id = '${idFavorite}';`
+                    WHERE favorito_id = '${idFavorite}';`
 
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
