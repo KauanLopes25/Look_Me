@@ -219,7 +219,6 @@ async function deleteOrder(idOrder) {
             // Processamento
             // Chama a função para deletar um pedido de adoção no BD
             let resultOrder = await orderDAO.setDeleteOrder(idOrder)
-            console.log(resultOrder)
 
             if (resultOrder) {
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_DELETE_ITEM.status

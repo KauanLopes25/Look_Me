@@ -52,6 +52,7 @@ const animalRoute = require('./router/animal_router.js')
 const animalAddressRoute = require('./router/animalAddress_router.js')
 const notificationRoute = require('./router/notification_router.js')
 const favoritesRoute = require('./router/favorites_router.js')
+const orderRoute = require('./router/order_router.js')
 
 // Retorna a porta do servidor local ou colocamos uma porta local
 const PORT = process.PORT || 8080
@@ -80,6 +81,8 @@ app.use('/v1/lookme/animaladdress/', animalAddressRoute)
 app.use('/v1/lookme/notificacao/', notificationRoute)
 // NOTIFICAÇÃO
 app.use('/v1/lookme/favoritos/', favoritesRoute)
+// PEDIDO DE ADOÇÃO
+app.use('/v1/lookme/pedido/', orderRoute)
 
 // Mensagem de operação da API
 app.listen(PORT, function(){

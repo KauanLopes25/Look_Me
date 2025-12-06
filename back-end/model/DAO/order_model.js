@@ -56,7 +56,7 @@ async function getSelectAllOrders() {
 async function getSelectOrderById(idOrder) {
     try {
         // Variavel com o comando sql para buscar toda a tabela de pedido de adoção
-        let sql = `SELECT * FROM tbl_pedido_adocao WHERE pedido_adocao_id = ${idOrder}`
+        let sql = `SELECT * FROM tbl_pedido_adocao WHERE pedido_id = ${idOrder}`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result))
@@ -76,6 +76,25 @@ async function getSelectOrderByIdUser(idUser) {
     try {
         // Variavel com o comando sql para buscar toda a tabela de pedido de adoção
         let sql = `SELECT * FROM tbl_pedido_adocao WHERE usuario_id = ${idUser}`
+        // Variavel para inserir o comando no banco de dados
+        let result = await prisma.$queryRawUnsafe(sql)
+        if (Array.isArray(result))
+            return result
+
+        else
+            return false
+
+
+    } catch (error) {
+        return false
+    }
+}
+
+// Buscar um registro de pedido de adoção no banco pelo id do animal
+async function getSelectOrderByIdAnimal(idAnimal) {
+    try {
+        // Variavel com o comando sql para buscar toda a tabela de pedido de adoção
+        let sql = `SELECT * FROM tbl_pedido_adocao WHERE animal_id = ${idAnimal}`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result))
@@ -136,6 +155,7 @@ async function setUpdateOrder(idOrder, newDataOrder) {
         }
 
     } catch (error) {
+        console.log(error)
         return false
     }
 }
@@ -162,6 +182,7 @@ module.exports = {
     getSelectAllOrders,
     getSelectOrderById,
     getSelectOrderByIdUser,
+    getSelectOrderByIdAnimal,
     setInsertOrder,
     setUpdateOrder,
     setDeleteOrder
