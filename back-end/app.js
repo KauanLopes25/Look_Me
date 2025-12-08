@@ -1,7 +1,7 @@
 /********************************************************************************************
 * Objetivo: Arquivo responsável por rodar a aplicação da api, utilizando EndPoints referente 
 a API de adoção de pet's Look Me
-* Autor: Kauan Lopes Pereira
+* Autor: Kauan Lopes Pereira, Luana Mariana Lopes Bomfim
 * Data inicial: 26/11/2025
 * Versão: 1.0
 ********************************************************************************************/
@@ -61,11 +61,11 @@ app.use((request, response, next)=>{
 
 
 //Import das contollers
-const userRoute = require('./router/user_router.js')
 const controllerPorte = require('./controller/sizes/size_controller.js')
 const controllerEspecie = require('./controller/especies/especies_controller.js')
 const controllerRaca = require('./controller/breeds/breeds_controller.js')
 const controllerIdade = require('./controller/ages/ages_controller.js')
+const controllerGenero = require('./controller/gender/gender_controller.js')
 
 
 
@@ -140,11 +140,6 @@ app.delete('/v1/lookme/porte/:id', cors(), async function (request, response) {
     response.status(porte.status_code)
     response.json(porte)
 })
-
-// ENDPOINT's de usuário
-app.use('/v1/lookme/user/', userRoute)
-
-
 
 // ENDPOINT'S de espécie
 
@@ -361,6 +356,78 @@ app.delete('/v1/lookme/idade/:id', cors(), async function (request, response) {
 
     response.status(idade.status_code)
     response.json(idade)
+})
+
+// ENDPOINT'S de gênero
+
+//função 01 - lista todos os generos
+app.get('/v1/lookme/generos', cors(), async function(request, response){
+
+    //chama a função para listar os generos do BD
+    let genero =  await controllerGenero.listarGeneros()
+
+    response.status(genero.status_code)
+
+    response.json(genero)
+
+})
+
+//função 02 - filtra um genero pelo ID
+app.get('/v1/lookme/genero/:id', cors(), async function(request, response){
+
+    let idGenero = request.params.id
+
+    let genero =  await controllerGenero.buscarGeneroID(idGenero)
+
+    response.status(genero.status_code)
+
+    response.json(genero)
+})
+
+
+//função 03 - insere um novo genero
+app.post('/v1/lookme/genero', cors(), bodyParserJSON, async function(request, response){
+
+    //recebe os dados do corpo (body) da requisição
+    //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
+    let dadosBody = request.body
+    
+    //recebe o tipo de dados da requisição (JSON, XML, etc)
+    let contentType = request.headers['content-type']
+
+    let genero =  await controllerGenero.inserirGenero(dadosBody, contentType)
+
+    response.status(genero.status_code)
+
+    response.json(genero)
+})
+
+//função 04 - atualiza um genero
+app.put('/v1/lookme/genero/:id', cors(), bodyParserJSON, async function(request, response){
+
+    //recebe os dados do corpo (body) da requisição
+    //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
+    let dadosBody = request.body
+
+    let idGenero = request.params.id
+ 
+    let contentType = request.headers['content-type']
+
+    let genero =  await controllerGenero.atualizarGenero(dadosBody, idGenero, contentType)
+
+    response.status(genero.status_code)
+
+    response.json(genero)
+})
+
+//função 05 - exclui um genero
+app.delete('/v1/lookme/genero/:id', cors(), async function (request, response) {
+    let idGenero = request.params.id
+
+    let genero = await controllerGenero.excluirGenero(idGenero)
+
+    response.status(genero.status_code)
+    response.json(genero)
 })
 
 // Mensagem de operação da API
