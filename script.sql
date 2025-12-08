@@ -348,3 +348,28 @@ BEGIN
     END IF;
 END $$
 DELIMITER ;
+
+-- select com join para os dados de animais
+ CREATE VIEW view_info_animal AS 
+    SELECT a.*,
+    p.nome_porte      AS porte,
+    r.nome_raca       AS raca,
+    e.nome_especie    AS especie,
+    i.descricao       AS idade,
+    s.descricao       AS sexo,
+    u.nome            AS protetor
+	FROM tbl_animal a
+	JOIN tbl_porte p  
+	ON a.porte_id = p.porte_id
+	JOIN tbl_raca r
+	ON a.raca_id = r.raca_id
+    JOIN tbl_especie e
+	ON a.especie_id = e.especie_id
+    JOIN tbl_idade i
+	ON a.idade_id = i.idade_id
+    JOIN tbl_sexo s
+	ON a.sexo_id = s.sexo_id
+    JOIN tbl_usuario u
+	ON a.usuario_id = u.usuario_id;
+
+SELECT * FROM view_info_animal;
