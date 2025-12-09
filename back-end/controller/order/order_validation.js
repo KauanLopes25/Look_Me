@@ -26,10 +26,7 @@ async function orderDataValidation(order, contentType) {
     if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
         // Validações de todas as entradas de dados
         if (
-            typeof order.usuario_id !== "number" ||
-            order.usuario_id == '' ||
-            order.usuario_id == undefined ||
-            order.usuario_id == null) {
+            typeof order.usuario_id !== "number") {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de usuario_id incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }

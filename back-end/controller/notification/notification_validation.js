@@ -53,10 +53,7 @@ async function notificationDataValidation(notification, contentType) {
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof notification.usuario_id !== "number" ||
-            notification.usuario_id == '' ||
-            notification.usuario_id == undefined ||
-            notification.usuario_id == null) {
+            typeof notification.usuario_id !== "number") {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de usuario_id incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }

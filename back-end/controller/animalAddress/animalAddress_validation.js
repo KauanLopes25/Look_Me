@@ -80,11 +80,7 @@ async function animalAddressDataValidation(animalAddress, contentType) {
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof animalAddress.animal_id !== "number" ||
-            animalAddress.animal_id == '' ||
-            animalAddress.animal_id == undefined ||
-            animalAddress.animal_id == null ||
-            animalAddress.animal_id.length > 2) {
+            typeof animalAddress.animal_id !== "number") {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de animal_id incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }

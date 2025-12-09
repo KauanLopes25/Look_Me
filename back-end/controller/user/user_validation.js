@@ -35,6 +35,7 @@ async function userDataValidation(user) {
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
+            typeof user.data_nascimento !== "string" ||
             user.data_nascimento == undefined ||
             user.data_nascimento.length != 10) {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de data de lançamento incorreto]'
@@ -59,8 +60,7 @@ async function userDataValidation(user) {
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            user.status_cadastro == undefined ||
-            user.status_cadastro == null) {
+            typeof user.nome !== "number") {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de status_cadastro incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }

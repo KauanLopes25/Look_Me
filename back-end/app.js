@@ -53,6 +53,11 @@ const animalAddressRoute = require('./router/animalAddress_router.js')
 const notificationRoute = require('./router/notification_router.js')
 const favoritesRoute = require('./router/favorites_router.js')
 const orderRoute = require('./router/order_router.js')
+const ageRoute = require('./router/age_router.js')
+const especiesRoute = require('./router/especies_router.js')
+const breedRoute = require('./router/breed_router.js')
+const sizeRoute = require('./router/size_router.js')
+const genderRoute = require('./router/gender_router.js')
 
 // Retorna a porta do servidor local ou colocamos uma porta local
 const PORT = process.PORT || 8080
@@ -83,20 +88,6 @@ app.use('/v1/lookme/notificacao/', notificationRoute)
 app.use('/v1/lookme/favoritos/', favoritesRoute)
 // PEDIDO DE ADOÇÃO
 app.use('/v1/lookme/pedido/', orderRoute)
-
-// Mensagem de operação da API
-app.listen(PORT, function(){
-    console.log('API aguardando requisições...')
-})
-
-// Import das rotas
-const ageRoute = require('./router/age_router.js')
-const especiesRoute = require('./router/especies_router.js')
-const breedRoute = require('./router/breed_router.js')
-const sizeRoute = require('./router/size_router.js')
-const genderRoute = require('./router/gender_router.js')
-
-// ENDPOINT's
 //IDADE
 app.use('/v1/lookme/age/', ageRoute)
 // ESPECIE
@@ -108,6 +99,10 @@ app.use('/v1/lookme/porte/', sizeRoute)
 // GENERO
 app.use('/v1/lookme/genero/', genderRoute)
 
+// Mensagem de operação da API
+app.listen(PORT, function(){
+    console.log('API aguardando requisições...')
+})
 
 
 

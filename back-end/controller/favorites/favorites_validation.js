@@ -26,18 +26,12 @@ async function favoriteDataValidation(favorite, contentType) {
     if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
         // Validações de todas as entradas de dados
         if (
-            typeof favorite.usuario_id !== "number" ||
-            favorite.usuario_id == '' ||
-            favorite.usuario_id == undefined ||
-            favorite.usuario_id == null ) {
+            typeof favorite.usuario_id !== "number") {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de usuario_id incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof favorite.animal_id !== "number" ||
-            favorite.animal_id == '' ||
-            favorite.animal_id == undefined ||
-            favorite.animal_id == null) {
+            typeof favorite.animal_id !== "number") {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de animal_id incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
