@@ -150,11 +150,41 @@ INSERT INTO tbl_porte (nome_porte) VALUES
 -- INSERTS TBL_RACA
 
 INSERT INTO tbl_raca (nome_raca) VALUES
+-- CÃES
 ('SRD'),
 ('Labrador'),
 ('Shih-tzu'),
+('Golden Retriever'),
+('Bulldog Francês'),
+('Poodle'),
+('Beagle'),
+('Pastor Alemão'),
+('Rottweiler'),
+('Border Collie'),
+('Pitbull'),
+('Yorkshire Terrier'),
+('Dálmata'),
+('Husky Siberiano'),
+('Chihuahua'),
+('Cocker Spaniel'),
+('Boxer'),
+('Doberman'),
+('Pug'),
+('Maltês'),
+
+-- GATOS
 ('Persa'),
-('Siamês');
+('Siamês'),
+('Maine Coon'),
+('Angorá'),
+('Sphynx'),
+('British Shorthair'),
+('Bengal'),
+('Ragdoll'),
+('Himalaio'),
+('Siberiano'),
+('SRD (Gato)');
+
 
 -- INSERTS TBL_ESPECIE
 
@@ -195,7 +225,7 @@ INSERT INTO tbl_animal (
  'Vermifugado e com 1ª dose de vacina.',
  'Filhote cheio de energia, ótimo para famílias e apartamentos.',
  'Adapta-se bem a espaços pequenos.',
- 'https://site.com/fotos/bolt.jpg',
+ 'https://img.freepik.com/fotos-gratis/golden-retriever-fofo-e-fofo-sentado-na-grama-do-parque_181624-40167.jpg?semt=ais_se_enriched&w=740&q=80',
  FALSE,
  TRUE,
  TRUE,
@@ -213,7 +243,7 @@ INSERT INTO tbl_animal (
  'Castrada e com vacinas atualizadas.',
  'Gata adulta que prefere ambientes tranquilos.',
  'Adapta-se bem a casas silenciosas.',
- 'https://site.com/fotos/misty.jpg',
+ 'https://premierpet.com.br/wp-content/uploads/2024/06/model-banner-persa-mobile-v1-1024x1024.png',
  FALSE,
  TRUE,
  TRUE,
@@ -231,7 +261,7 @@ INSERT INTO tbl_animal (
  'Necessita acompanhamento veterinário semestral.',
  'Cachorro idoso, ideal para famílias calmas.',
  'Prefere locais maiores e rotina estável.',
- 'https://site.com/fotos/thor.jpg',
+ 'https://www.petz.com.br/blog/wp-content/uploads/2025/05/adaptar-a-casa-para-cachorro-idoso-capa.jpg',
  TRUE,
  FALSE,
  TRUE,
