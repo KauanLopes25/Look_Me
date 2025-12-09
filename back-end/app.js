@@ -28,7 +28,9 @@ utilizarmos o projeto em outro computador.
                                            neste processo você poderá perder dados reais do DB, 
                                            pois ele pega e cria tabelas programadas no ORM schema.prisma)
     npx prisma generate                 -> Apenas realiza o sincronismo entre o prisma e o DB, geralmente
-                                           usamos para rodar o projeto em um PC novo 
+                                           usamos para rodar o projeto em um PC novo
+    npm install multer                  -> Recebe arquivos enviados pelo front-end em requisições HTTP usando multipart/form-data.
+    npm install @azure/storage-blob     -> Realiza o de imagens para o Azure Blob Storage.
 ******************************** BIBLIOTECAS UTILIZADAS *************************************
 * Prisma
 * Express
@@ -36,32 +38,56 @@ utilizarmos o projeto em outro computador.
 * Body-parser
 ********************************************************************************************/
 // Responsável pela API
-const express = require('express')  // Responsável pelas permissões da API (APP)
-const cors = require('cors') // Responsável por gerenciar a chegada dos dados da api com o front
-const bodyParser = require('body-parser') // Import das rotas
-
+const express = require('express')
+// Responsável pelas permissões da API (APP)
+const cors = require('cors')
+// Responsável por gerenciar a chegada dos dados da api com o front
+const bodyParser = require('body-parser')
 // Faz o node conseguir ler variaves presentes no arquivo .env
 require('dotenv').config();
-
-
-//Criando um objeto especialista no formato JSON para obter dados via POST e PUT
-const bodyParserJSON = bodyParser.json() 
-
-// Criando uma instancia de uma classe do express
-const app = express()
+// Import das rotas
+const userRoute = require('./router/user_router.js')
+const userAddressRoute = require('./router/userAddress_router.js')
+const animalRoute = require('./router/animal_router.js')
+const animalAddressRoute = require('./router/animalAddress_router.js')
+const notificationRoute = require('./router/notification_router.js')
+const favoritesRoute = require('./router/favorites_router.js')
+const orderRoute = require('./router/order_router.js')
 
 // Retorna a porta do servidor local ou colocamos uma porta local
 const PORT = process.PORT || 8080
+// Criando uma instancia de uma classe do express
+const app = express()
 
 // Configuração de permissões
 // next ?
-app.use((request, response, next)=>{
+app.use((request, response, next) => {
     response.header('Access-Control-Allow-Origin', '*') // Servidor de origem da API
     response.header('Access-Control-Allow-Methods', 'GET') // Verbos permitidos na API
     app.use(cors()) // Carrega as configurações no Cors da API
     next() // Próximo, carregar os proximos endpoints
 })
 
+// ENDPOINT's
+// USUÁRIOS
+app.use('/v1/lookme/user/', userRoute)
+// ENDEREÇO DE USUÁRIO
+app.use('/v1/lookme/useraddress/', userAddressRoute)
+// ANIMAL
+app.use('/v1/lookme/animal/', animalRoute)
+// ENDEREÇo DE ANIMAL
+app.use('/v1/lookme/animaladdress/', animalAddressRoute)
+// NOTIFICAÇÃO
+app.use('/v1/lookme/notificacao/', notificationRoute)
+// NOTIFICAÇÃO
+app.use('/v1/lookme/favoritos/', favoritesRoute)
+// PEDIDO DE ADOÇÃO
+app.use('/v1/lookme/pedido/', orderRoute)
+
+// Mensagem de operação da API
+app.listen(PORT, function(){
+    console.log('API aguardando requisições...')
+})
 
 // Import das rotas
 const ageRoute = require('./router/age_router.js')
@@ -82,7 +108,22 @@ app.use('/v1/lookme/porte/', sizeRoute)
 // GENERO
 app.use('/v1/lookme/genero/', genderRoute)
 
-// Mensagem de operação da API
-app.listen(PORT, function(){
-    console.log('API aguardando requisições...')
-})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
