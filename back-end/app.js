@@ -1,7 +1,7 @@
 /********************************************************************************************
 * Objetivo: Arquivo responsável por rodar a aplicação da api, utilizando EndPoints referente 
 a API de adoção de pet's Look Me
-* Autor: Kauan Lopes Pereira
+* Autor: Kauan Lopes Pereira, Luana Mariana Lopes Bomfim
 * Data inicial: 26/11/2025
 * Versão: 1.0
 ********************************************************************************************/
@@ -28,7 +28,7 @@ utilizarmos o projeto em outro computador.
                                            neste processo você poderá perder dados reais do DB, 
                                            pois ele pega e cria tabelas programadas no ORM schema.prisma)
     npx prisma generate                 -> Apenas realiza o sincronismo entre o prisma e o DB, geralmente
-                                           usamos para rodar o projeto em um PC novo 
+                                           usamos para rodar o projeto em um PC novo
     npm install multer                  -> Recebe arquivos enviados pelo front-end em requisições HTTP usando multipart/form-data.
     npm install @azure/storage-blob     -> Realiza o de imagens para o Azure Blob Storage.
 ******************************** BIBLIOTECAS UTILIZADAS *************************************
@@ -61,7 +61,7 @@ const app = express()
 
 // Configuração de permissões
 // next ?
-app.use((request, response, next)=>{
+app.use((request, response, next) => {
     response.header('Access-Control-Allow-Origin', '*') // Servidor de origem da API
     response.header('Access-Control-Allow-Methods', 'GET') // Verbos permitidos na API
     app.use(cors()) // Carrega as configurações no Cors da API
@@ -88,3 +88,42 @@ app.use('/v1/lookme/pedido/', orderRoute)
 app.listen(PORT, function(){
     console.log('API aguardando requisições...')
 })
+
+// Import das rotas
+const ageRoute = require('./router/age_router.js')
+const especiesRoute = require('./router/especies_router.js')
+const breedRoute = require('./router/breed_router.js')
+const sizeRoute = require('./router/size_router.js')
+const genderRoute = require('./router/gender_router.js')
+
+// ENDPOINT's
+//IDADE
+app.use('/v1/lookme/age/', ageRoute)
+// ESPECIE
+app.use('/v1/lookme/especie/', especiesRoute)
+// RACA
+app.use('/v1/lookme/raca/', breedRoute)
+// PORTE
+app.use('/v1/lookme/porte/', sizeRoute)
+// GENERO
+app.use('/v1/lookme/genero/', genderRoute)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
