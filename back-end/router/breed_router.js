@@ -21,7 +21,7 @@ const router = express.Router();
 const breedsController = require('../controller/breeds/breeds_controller.js')
 
 //função 01 - lista todas as raças
-router.get('/v1/lookme/racas', cors(), async function(request, response){
+router.get('/', cors(), async function(request, response){
 
     //chama a função para listar os portes do BD
     let raca =  await breedsController.listarRacas()
@@ -34,7 +34,7 @@ router.get('/v1/lookme/racas', cors(), async function(request, response){
 })
 
 //função 02 - filtra uma raca pelo ID
-router.get('/v1/lookme/raca/:id', cors(), async function(request, response){
+router.get('/:id', cors(), async function(request, response){
 
     let idRaca = request.params.id
 
@@ -48,7 +48,7 @@ router.get('/v1/lookme/raca/:id', cors(), async function(request, response){
 
 
 //função 03 - insere uma nova raça
-router.post('/v1/lookme/raca', cors(), bodyParserJSON, async function(request, response){
+router.post('/', cors(), bodyParserJSON, async function(request, response){
 
     //recebe os dados do corpo (body) da requisição
     //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
@@ -66,7 +66,7 @@ router.post('/v1/lookme/raca', cors(), bodyParserJSON, async function(request, r
 })
 
 //função 04 - atualiza uma raça
-router.put('/v1/lookme/raca/:id', cors(), bodyParserJSON, async function(request, response){
+router.put('/:id', cors(), bodyParserJSON, async function(request, response){
 
     //recebe os dados do corpo (body) da requisição
     //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
@@ -85,7 +85,7 @@ router.put('/v1/lookme/raca/:id', cors(), bodyParserJSON, async function(request
 })
 
 //função 05 - exclui uma raça
-router.delete('/v1/lookme/raca/:id', cors(), async function (request, response) {
+router.delete('/:id', cors(), async function (request, response) {
     let idRaca = request.params.id
 
     let raca = await breedsController.excluirRaca(idRaca)

@@ -22,7 +22,7 @@ const genderController = require('../controller/gender/gender_controller.js')
 
 
 //função 01 - lista todos os generos
-router.get('/v1/lookme/generos', cors(), async function(request, response){
+router.get('/', cors(), async function(request, response){
 
     //chama a função para listar os generos do BD
     let genero =  await genderController.listarGeneros()
@@ -35,7 +35,7 @@ router.get('/v1/lookme/generos', cors(), async function(request, response){
 })
 
 //função 02 - filtra um genero pelo ID
-router.get('/v1/lookme/genero/:id', cors(), async function(request, response){
+router.get('/:id', cors(), async function(request, response){
 
     let idGenero = request.params.id
 
@@ -49,7 +49,7 @@ router.get('/v1/lookme/genero/:id', cors(), async function(request, response){
 
 
 //função 03 - insere um novo genero
-router.post('/v1/lookme/genero', cors(), bodyParserJSON, async function(request, response){
+router.post('/', cors(), bodyParserJSON, async function(request, response){
 
     //recebe os dados do corpo (body) da requisição
     //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
@@ -67,7 +67,7 @@ router.post('/v1/lookme/genero', cors(), bodyParserJSON, async function(request,
 })
 
 //função 04 - atualiza um genero
-router.put('/v1/lookme/genero/:id', cors(), bodyParserJSON, async function(request, response){
+router.put('/:id', cors(), bodyParserJSON, async function(request, response){
 
     //recebe os dados do corpo (body) da requisição
     //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
@@ -86,7 +86,7 @@ router.put('/v1/lookme/genero/:id', cors(), bodyParserJSON, async function(reque
 })
 
 //função 05 - exclui um genero
-router.delete('/v1/lookme/genero/:id', cors(), async function (request, response) {
+router.delete('/:id', cors(), async function (request, response) {
     let idGenero = request.params.id
 
     let genero = await genderController.excluirGenero(idGenero)

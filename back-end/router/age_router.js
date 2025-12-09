@@ -21,7 +21,7 @@ const router = express.Router();
 const ageController = require('../controller/ages/ages_controller.js')
 
 //função 01 - lista todas as idades
-router.get('/v1/lookme/idades', cors(), async function(request, response){
+router.get('/', cors(), async function(request, response){
 
     //chama a função para listar as idades do BD
     let idade =  await ageController.listarIdades()
@@ -34,7 +34,7 @@ router.get('/v1/lookme/idades', cors(), async function(request, response){
 })
 
 //função 02 - filtra uma idade pelo ID
-router.get('/v1/lookme/idade/:id', cors(), async function(request, response){
+router.get('/:id', cors(), async function(request, response){
 
     let idIdade = request.params.id
 
@@ -48,7 +48,7 @@ router.get('/v1/lookme/idade/:id', cors(), async function(request, response){
 
 
 //função 03 - insere uma nova idade
-router.post('/v1/lookme/idade', cors(), bodyParserJSON, async function(request, response){
+router.post('/', cors(), bodyParserJSON, async function(request, response){
 
     //recebe os dados do corpo (body) da requisição
     //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
@@ -66,7 +66,7 @@ router.post('/v1/lookme/idade', cors(), bodyParserJSON, async function(request, 
 })
 
 //função 04 - atualiza uma idade
-router.put('/v1/lookme/idade/:id', cors(), bodyParserJSON, async function(request, response){
+router.put('/:id', cors(), bodyParserJSON, async function(request, response){
 
     //recebe os dados do corpo (body) da requisição
     //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
@@ -85,7 +85,7 @@ router.put('/v1/lookme/idade/:id', cors(), bodyParserJSON, async function(reques
 })
 
 //função 05 - exclui uma idade
-router.delete('/v1/lookme/idade/:id', cors(), async function (request, response) {
+router.delete('/:id', cors(), async function (request, response) {
     let idIdade = request.params.id
 
     let idade = await ageController.excluirIdade(idIdade)

@@ -21,7 +21,7 @@ const router = express.Router();
 const sizeController = require('../controller/sizes/size_controller.js')
 
 //função 01 - lista todos os portes
-router.get('/v1/lookme/portes', cors(), async function(request, response){
+router.get('/', cors(), async function(request, response){
 
     //chama a função para listar os portes do BD
     let porte =  await sizeController.listarPortes()
@@ -34,7 +34,7 @@ router.get('/v1/lookme/portes', cors(), async function(request, response){
 })
 
 //função 02 - filtra um porte pelo ID
-router.get('/v1/lookme/porte/:id', cors(), async function(request, response){
+router.get('/:id', cors(), async function(request, response){
 
     let idPorte = request.params.id
 
@@ -48,7 +48,7 @@ router.get('/v1/lookme/porte/:id', cors(), async function(request, response){
 
 
 //função 03 - insere um novo porte
-router.post('/v1/lookme/porte', cors(), bodyParserJSON, async function(request, response){
+router.post('/', cors(), bodyParserJSON, async function(request, response){
 
     //recebe os dados do corpo (body) da requisição
     //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
@@ -66,7 +66,7 @@ router.post('/v1/lookme/porte', cors(), bodyParserJSON, async function(request, 
 })
 
 //função 04 - atualiza um porte
-router.put('/v1/lookme/porte/:id', cors(), bodyParserJSON, async function(request, response){
+router.put('/:id', cors(), bodyParserJSON, async function(request, response){
 
     //recebe os dados do corpo (body) da requisição
     //---- se você utilizar o bodyParser, é obrigatório ter no endPoint----
@@ -85,7 +85,7 @@ router.put('/v1/lookme/porte/:id', cors(), bodyParserJSON, async function(reques
 })
 
 //função 05 - exclui um porte
-router.delete('/v1/lookme/porte/:id', cors(), async function (request, response) {
+router.delete('/:id', cors(), async function (request, response) {
     let idPorte = request.params.id
 
     let porte = await sizeController.excluirPorte(idPorte)
