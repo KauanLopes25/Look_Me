@@ -19,11 +19,11 @@
 // Importação do arquivo de mensagens da API
 const DEFAULT_MESSAGES = require('../menssages/config_menssages.js')
 
-async function userDataValidation(user, contentType) {
+async function userDataValidation(user) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
-    if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+    if (user) {
         // Validações de todas as entradas de dados
         if (
             typeof user.nome !== "string" ||
@@ -56,13 +56,6 @@ async function userDataValidation(user, contentType) {
             user.email == null ||
             user.email.length > 100) {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de email incorreto]'
-            return MESSAGES.ERROR_REQUIRED_FIELDS
-        }
-        else if (
-            typeof user.foto_url !== "string" ||
-            user.foto_url == undefined ||
-            user.foto_url.length > 100) {
-            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de foto_url incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (

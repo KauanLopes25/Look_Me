@@ -29,6 +29,8 @@ utilizarmos o projeto em outro computador.
                                            pois ele pega e cria tabelas programadas no ORM schema.prisma)
     npx prisma generate                 -> Apenas realiza o sincronismo entre o prisma e o DB, geralmente
                                            usamos para rodar o projeto em um PC novo 
+    npm install multer                  -> Recebe arquivos enviados pelo front-end em requisições HTTP usando multipart/form-data.
+    npm install @azure/storage-blob     -> Realiza o de imagens para o Azure Blob Storage.
 ******************************** BIBLIOTECAS UTILIZADAS *************************************
 * Prisma
 * Express
@@ -41,12 +43,16 @@ const express = require('express')
 const cors = require('cors')
 // Responsável por gerenciar a chegada dos dados da api com o front
 const bodyParser = require('body-parser')
+// Faz o node conseguir ler variaves presentes no arquivo .env
+require('dotenv').config();
 // Import das rotas
 const userRoute = require('./router/user_router.js')
 const userAddressRoute = require('./router/userAddress_router.js')
 const animalRoute = require('./router/animal_router.js')
 const animalAddressRoute = require('./router/animalAddress_router.js')
-
+const notificationRoute = require('./router/notification_router.js')
+const favoritesRoute = require('./router/favorites_router.js')
+const orderRoute = require('./router/order_router.js')
 
 // Retorna a porta do servidor local ou colocamos uma porta local
 const PORT = process.PORT || 8080
@@ -71,6 +77,13 @@ app.use('/v1/lookme/useraddress/', userAddressRoute)
 app.use('/v1/lookme/animal/', animalRoute)
 // ENDEREÇo DE ANIMAL
 app.use('/v1/lookme/animaladdress/', animalAddressRoute)
+// NOTIFICAÇÃO
+app.use('/v1/lookme/notificacao/', notificationRoute)
+// NOTIFICAÇÃO
+app.use('/v1/lookme/favoritos/', favoritesRoute)
+// PEDIDO DE ADOÇÃO
+app.use('/v1/lookme/pedido/', orderRoute)
+
 // Mensagem de operação da API
 app.listen(PORT, function(){
     console.log('API aguardando requisições...')
