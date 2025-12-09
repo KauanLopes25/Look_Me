@@ -5,6 +5,80 @@
 * Versão: 1.0
 * **********************************************************************/
 
+/* CRUD - ANIMAIS */
+const API_URL_ANIMAIS = "http://localhost:8080/v1/lookme/animal/";
+
+async function criarAnimal(formData) {
+    const options = {
+        method: "POST",
+        body: formData
+    };
+    try {
+        const response = await fetch(API_URL_ANIMAIS, options);
+        
+        // SE DER ERRO (Status diferente de 200 ou 201)
+        if (!response.ok) {
+            // Tenta ler o erro que o backend mandou (texto ou json)
+            const errorData = await response.text(); 
+            console.error("ERRO DETALHADO DO BACKEND:", errorData);
+            alert(`O Backend recusou: ${response.status} - ${errorData}`);
+            return false;
+        }
+
+        return true;
+    } catch (error) {
+        console.error("Erro de Rede/Fetch:", error);
+        alert("Erro de conexão com a API.");
+        return false;
+    }
+}
+
+async function atualizarAnimal(id, formData) {
+    const url = `${API_URL_ANIMAIS}${id}`;
+    const options = {
+        method: "PUT",
+        body: formData
+    };
+    try {
+        const response = await fetch(url, options);
+        return response.ok;
+    } catch (error) {
+        console.error("Erro ao atualizar:", error);
+        return false;
+    }
+}
+
+async function deletarAnimal(id) {
+    const url = `${API_URL_ANIMAIS}${id}`;
+    const options = { method: "DELETE" };
+    try {
+        const response = await fetch(url, options);
+        return response.ok;
+    } catch (error) {
+        console.error("Erro ao deletar:", error);
+        return false;
+    }
+}
+
+async function lerAnimal(id) {
+    const url = `${API_URL_ANIMAIS}${id}`;
+    try {
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            // Ajuste defensivo para pegar o objeto correto
+            let animal = data;
+            if (data.items && data.items.animal) animal = data.items.animal[0];
+            else if (Array.isArray(data)) animal = data[0];
+            return animal;
+        }
+        return null;
+    } catch (error) {
+        console.error("Erro ao ler animal:", error);
+        return null;
+    }
+}
+
 const routes = {
     "/": {
         title: "NOSSOS PETS",
@@ -124,10 +198,10 @@ const routes = {
 
                     const card = document.createElement('div');
                     card.classList.add('card');
-                    
+
                     // ID na URL
                     card.onclick = () => {
-                        window.history.pushState({}, '', `/pet?id=${pet.animal_id}`); 
+                        window.history.pushState({}, '', `/pet?id=${pet.animal_id}`);
                         window.route();
                     };
 
@@ -148,14 +222,14 @@ const routes = {
                 const idadesSelecionadas = Array.from(document.querySelectorAll('input[name="idade"]:checked')).map(el => parseInt(el.value));
                 const sexosSelecionados = Array.from(document.querySelectorAll('input[name="sexo"]:checked')).map(el => parseInt(el.value));
                 const statusSelecionados = Array.from(document.querySelectorAll('input[name="status"]:checked')).map(el => parseInt(el.value));
-                
+
                 const racaSelecionada = document.getElementById('filtro-raca').value;
 
                 // Filtra o array original
                 const petsFiltrados = todosOsPets.filter(pet => {
                     // Verifica Espécie (se nenhum marcado, aceita todos)
                     if (especiesSelecionadas.length > 0 && !especiesSelecionadas.includes(pet.especie_id)) return false;
-                    
+
                     // Verifica Porte
                     if (portesSelecionados.length > 0 && !portesSelecionados.includes(pet.porte_id)) return false;
 
@@ -188,12 +262,12 @@ const routes = {
             try {
                 const response = await fetch(apiUrl);
                 if (!response.ok) throw new Error(`Erro API: ${response.status}`);
-                
+
                 const dados = await response.json();
                 todosOsPets = dados.items.animal || []; // Salva na memória global da função
 
                 // Aplica o filtro inicial (para pegar o status "checked" do HTML, por exemplo)
-                aplicarFiltros(); 
+                aplicarFiltros();
 
             } catch (error) {
                 console.error("Erro:", error);
@@ -294,8 +368,8 @@ const routes = {
             // upload de Foto
             const uploadBox = document.querySelector('.perfil-section .photo-upload');
             const fileInput = document.getElementById('file-input-perfil');
-            
-            if(uploadBox && fileInput) {
+
+            if (uploadBox && fileInput) {
                 uploadBox.addEventListener('click', () => {
                     fileInput.click();
                 });
@@ -391,8 +465,8 @@ const routes = {
             const togglePassword = (inputId, iconId) => {
                 const input = document.getElementById(inputId);
                 const icon = document.getElementById(iconId);
-                
-                if(input && icon) {
+
+                if (input && icon) {
                     icon.addEventListener('click', () => {
                         const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
                         input.setAttribute('type', type);
@@ -405,7 +479,7 @@ const routes = {
             togglePassword('confirmar-senha', 'icon-confirmar-senha');
 
             // logica de Consumo de API (ViaCEP)
-            
+
             // funções auxiliares
             const limparFormulario = () => {
                 document.getElementById('logradouro').value = '';
@@ -425,7 +499,7 @@ const routes = {
 
             const pesquisarCep = async () => {
                 limparFormulario();
-                
+
                 const inputCep = document.getElementById('cep');
                 //remove traço caso o usuário digite
                 const cep = inputCep.value.replace("-", "");
@@ -447,8 +521,8 @@ const routes = {
                         alert('Erro ao buscar CEP');
                     }
                 } else {
-                     //avisa se o campo não estiver vazio 
-                     if(cep.length > 0) alert('CEP incorreto!');
+                    //avisa se o campo não estiver vazio 
+                    if (cep.length > 0) alert('CEP incorreto!');
                 }
             }
 
@@ -499,8 +573,8 @@ const routes = {
         init: () => {
             const input = document.getElementById('senha');
             const icon = document.getElementById('icon-senha');
-            
-            if(input && icon) {
+
+            if (input && icon) {
                 icon.addEventListener('click', () => {
                     const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
                     input.setAttribute('type', type);
@@ -516,89 +590,214 @@ const routes = {
             <div class="anunciar-container">
                 <div class="top-section">
                     <div class="photo-upload">
-                        <div class="upload-icon">
+                        <div class="upload-icon" id="upload-icon-container">
                             <i class="bi bi-cloud-upload-fill"></i>
                         </div>
+                        <img id="preview-image" src="" alt="Preview" style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
                         <input type="file" id="file-input" style="display: none;" accept="image/*">
                     </div>
 
                     <div class="info-basica">
-                        <input type="text" placeholder="Nome do Pet" class="input-padrao">
+                        <input type="text" id="nome" placeholder="Nome do Pet" class="input-padrao form-input">
 
                         <div class="input-selecao">
-                            <select class="input-padrao">
-                                <option disabled selected>Espécie</option>
-                                <option value="cachorro">Cachorro</option>
-                                <option value="gato">Gato</option>
-                                <option value="outro">Outro</option>
+                            <select id="especie" class="input-padrao form-input">
+                                <option disabled selected value="">Espécie</option>
+                                <option value="1">Cachorro</option>
+                                <option value="2">Gato</option>
+                                <option value="3">Outro</option>
                             </select>
-                            <select class="input-padrao">
-                                <option disabled selected>Raça</option>
-                                <option value="sem-raca">Sem raça definida</option>
-                                <option value="poodle">Poodle</option>
-                                <option value="bulldog">Bulldog</option>
-                                <option value="siames">Siamês</option>
-                                <option value="persa">Persa</option>
-                                <option value="outros">Outros</option>
-                            </select>
-
-                            <select class="input-padrao">
-                                <option disabled selected>Porte</option>
-                                <option value="pequeno">Pequeno</option>
-                                <option value="medio">Médio</option>
-                                <option value="grande">Grande</option>
-                            </select>
-                            <select class="input-padrao">
-                                <option disabled selected>Idade</option>
-                                <option value="filhote">Filhote</option>
-                                <option value="adulto">Adulto</option>
-                                <option value="idoso">Idoso</option>
+                            
+                            <select id="raca" class="input-padrao form-input">
+                                <option disabled selected value="">Raça</option>
+                                <option value="0">Sem raça definida</option>
+                                <option value="1">Poodle</option>
+                                <option value="2">Bulldog</option>
+                                <option value="3">Siamês</option>
+                                <option value="4">Persa</option>
+                                <option value="5">Outros</option>
                             </select>
 
-                            <select class="input-padrao">
-                                <option disabled selected>Sexo</option>
-                                <option value="m">Macho</option>
-                                <option value="f">Femea</option>
+                            <select id="porte" class="input-padrao form-input">
+                                <option disabled selected value="">Porte</option>
+                                <option value="1">Pequeno</option>
+                                <option value="2">Médio</option>
+                                <option value="3">Grande</option>
+                            </select>
+                            
+                            <select id="idade" class="input-padrao form-input">
+                                <option disabled selected value="">Idade</option>
+                                <option value="1">Filhote</option>
+                                <option value="2">Adulto</option>
+                                <option value="3">Idoso</option>
+                            </select>
+
+                            <select id="sexo" class="input-padrao form-input">
+                                <option disabled selected value="">Sexo</option>
+                                <option value="1">Macho</option>
+                                <option value="2">Fêmea</option>
+                            </select>
+
+                            <select id="castrado" class="input-padrao form-input">
+                                <option disabled selected value="">Castrado?</option>
+                                <option value="1">Sim</option>
+                                <option value="0">Não</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="description-box">
-                        <textarea placeholder="Descrição" class="input-padrao"></textarea>
+                        <textarea id="descricao" placeholder="Descrição" class="input-padrao form-input"></textarea>
                     </div>
                 </div>
 
                 <div class="details-section">
-                    <textarea placeholder="Temperamento" class="input-padrao"></textarea>
-                    <textarea placeholder="Informações Veterinárias" class="input-padrao"></textarea>
-                    <textarea placeholder="Adaptabilidade" class="input-padrao"></textarea>
+                    <textarea id="temperamento" placeholder="Temperamento" class="input-padrao form-input"></textarea>
+                    <textarea id="infos_veterinarias" placeholder="Informações Veterinárias" class="input-padrao form-input"></textarea>
+                    <textarea id="adaptabilidade" placeholder="Adaptabilidade" class="input-padrao form-input"></textarea>
                 </div>
 
                 <div class="actions-section">
-                    <button class="botao botao-salvar">Salvar</button>
-                    <button class="botao botao-editar">Editar</button>
-                    <button class="botao botao-excluir">Excluir</button>
-                    <button class="botao botao-cancelar">Cancelar</button>
+                    <button id="btn-salvar" class="botao botao-salvar">Salvar</button>
+                    <button id="btn-editar" class="botao botao-editar" style="display: none;">Editar</button>
+                    <button id="btn-excluir" class="botao botao-excluir" style="display: none;">Excluir</button>
+                    <button id="btn-cancelar" class="botao botao-cancelar">Cancelar</button>
                 </div>
             </div>
         `,
-        init: () => {
-            //logica para simular o clique no upload de imagem (NECESSARIO ALTERAR DEPOIS)
+        init: async () => {
             const uploadBox = document.querySelector('.photo-upload');
             const fileInput = document.getElementById('file-input');
+            const previewImg = document.getElementById('preview-image');
+            const iconContainer = document.getElementById('upload-icon-container');
+            const inputs = document.querySelectorAll('.form-input');
             
+            const btnSalvar = document.getElementById('btn-salvar');
+            const btnEditar = document.getElementById('btn-editar');
+            const btnExcluir = document.getElementById('btn-excluir');
+
+            let arquivoSelecionado = null;
+
+            const paramsString = window.location.hash.split('?')[1];
+            const params = new URLSearchParams(paramsString);
+            const idEdicao = params.get('id');
+
+            const toggleCampos = (desabilitar) => {
+                inputs.forEach(input => input.disabled = desabilitar);
+                if(desabilitar) {
+                    uploadBox.style.pointerEvents = 'none';
+                    uploadBox.style.opacity = '0.7';
+                } else {
+                    uploadBox.style.pointerEvents = 'auto';
+                    uploadBox.style.opacity = '1';
+                }
+            };
+
+            btnEditar.addEventListener('click', () => {
+                toggleCampos(false); 
+                btnEditar.style.display = 'none'; 
+                btnSalvar.style.display = 'block'; 
+                btnSalvar.innerText = "ATUALIZAR"; 
+            });
+
             if(uploadBox && fileInput) {
-                uploadBox.addEventListener('click', () => {
-                    fileInput.click();
-                });
-                
+                uploadBox.addEventListener('click', () => fileInput.click());
                 fileInput.addEventListener('change', (e) => {
                     if (e.target.files && e.target.files[0]) {
-                        // Apenas um feedback visual simples que selecionou
-                        alert(`Imagem selecionada: ${e.target.files[0].name}`);
+                        arquivoSelecionado = e.target.files[0];
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            previewImg.src = e.target.result;
+                            previewImg.style.display = 'block';
+                            iconContainer.style.display = 'none';
+                        }
+                        reader.readAsDataURL(arquivoSelecionado);
                     }
                 });
             }
+
+            //BOTÃO SALVAR
+            btnSalvar.addEventListener('click', async () => {
+                const nome = document.getElementById('nome').value;
+                const especie = document.getElementById('especie').value;
+                const castradoValue = document.getElementById('castrado').value;
+
+                if (!nome || !especie || castradoValue === "") {
+                    alert("Preencha os campos obrigatórios (Nome, Espécie, Castração).");
+                    return;
+                }
+
+                //CRIAÇÃO DO JSON
+                const animalJson = {
+                    // Campos vindos dos inputs
+                    "nome": nome,
+                    "temperamento": document.getElementById('temperamento').value || "Não informado",
+                    "informacoes_veterinarias": document.getElementById('infos_veterinarias').value || "Não informado",
+                    "descricao": document.getElementById('descricao').value || "Sem descrição",
+                    "adaptabilidade": document.getElementById('adaptabilidade').value || "Não informado",
+                    
+                    // Campos de IDs (Convertidos para Int)
+                    "porte_id": parseInt(document.getElementById('porte').value) || 1,
+                    "raca_id": parseInt(document.getElementById('raca').value) || 0,
+                    "especie_id": parseInt(especie) || 1,
+                    "idade_id": parseInt(document.getElementById('idade').value) || 1,
+                    "sexo_id": parseInt(document.getElementById('sexo').value) || 1,
+                    "status_castracao": parseInt(castradoValue), // 0 ou 1
+                    
+                    // Campos Fixos (Sem input na tela)
+                    "status_adocao": 1,   // 1 = Disponível
+                    "status_cadastro": 1, // 1 = Ativo
+                    "usuario_id": 3       // Usuário fixo PARA TESTE
+                };
+
+                const formData = new FormData();
+                
+                // Anexa o JSON no campo 'data'
+                formData.append('data', JSON.stringify(animalJson));
+
+                if (idEdicao) {
+                    // EDIÇÃO
+                    if (arquivoSelecionado) {
+                        formData.append('image', arquivoSelecionado);
+                    }
+                    const sucesso = await atualizarAnimal(idEdicao, formData);
+                    if(sucesso) {
+                        alert("Atualizado com sucesso!");
+                        window.location.hash = "/meus-pets";
+                    } else alert("Erro ao atualizar.");
+
+                } else {
+                    // CRIAÇÃO
+                    if (!arquivoSelecionado) {
+                        alert("Selecione uma foto.");
+                        return;
+                    }
+                    // Anexa a imagem no campo 'image'
+                    formData.append('image', arquivoSelecionado);
+                    
+                    const sucesso = await criarAnimal(formData);
+                    if(sucesso) {
+                        alert("Criado com sucesso!");
+                        window.location.hash = "/meus-pets";
+                    } 
+                }
+            });
+
+            btnExcluir.addEventListener('click', async () => {
+                if(confirm("Tem certeza que deseja excluir este pet?")) {
+                    const sucesso = await deletarAnimal(idEdicao);
+                    if(sucesso) {
+                        alert("Pet excluído.");
+                        window.location.hash = "/meus-pets";
+                    } else {
+                        alert("Erro ao excluir.");
+                    }
+                }
+            });
+
+            document.getElementById('btn-cancelar').addEventListener('click', () => {
+                window.location.hash = "/meus-pets";
+            });
         }
     },
     "/detalhes-pedido": {
@@ -641,17 +840,17 @@ const routes = {
             const btnAceitar = document.querySelector('.botao-aceitar');
             const btnRecusar = document.querySelector('.botao-recusar');
 
-            if(btnAceitar) {
+            if (btnAceitar) {
                 btnAceitar.addEventListener('click', () => {
-                    if(confirm('Deseja aceitar este pedido de adoção?')) {
+                    if (confirm('Deseja aceitar este pedido de adoção?')) {
                         alert('Pedido aceito com sucesso! Entre em contato com o adotante.');
                     }
                 });
             }
 
-            if(btnRecusar) {
+            if (btnRecusar) {
                 btnRecusar.addEventListener('click', () => {
-                    if(confirm('Tem certeza que deseja recusar este pedido?')) {
+                    if (confirm('Tem certeza que deseja recusar este pedido?')) {
                         alert('Pedido recusado.');
                         // Opcional: voltar para notificações
                         window.history.pushState({}, "", "/notificacoes");
@@ -751,13 +950,13 @@ const routes = {
             try {
                 // Tenta buscar no endpoint específico: .../animal/3
                 const response = await fetch(`http://localhost:8080/v1/lookme/animal/${id}`);
-                
+
                 if (!response.ok) throw new Error('Erro ao buscar detalhes do pet');
-                
+
                 const dados = await response.json();
-                
+
                 let pet = dados;
-                
+
                 if (dados.items && dados.items.animal) pet = dados.items.animal[0];
                 else if (Array.isArray(dados)) pet = dados[0];
 
@@ -767,16 +966,16 @@ const routes = {
                 document.getElementById('detalhe-temperamento').innerText = pet.temperamento || "Não informado.";
                 document.getElementById('detalhe-vet').innerText = pet.informacoes_veterinarias || "Não informado.";
                 document.getElementById('detalhe-adaptabilidade').innerText = pet.adaptabilidade || "Não informado.";
-                
+
                 // Tradução dos IDs usando os mapas
                 document.getElementById('detalhe-especie').innerText = mapEspecie[pet.especie_id] || 'Desconhecido';
                 document.getElementById('detalhe-raca').innerText = mapRaca[pet.raca_id] || 'Outra';
                 document.getElementById('detalhe-porte').innerText = mapPorte[pet.porte_id] || 'Desconhecido';
                 document.getElementById('detalhe-idade').innerText = mapIdade[pet.idade_id] || 'Desconhecido';
                 document.getElementById('detalhe-sexo').innerText = mapSexo[pet.sexo_id] || 'Desconhecido';
-                
+
                 document.getElementById('detalhe-status').innerText = pet.status_adocao === 1 ? 'Disponível' : 'Indisponível';
-                
+
                 // Imagem
                 const imgEl = document.getElementById('detalhe-img');
                 imgEl.src = pet.foto_url || './img/pet-teste.jpg';
@@ -815,10 +1014,10 @@ const routes = {
 
             // Lógica do botão favorito
             const btnFav = document.querySelector('.botao-favorito');
-            if(btnFav) {
+            if (btnFav) {
                 btnFav.addEventListener('click', () => {
                     const icon = btnFav.querySelector('i');
-                    if(icon.classList.contains('bi-heart')) {
+                    if (icon.classList.contains('bi-heart')) {
                         icon.classList.remove('bi-heart');
                         icon.classList.add('bi-heart-fill');
                         icon.style.color = 'red';
@@ -894,10 +1093,10 @@ const router = () => {
 
     // insere o html
     document.getElementById('app').innerHTML = route.template;
-    
+
     // atualiza o Título
     const pageTitle = document.getElementById('page-title');
-    if(pageTitle) pageTitle.innerText = route.title;
+    if (pageTitle) pageTitle.innerText = route.title;
 
     // ocultar Cabeçalho Secundário fora da Home
     const cabecalhoSecundario = document.querySelector('.cabecalho-secundario');
@@ -920,8 +1119,8 @@ const router = () => {
 // Navegação via links
 document.addEventListener('click', (e) => {
     // Procura o link mais próximo que tenha a classe spa-link
-    const link = e.target.closest('.spa-link'); 
-    
+    const link = e.target.closest('.spa-link');
+
     // VERIFICAÇÃO EXTRA: Se for o botão de filtro, NÃO navega
     if (e.target.closest('.botao-mobile-filter')) return;
 
