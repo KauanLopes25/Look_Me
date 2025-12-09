@@ -60,7 +60,7 @@ async function userDataValidation(user) {
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof user.nome !== "number") {
+            typeof user.status_cadastro !== "number") {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de status_cadastro incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
