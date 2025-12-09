@@ -77,10 +77,7 @@ async function animalDataValidation(animal) {
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof animal.status_castracao !== "number" ||
-            animal.status_castracao == '' ||
-            animal.status_castracao == undefined ||
-            animal.status_castracao == null ) {
+            typeof animal.status_castracao !== "number") {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de status_castracao incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
