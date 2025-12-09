@@ -987,7 +987,7 @@ const routes = {
 
             } catch (error) {
                 console.error(error);
-                document.getElementById('loading-message').innerHTML = '<h3 style="color:red">Erro ao carregar detalhes. Tente novamente.</h3>';
+                document.getElementById('loading-message').innerHTML = '<h3>Erro ao carregar detalhes. Tente novamente.</h3>';
             }
 
             // Accordions
