@@ -53,6 +53,14 @@ export const Login = {
                 icon.classList.toggle('bi-eye');
                 icon.classList.toggle('bi-eye-slash');
             });
+        }    
+        
+        if(emailUsuario && senhaUsuaio) {
+            const iconPerfil = document.getElementsByTagName('<a href="/perfil"')
+            
+            iconPerfil.addEventListener('click', () => {
+                iconPerfil.href = '<a href="/login"'
+            })
         }
     }
-};
+}
