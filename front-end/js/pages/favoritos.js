@@ -32,8 +32,7 @@ export const Favoritos = {
             return;
         }
 
-        // Para cada favorito, busca os dados do animal (Nome, Foto, Status)
-        // Usar Promise.all para carregar todos juntos e ser mais rápido
+        //Para cada favorito, busca os dados do animal (Nome, Foto, Status)
         const promessas = listaFavoritos.map(async (fav) => {
             const animal = await lerAnimal(fav.animal_id);
             return animal;
@@ -41,9 +40,9 @@ export const Favoritos = {
 
         const animaisDetalhados = await Promise.all(promessas);
 
-        // Renderiza os cards
+        //Renderiza os cards
         animaisDetalhados.forEach(pet => {
-            if (!pet) return; // Se o animal foi excluído mas ainda estava nos favoritos
+            if (!pet) return; // Proteção caso o animal tenha sido excluído
 
             const statusTexto = pet.status_adocao === 1 ? 'Disponível' : 'Adotado';
             

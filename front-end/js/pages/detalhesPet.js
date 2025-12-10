@@ -5,7 +5,6 @@
 * Versão: 1.0
 * **********************************************************************/
 
-/* js/pages/detalhes.js */
 import { lerAnimal } from '../services/animalService.js';
 import { adicionarFavorito, removerFavorito, verificarSeEhFavorito } from '../services/favoritesService.js';
 
@@ -15,7 +14,7 @@ export const DetalhesPet = {
         <div class="detalhes-pet-container">
             <div id="loading-message" style="text-align: center; padding: 50px;">
                 <h2>Carregando informações do pet...</h2>
-                <p id="msg-erro" style="color: red; display: none;"></p>
+                <p id="msg-erro" display: none;"></p>
             </div>
 
             <div id="pet-content" style="display: none;">
@@ -141,7 +140,7 @@ export const DetalhesPet = {
             document.getElementById('loading-message').style.display = 'none';
             document.getElementById('pet-content').style.display = 'block';
 
-            // --- 2. LÓGICA DO FAVORITO (BLINDADA) ---
+            // LÓGICA DO FAVORITO 
             const btnFav = document.getElementById('btn-favoritar');
             const iconFav = btnFav.querySelector('i');
             
@@ -155,17 +154,15 @@ export const DetalhesPet = {
                 if (favoritoAtual) {
                     iconFav.classList.remove('bi-heart');
                     iconFav.classList.add('bi-heart-fill');
-                    iconFav.style.color = 'red';
+                    iconFav.style.color = '#0475A8';
                 }
                 // Só habilita o botão se a verificação de favoritos funcionar
                 btnFav.disabled = false; 
 
             } catch (favError) {
                 console.warn("Erro ao verificar favoritos (API pode estar offline):", favError);
-                // Não travamos a tela, apenas deixamos o botão desabilitado ou logamos o erro
             }
 
-            // --- CÓDIGO DE DIAGNÓSTICO DO BOTÃO FAVORITAR ---
             btnFav.addEventListener('click', async () => {
                 btnFav.disabled = true; 
                 console.log("--- INÍCIO DO CLIQUE NO FAVORITO ---");
@@ -214,7 +211,7 @@ export const DetalhesPet = {
                             console.log("Novo estado do favorito:", favoritoAtual);
                             
                             iconFav.classList.replace('bi-heart', 'bi-heart-fill');
-                            iconFav.style.color = 'red';
+                            iconFav.style.color = '#0475A8';
                         } else {
                             alert("O Back-end recusou a adição. Verifique o Console.");
                         }
