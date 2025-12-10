@@ -8,7 +8,6 @@
 export const Login = {
     title: "ENTRAR",
     template: `
-            <!-- ADICIONEI A CLASSE 'login-mode' AQUI NA DIV WRAPPER -->
             <div class="cadastro-wrapper login-mode">
                 
                 <a href="/" class="spa-link botao-voltar">
@@ -18,7 +17,7 @@ export const Login = {
                 <div class="card-auth">
                     <div class="content-login">
                     
-                        <img class="logo" src="./img/logo.png" alt="Logo do Site">
+                        <img class="logo" src="/front-end/img/logo.png" alt="Logo do Site">
                     
                         <form class="box-login">
                             <div class="input-login">

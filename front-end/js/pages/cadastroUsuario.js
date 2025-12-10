@@ -15,7 +15,7 @@ export const CadastroUsuario = {
 
                 <div class="card-auth">
                     <div class="content-login">
-                        <img class="logo" src="./img/logo.png" alt="Logo do Site">
+                        <img class="logo" src="/front-end/img/logo.png" alt="Logo do Site">
 
                         <form class="box-login">
                             <h3 class="titulo-secao">INFORMAÇÕES</h3>
