@@ -8,6 +8,7 @@
 /* js/pages/detalhes.js */
 import { lerAnimal } from '../services/animalService.js';
 import { adicionarFavorito, removerFavorito, verificarSeEhFavorito } from '../services/favoritesService.js';
+import { criarPedido } from '../services/orderService.js';
 
 export const DetalhesPet = {
     title: "DETALHES DO PET",
@@ -34,7 +35,7 @@ export const DetalhesPet = {
                                 <p><strong>Sexo:</strong> <span id="detalhe-sexo">...</span></p>
                                 <p><strong>Status:</strong> <span id="detalhe-status">...</span></p>
                             </div>
-                            <button class="botao-adote">QUERO ADOTAR</button>
+                            <button id="btn-adotar" class="botao-adote">QUERO ADOTAR</button>
                         </div>
                         
                         <button class="botao-favorito" id="btn-favoritar" disabled>
@@ -228,6 +229,21 @@ export const DetalhesPet = {
                 }
             });
 
+            // --- 3. LÓGICA DE PEDIDO ---
+            const btnOrder = document.getElementById('btn-adotar');
+            if (pet.status_adocao !== 1) {
+                btnOrder.disabled = true;
+                btnOrder.innerText = "INDISPONÍVEL";
+            }
+
+            btnOrder.addEventListener('click', async () => {
+                if (confirm(`Deseja solicitar a adoção de ${pet.nome}?`)) {
+                    // O status inicial do pedido é 'PENDENTE' 
+                    const sucesso = await criarPedido('PENDENTE', pet.animal_id);
+                    if (sucesso) alert("Pedido de adoção enviado com sucesso!");
+                    else alert("Falha ao enviar o pedido. Verifique o console.");
+                }
+            });
         } catch (error) {
             console.error("ERRO CRÍTICO NA TELA DE DETALHES:", error);
             const msgErro = document.getElementById('msg-erro');

@@ -8,10 +8,12 @@
 const API_URL_PEDIDO = "http://localhost:8080/v1/lookme/pedido/";
 const USUARIO_LOGADO = 3;
 
-export async function criarPedido(animalId, usuarioId) {
+export async function criarPedido(status_pedido,animalId) {
     const dadosPedido = {
-        animal_id: parseInt(animalId),
-        usuario_id: USUARIO_LOGADO
+        status_pedido: String(status_pedido),
+        data_solicitacao: new Date().toISOString().split('T')[0], // Formato YYYY-MM-DD
+        usuario_id: USUARIO_LOGADO,
+        animal_id: parseInt(animalId)
     };
 
 
@@ -37,5 +39,43 @@ export async function criarPedido(animalId, usuarioId) {
         console.error("Erro de Rede:", error);
         alert("Erro de conexão com a API.");
         return false;
+    }
+}
+
+export async function removerPedido(pedidoId) {
+
+    const url = `${API_URL_PEDIDO}${pedidoId}`;
+    const options = { method: "DELETE" };
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            console.error("Erro DELETE Pedido:", await response.text());
+        }
+        return response.ok;
+    } catch (error) {
+        console.error("Erro Conexão DELETE:", error);
+        return false;
+    }
+}
+
+export async function listarPedidos() {
+    try {
+        const response = await fetch(API_URL_PEDIDO);
+        if (response.ok) {
+            const data = await response.json();
+
+            console.log("LISTA DE PEDIDOS (API):", data);
+
+            let lista = [];
+            if (data.items && data.items.pedidos) lista = data.items.pedido;
+            else if (Array.isArray(data)) lista = data;
+            
+            return lista.filter(order => order.usuario_id == USUARIO_LOGADO);
+        }
+        return [];
+    } catch (error) {
+        console.error("Erro Listar Pedidos:", error);
+        return [];
     }
 }

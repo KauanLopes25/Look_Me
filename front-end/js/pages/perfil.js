@@ -31,7 +31,7 @@ export const Perfil = {
                     <a href="/meus-pets" class="botao spa-link" style="text-align:center; text-decoration:none; display:inline-block;">
                         Pets Anunciados
                     </a>
-                    <a href="/meus-pedidos" class="botao spa-link" style="text-align:center; text-decoration:none; display:inline-block;">
+                    <a href="/meus-pedidos" class="botao spa-link" id="meus-pedidos-link" "style="text-align:center; text-decoration:none; display:inline-block;">
                         Meus Pedidos
                     </a>
                     <button class="botao">Editar</button>
@@ -68,4 +68,6 @@ export const Perfil = {
             });
         }
     }
+
 };
+
