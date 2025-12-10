@@ -69,9 +69,10 @@ const app = express()
 app.use((request, response, next) => {
     response.header('Access-Control-Allow-Origin', '*') // Servidor de origem da API
     response.header('Access-Control-Allow-Methods','GET, POST, PUT, DELETE, PATCH, OPTIONS'); // Verbos permitidos na API
-    app.use(cors()) // Carrega as configurações no Cors da API
     next() // Próximo, carregar os proximos endpoints
 })
+
+app.use(cors()) // Carrega as configurações no Cors da API
 
 // ENDPOINT's
 // USUÁRIOS
