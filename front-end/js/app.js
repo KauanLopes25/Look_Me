@@ -10,6 +10,8 @@ import { router } from './router.js';
 // Carregar usuário salvo
 let usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
 
+const rotasProtegidas = ["/perfil", "/favoritos", "/notificacoes", "/meuspets", "/meuspedidos", "/detalhespedido", "/anunciar"];
+
 // Evento de navegação pelos links do menu
 document.addEventListener('click', (e) => {
     const link = e.target.closest('.spa-link');
@@ -17,24 +19,19 @@ document.addEventListener('click', (e) => {
     if (e.target.closest('.botao-mobile-filter')) return;
 
     const destino = link.getAttribute('href');
-   
+
     e.preventDefault();
-        window.history.pushState({}, "", link.getAttribute('href'));
-        router();
+    window.history.pushState({}, "", link.getAttribute('href'));
+    router();
 
     // Se clicar no perfil:
-    if (destino === "/perfil") {
+    if (rotasProtegidas.includes(destino)) {
         const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
-        if (usuarioLogado) {
-            // Usuário logado → deixa ir pro perfil
-            e.preventDefault();
-            window.history.pushState({}, "", "/perfil");
-            router();
-        } else {
-            // Usuário NÃO logado → manda pro login
-            e.preventDefault();
+        // SE A ROTA FOR PROTEGIDA
+        if (!usuarioLogado) {
+            // REDIRECIONA PARA LOGIN
             window.history.pushState({}, "", "/login");
-            router();
+            return router();
         }
     }
 });

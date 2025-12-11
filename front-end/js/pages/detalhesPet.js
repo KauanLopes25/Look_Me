@@ -77,6 +77,27 @@ export const DetalhesPet = {
             </div>
         `,
     init: async () => {
+        // --- LÓGICA DO BOTÃO ADOTAR ---
+        const btnAdotar = document.querySelector('.botao-adote');
+
+        if (btnAdotar) {
+            btnAdotar.addEventListener('click', () => {
+                const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+                if (!usuarioLogado) {
+                    alert("Você precisa estar logado para adotar um pet!");
+                    window.history.pushState({}, "", "/login");
+                    return route();
+                }
+
+                // Se estiver logado, pode adotar
+                alert("Processo de adoção iniciado!");
+            });
+        }
+
+
+
+
         //Pega o ID da URL
         const params = new URLSearchParams(window.location.search);
         const id = params.get('id');
