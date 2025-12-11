@@ -84,6 +84,7 @@ export const Perfil = {
         inputs[2].value = usuario.data_nascimento?.substring(0, 10) || "";
         inputs[3].value = usuario.email || "";
         inputs[4].value = usuario.telefone || "";
+        fotoPerfil.src = usuario.url || "";
 
         // BOTÃO SALVAR → Enviar PUT
 
