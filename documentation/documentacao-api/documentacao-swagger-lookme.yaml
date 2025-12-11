@@ -1,0 +1,1422 @@
+openapi: 3.0.0
+info:
+  title: Look Me API Documentation
+  description: >
+    Projeto integrador realizado no SENAI Jandira. 
+    API para manipular dados da Look Me (Adoção de Animais).
+  version: 1.0.0
+  contact:
+    name: Kauan Lopes, Luana Mariana, Marcelo Vieira
+servers:
+  - url: http://localhost:8080/v1/lookme
+    description: Servidor Local
+
+tags:
+  - name: Animal
+  - name: Endereço de Animal
+  - name: Usuários
+  - name: Endereço de Usuários
+  - name: Pedido de Adoção
+  - name: Notificação
+  - name: Favoritos
+  - name: Porte
+  - name: Idade
+  - name: Espécie
+  - name: Gênero
+  - name: Raça
+
+paths:
+  # ============================================================
+  # BLOCO: ANIMAL
+  # ============================================================
+  /animal/:
+    get:
+      tags: [Animal]
+      summary: Retorna todos os animais cadastrados
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  api_description: "API para manipular dados da Look Me"
+                  items:
+                    animal:
+                      - animal_id: 1
+                        nome: "Rex"
+                        temperamento: "Dócil"
+                        status_adocao: 0
+                      - animal_id: 2
+                        nome: "Mia"
+                        temperamento: "Arisca"
+                        status_adocao: 0
+                  status: true
+                  status_code: 200
+    post:
+      tags: [Animal]
+      summary: Cadastrar animal
+      description: Requer envio de imagem e JSON stringificado no campo 'data'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                data:
+                  type: string
+                  description: JSON stringificado com dados do animal
+                  example: '{"nome": "Rex", "temperamento": "Dócil", "porte_id": 1, "raca_id": 1, "especie_id": 1, "usuario_id": 1}'
+      responses:
+        '201':
+          description: Criado
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  status_code: 201
+                  message: "Item criado com sucesso!"
+
+  /animal/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      tags: [Animal]
+      summary: Retorna animal por ID
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  api_description: "API para manipular dados da Look Me"
+                  items:
+                    animal:
+                      - animal_id: 1
+                        nome: "Rex"
+                        temperamento: "Dócil"
+                        descricao: "Cão muito amigo"
+                        porte_id: 1
+                        raca_id: 2
+                  status: true
+                  status_code: 200
+    put:
+      tags: [Animal]
+      summary: Atualizar animal
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                data:
+                  type: string
+                  description: JSON stringificado
+      responses:
+        '200':
+          description: Atualizado
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  status_code: 200
+                  message: "Item atualizado com sucesso!"
+    delete:
+      tags: [Animal]
+      summary: Deletar um animal
+      responses:
+        '200':
+          description: Deletado
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  status_code: 200
+                  message: "Item deletado com sucesso!"
+
+  /animal/mypet/{usuario_id}:
+    get:
+      tags: [Animal]
+      summary: Retorna animais cadastrados por um usuário
+      parameters:
+        - in: path
+          name: usuario_id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    animal:
+                      - animal_id: 5
+                        nome: "Totó"
+                        usuario_id: 1
+                  status: true
+                  status_code: 200
+
+  # ============================================================
+  # BLOCO: ENDEREÇO DE ANIMAL
+  # ============================================================
+  /animaladdress/:
+    get:
+      tags: [Endereço de Animal]
+      summary: Retorna todos os endereços de animal
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    enderecos:
+                      - id: 1
+                        logradouro: "Rua A"
+                        animal_id: 1
+                  status: true
+                  status_code: 200
+    post:
+      tags: [Endereço de Animal]
+      summary: Cadastrar endereços de animal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnimalAddress'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  status_code: 201
+                  message: "Endereço criado com sucesso"
+
+  /animaladdress/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      tags: [Endereço de Animal]
+      summary: Retorna endereços de animal por ID
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    endereco:
+                      - id: 1
+                        logradouro: "Rua A"
+                        cidade: "São Paulo"
+                  status: true
+                  status_code: 200
+    put:
+      tags: [Endereço de Animal]
+      summary: Atualizar endereços de animal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnimalAddress'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Atualizado com sucesso"
+    delete:
+      tags: [Endereço de Animal]
+      summary: Deletar endereço de um animal por ID
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Deletado com sucesso"
+
+  /animaladdress/address/{id}:
+    get:
+      tags: [Endereço de Animal]
+      summary: Retorna endereços de animal por ID do endereço
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    endereco: [{ "id": 10, "logradouro": "Rua X" }]
+                  status: true
+
+  # ============================================================
+  # BLOCO: USUÁRIOS
+  # ============================================================
+  /user/:
+    get:
+      tags: [Usuários]
+      summary: Retorna todos os usuários cadastrados
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  api_description: "API Look Me"
+                  items:
+                    usuarios:
+                      - id: 1
+                        nome: "Kauan"
+                        email: "kauan@teste.com"
+                      - id: 2
+                        nome: "Maria"
+                        email: "maria@teste.com"
+                  status: true
+                  status_code: 200
+    post:
+      tags: [Usuários]
+      summary: Cadastrar usuário
+      description: Requer envio de imagem e JSON stringificado no campo 'data'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                data:
+                  type: string
+                  description: JSON stringificado com dados do usuário
+                  example: '{"nome": "Nome", "data_nascimento": "2000-01-01", "telefone": "9999-9999", "email": "email@teste.com", "senha": "123"}'
+      responses:
+        '201':
+          description: Criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  status_code: 201
+                  message: "Usuário criado com sucesso!"
+
+  /user/{email}:
+    parameters:
+      - in: path
+        name: email
+        schema:
+          type: string
+        required: true
+        description: Email do usuário
+    get:
+      tags: [Usuários]
+      summary: Retorna usuário por Email
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    usuario:
+                      - id: 1
+                        nome: "Kauan"
+                        email: "kauan@teste.com"
+                        telefone: "1199999999"
+                  status: true
+                  status_code: 200
+    put:
+      tags: [Usuários]
+      summary: Atualizar usuário
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                data:
+                  type: string
+                  description: JSON stringificado para atualização
+      responses:
+        '200':
+          description: Atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Usuário atualizado"
+    delete:
+      tags: [Usuários]
+      summary: Deletar usuário
+      responses:
+        '200':
+          description: Deletado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Usuário deletado"
+
+  # ============================================================
+  # BLOCO: ENDEREÇO DE USUÁRIOS
+  # ============================================================
+  /useraddress/:
+    get:
+      tags: [Endereço de Usuários]
+      summary: Retorna todos os endereços de usuários
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    enderecos:
+                      - id: 1
+                        logradouro: "Rua Bahia"
+                        usuario_id: 3
+                  status: true
+    post:
+      tags: [Endereço de Usuários]
+      summary: Cadastrar endereços de usuário
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAddress'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Endereço criado"
+
+  /useraddress/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      tags: [Endereço de Usuários]
+      summary: Retorna endereços de usuário por ID
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    endereco:
+                      - id: 1
+                        logradouro: "Rua Bahia"
+                        cidade: "Salvador"
+                  status: true
+    put:
+      tags: [Endereço de Usuários]
+      summary: Atualizar endereços de usuário
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAddress'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Atualizado"
+    delete:
+      tags: [Endereço de Usuários]
+      summary: Deletar endereço de um usuário por ID
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Deletado"
+
+  # ============================================================
+  # BLOCO: PEDIDO DE ADOÇÃO
+  # ============================================================
+  /pedido/:
+    get:
+      tags: [Pedido de Adoção]
+      summary: Retorna todos os pedidos de adoção
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    pedidos:
+                      - id: 1
+                        status_pedido: "PENDENTE"
+                        usuario_id: 1
+                        animal_id: 2
+                  status: true
+    post:
+      tags: [Pedido de Adoção]
+      summary: Cadastrar pedido de adoção
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdoptionRequest'
+      responses:
+        '201':
+          description: Criado
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Pedido realizado com sucesso"
+
+  /pedido/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: Pode ser ID do pedido (PUT/DELETE) ou ID do usuário (GET)
+    get:
+      tags: [Pedido de Adoção]
+      summary: Retorna pedidos de um usuário pelo ID do usuário
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    pedidos:
+                      - id: 1
+                        status_pedido: "APROVADO"
+                        data_solicitacao: "2025-11-21"
+                  status: true
+    put:
+      tags: [Pedido de Adoção]
+      summary: Atualizar pedido de adoção
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdoptionRequest'
+      responses:
+        '200':
+          description: Atualizado
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Status do pedido atualizado"
+    delete:
+      tags: [Pedido de Adoção]
+      summary: Deletar pedido de adoção
+      responses:
+        '200':
+          description: Deletado
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Pedido cancelado"
+
+  # ============================================================
+  # BLOCO: NOTIFICAÇÃO
+  # ============================================================
+  /notificacao/:
+    get:
+      tags: [Notificação]
+      summary: Retorna todas as notificações
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    notificacoes:
+                      - id: 1
+                        titulo: "Bem-vindo"
+                        mensagem: "Obrigado por se cadastrar"
+                  status: true
+    post:
+      tags: [Notificação]
+      summary: Cadastrar notificações
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Notificação enviada"
+
+  /notificacao/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      tags: [Notificação]
+      summary: Retorna notificações pelo ID de um usuário
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    notificacoes:
+                      - id: 5
+                        titulo: "Adoção"
+                        mensagem: "Seu pedido foi aceito"
+                  status: true
+    put:
+      tags: [Notificação]
+      summary: Atualizar notificação
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Notificação atualizada"
+    delete:
+      tags: [Notificação]
+      summary: Deletar uma notificação
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Notificação removida"
+
+  # ============================================================
+  # BLOCO: FAVORITOS
+  # ============================================================
+  /favoritos/:
+    get:
+      tags: [Favoritos]
+      summary: Retorna todos os animais favoritos do banco
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    favoritos:
+                      - id: 1
+                        usuario_id: 2
+                        animal_id: 3
+                  status: true
+    post:
+      tags: [Favoritos]
+      summary: Cadastrar favoritos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Favorite'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Adicionado aos favoritos"
+
+  /favoritos/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      tags: [Favoritos]
+      summary: Retorna animais favoritos de um usuário pelo ID de um usuário
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    favoritos:
+                      - id: 1
+                        animal_id: 5
+                        nome_animal: "Rex"
+                  status: true
+    put:
+      tags: [Favoritos]
+      summary: Atualizar favoritos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Favorite'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Favorito atualizado"
+    delete:
+      tags: [Favoritos]
+      summary: Deletar um favorito
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Removido dos favoritos"
+
+  # ============================================================
+  # BLOCO AUXILIAR: PORTE
+  # ============================================================
+  /porte/:
+    get:
+      tags: [Porte]
+      summary: Retorna todos portes do banco
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    porte:
+                      - id: 1
+                        nome: "Pequeno"
+                      - id: 2
+                        nome: "Médio"
+                      - id: 3
+                        nome: "Grande"
+                  status: true
+                  status_code: 200
+    post:
+      tags: [Porte]
+      summary: Cadastrar porte
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuxNome'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  status_code: 201
+                  message: "Item criado com sucesso!"
+
+  /porte/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      tags: [Porte]
+      summary: Retorna portes pelo ID
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    porte:
+                      - id: 1
+                        nome: "Pequeno"
+                  status: true
+    put:
+      tags: [Porte]
+      summary: Atualizar porte
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuxNome'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Atualizado"
+    delete:
+      tags: [Porte]
+      summary: Deletar um porte
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Deletado"
+
+  # ============================================================
+  # BLOCO AUXILIAR: IDADE
+  # ============================================================
+  /age/:
+    get:
+      tags: [Idade]
+      summary: Retorna todas as idades possíveis
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    idades:
+                      - id: 1
+                        descricao: "Filhote"
+                      - id: 2
+                        descricao: "Adulto"
+                  status: true
+                  status_code: 200
+    post:
+      tags: [Idade]
+      summary: Cadastrar idade
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuxDescricao'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  status_code: 201
+                  message: "Item criado com sucesso!"
+
+  /age/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      tags: [Idade]
+      summary: Retorna idade pelo ID
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    idade:
+                      - id: 1
+                        descricao: "Filhote"
+                  status: true
+    put:
+      tags: [Idade]
+      summary: Atualizar idade
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuxDescricao'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Atualizado"
+    delete:
+      tags: [Idade]
+      summary: Deletar uma idade
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Deletado"
+
+  # ============================================================
+  # BLOCO AUXILIAR: ESPÉCIE
+  # ============================================================
+  /especie/:
+    get:
+      tags: [Espécie]
+      summary: Retorna todas as espécies de animais
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    especie:
+                      - id: 1
+                        nome: "Cão"
+                      - id: 2
+                        nome: "Gato"
+                  status: true
+                  status_code: 200
+    post:
+      tags: [Espécie]
+      summary: Cadastrar espécie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuxNome'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  status_code: 201
+                  message: "Item criado com sucesso!"
+
+  /especie/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      tags: [Espécie]
+      summary: Retorna espécie por ID
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    especie:
+                      - id: 1
+                        nome: "Cão"
+                  status: true
+    put:
+      tags: [Espécie]
+      summary: Atualizar espécie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuxNome'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Atualizado"
+    delete:
+      tags: [Espécie]
+      summary: Deletar uma espécie
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Deletado"
+
+  # ============================================================
+  # BLOCO AUXILIAR: GÊNERO
+  # ============================================================
+  /genero/:
+    get:
+      tags: [Gênero]
+      summary: Retorna todos os Gêneros
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    generos:
+                      - id: 1
+                        descricao: "Macho"
+                      - id: 2
+                        descricao: "Fêmea"
+                  status: true
+                  status_code: 200
+    post:
+      tags: [Gênero]
+      summary: Cadastrar gênero
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuxDescricao'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  status_code: 201
+                  message: "Item criado com sucesso!"
+
+  /genero/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      tags: [Gênero]
+      summary: Retorna gênero por ID
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    genero:
+                      - id: 1
+                        descricao: "Macho"
+                  status: true
+    put:
+      tags: [Gênero]
+      summary: Atualizar gênero
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuxDescricao'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Atualizado"
+    delete:
+      tags: [Gênero]
+      summary: Deletar um gênero
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Deletado"
+
+  # ============================================================
+  # BLOCO AUXILIAR: RAÇA
+  # ============================================================
+  /raca/:
+    get:
+      tags: [Raça]
+      summary: Retorna todas as Raças
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    raca:
+                      - id: 1
+                        nome: "Vira-lata"
+                      - id: 2
+                        nome: "Poodle"
+                  status: true
+                  status_code: 200
+    post:
+      tags: [Raça]
+      summary: Cadastrar raça
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuxNome'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  status_code: 201
+                  message: "Item criado com sucesso!"
+
+  /raca/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      tags: [Raça]
+      summary: Retorna raça por ID
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  items:
+                    raca:
+                      - id: 1
+                        nome: "Vira-lata"
+                  status: true
+    put:
+      tags: [Raça]
+      summary: Atualizar raça
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuxNome'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Atualizado"
+    delete:
+      tags: [Raça]
+      summary: Deletar uma raça
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: "Deletado"
+
+components:
+  schemas:
+    # Schemas Principais
+    UserAddress:
+      type: object
+      properties:
+        logradouro:
+          type: string
+          example: "Rua Bahia"
+        numero:
+          type: string
+          example: "88"
+        bairro:
+          type: string
+          example: "Pituba"
+        cidade:
+          type: string
+          example: "Salvador"
+        uf:
+          type: string
+          example: "BA"
+        cep:
+          type: string
+          example: "41830-160"
+        usuario_id:
+          type: integer
+          example: 3
+        regiao:
+          type: string
+          example: "Nordeste"
+
+    AnimalAddress:
+      type: object
+      properties:
+        logradouro:
+          type: string
+          example: "ABCDEF"
+        numero:
+          type: string
+          example: "88"
+        bairro:
+          type: string
+          example: "Pituba"
+        cidade:
+          type: string
+          example: "Salvador"
+        uf:
+          type: string
+          example: "BA"
+        cep:
+          type: string
+          example: "41830-160"
+        animal_id:
+          type: integer
+          example: 3
+        regiao:
+          type: string
+          example: "Nordeste"
+
+    Notification:
+      type: object
+      properties:
+        mensagem:
+          type: string
+          example: "Seu pedido de adoção foi aprovado!"
+        titulo:
+          type: string
+          example: "Pedido Aprovado"
+        data_notificacao:
+          type: string
+          example: "2025-11-21"
+        usuario_id:
+          type: integer
+          example: 3
+        pedido_id:
+          type: integer
+          example: 2
+
+    Favorite:
+      type: object
+      properties:
+        usuario_id:
+          type: integer
+          example: 2
+        animal_id:
+          type: integer
+          example: 3
+
+    AdoptionRequest:
+      type: object
+      properties:
+        status_pedido:
+          type: string
+          example: "PENDENTE"
+        data_solicitacao:
+          type: string
+          format: date
+          example: "2025-11-21"
+        usuario_id:
+          type: integer
+          example: 1
+        animal_id:
+          type: integer
+          example: 1
+
+    # Schemas Auxiliares (Reutilizáveis)
+    AuxNome:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "Exemplo Nome"
+      description: Usado para Porte, Espécie e Raça
+
+    AuxDescricao:
+      type: object
+      properties:
+        descricao:
+          type: string
+          example: "Exemplo Descrição"
+      description: Usado para Idade e Gênero
