@@ -6,8 +6,10 @@
 * **********************************************************************/
 
 import { router } from './router.js';
-let emailUsuario = null
-let senhaUsuario = null
+
+// Carregar usuário salvo
+let usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
 // Evento de navegação pelos links do menu
 document.addEventListener('click', (e) => {
     const link = e.target.closest('.spa-link');
@@ -22,7 +24,8 @@ document.addEventListener('click', (e) => {
 
     // Se clicar no perfil:
     if (destino === "/perfil") {
-        if (emailUsuario && senhaUsuario) {
+        const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+        if (usuarioLogado) {
             // Usuário logado → deixa ir pro perfil
             e.preventDefault();
             window.history.pushState({}, "", "/perfil");

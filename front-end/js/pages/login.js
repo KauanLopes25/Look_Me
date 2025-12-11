@@ -60,6 +60,8 @@ export const Login = {
             if (usuario) {
                 // Guarda o usuário completo para usar no perfil
                 window.usuarioLogado = usuario;
+                // Salva o usuário inteiro no localStorage
+                localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
 
                 window.history.pushState({}, "", "/perfil");
                 route();

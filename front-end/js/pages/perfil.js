@@ -65,6 +65,8 @@ export const Perfil = {
                 alert('Você saiu do sistema.');
                 //redireciona para o Login
                 window.history.pushState({}, "", "/login");
+                // Remove usuario do storage
+                localStorage.removeItem("usuarioLogado");
                 window.route();
             });
         }
