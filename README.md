@@ -1,6 +1,6 @@
 # LooK Me! - Adoção de Pets
 
-<!-- ![](./img/preview.png) -->
+![](./documentation/img/preview.png)
 
 Desenvolvido como Projeto Integrador do curso técnico em Desenvolvimento de Sistemas do SENAI, esta solução Fullstack para adoção de pets foi criada por uma equipe de três desenvolvedores com o objetivo de conectar animais a novos lares de forma eficiente. O sistema, estruturado sobre um banco de dados MySQL, apresenta operações completas de CRUD para o gerenciamento de animais e usuários. O projeto abrangeu todo o ciclo de vida de desenvolvimento, desde a prototipagem de interfaces e diagramação do banco de dados até a codificação final. O diferencial reside na aplicação rigorosa de boas práticas de engenharia de software, incluindo uma documentação robusta (TAP, RF, RNF, RN) e uma gestão ágil realizada integralmente através de Kanban, Issues e Milestones no GitHub.
 
