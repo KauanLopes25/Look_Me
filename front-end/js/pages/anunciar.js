@@ -184,9 +184,10 @@ export const Anunciar = {
                     formData.append('image', arquivoSelecionado);
                 }
                 const sucesso = await atualizarAnimal(idEdicao, formData);
-                if (sucesso) {
+                if(sucesso) {
                     alert("Atualizado com sucesso!");
-                    window.location.hash = "/meus-pets";
+                    
+                    window.location.hash = "/meus-pets"; 
                 } else alert("Erro ao atualizar.");
 
             } else {
@@ -195,14 +196,14 @@ export const Anunciar = {
                     alert("Selecione uma foto.");
                     return;
                 }
-                // Anexa a imagem no campo 'image'
                 formData.append('image', arquivoSelecionado);
-
+                
                 const sucesso = await criarAnimal(formData);
-                if (sucesso) {
+                if(sucesso) {
                     alert("Criado com sucesso!");
-                    window.location.hash = "/meus-pets";
-                }
+
+                    window.location.hash = "/"; 
+                } 
             }
         });
 
@@ -211,7 +212,7 @@ export const Anunciar = {
                 const sucesso = await deletarAnimal(idEdicao);
                 if (sucesso) {
                     alert("Pet excluído.");
-                    window.location.hash = "/meus-pets";
+                    window.location.hash = "/";
                 } else {
                     alert("Erro ao excluir.");
                 }
