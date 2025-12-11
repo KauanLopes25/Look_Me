@@ -59,23 +59,26 @@ export async function removerPedido(pedidoId) {
     }
 }
 
-export async function listarPedidos() {
+export async function listarPedidos() { 
     try {
         const response = await fetch(API_URL_PEDIDO);
+
         if (response.ok) {
+
             const data = await response.json();
 
             console.log("LISTA DE PEDIDOS (API):", data);
 
             let lista = [];
-            if (data.items && data.items.pedidos) lista = data.items.pedido;
+            if (data.items && data.items.pedidos) lista = data.items.pedidos;
             else if (Array.isArray(data)) lista = data;
             
             return lista.filter(order => order.usuario_id == USUARIO_LOGADO);
         }
         return [];
     } catch (error) {
-        console.error("Erro Listar Pedidos:", error);
+        console.error("Erro Listar Favoritos:", error);
         return [];
     }
 }
+

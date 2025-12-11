@@ -4,21 +4,21 @@
 * Autor: Marcelo Vieira
 * Versão: 1.0
 * **********************************************************************/
-import { listarPedidos, listarPedidos } from '../services/orderService.js';
+import { listarPedidos } from '../services/orderService.js';
 import { lerAnimal } from '../services/animalService.js';
 
 export const MeusPedidos = {
     title: "MEUS PEDIDOS",
     template: `
-            <div class="meus-pedidos-container">
+            <div class="meus-pedidos-container" id="meus-pedidos-container">
                 <section class="cards">
 
-                    <div class="card" onclick="window.history.pushState({}, '', '/pet'); window.route();">
+                    <div class="card">
                         <img src="./img/pet-teste.jpg" alt="Pet">
                         <h3>Luna</h3>
                         <p style="color: orange;">Aguardando</p> </div>
 
-                    <div class="card" onclick="window.history.pushState({}, '', '/pet'); window.route();">
+                    <div class="card">
                         <img src="./img/pet-teste.jpg" alt="Pet">
                         <h3>Max</h3>
                         <p style="color: green;">Aprovado</p>
@@ -26,22 +26,24 @@ export const MeusPedidos = {
 
                 </section>
             </div>
-        `, init: async () => {
-            const container = document.getElementById('meus-pedidos-conteiner');
+        `, 
         
-            const listarPedidos = await listarPedidos();
+        init: async () => {
+            const container = document.getElementById('meus-pedidos-container');
+        
+            const pedidos = await listarPedidos(); 
     
             container.innerHTML = '';
     
-            if (listarPedidos.length === 0) {
+            if (pedidos.length === 0) {
                 container.innerHTML = '<h3 style="text-align:center; width:100%; color: white;">Você ainda não tem favoritos.</h3>';
                 return;
             }
     
             // Para cada favorito, busca os dados do animal (Nome, Foto, Status)
             // Usar Promise.all para carregar todos juntos e ser mais rápido
-            const promessas = listaFavoritos.map(async (fav) => {
-                const animal = await lerAnimal(fav.animal_id);
+            const promessas = pedidos.map(async (order) => {
+                const animal = await lerAnimal(order.animal_id);
                 return animal;
             });
     
@@ -63,6 +65,7 @@ export const MeusPedidos = {
                 
                 card.onclick = () => {
                     window.location.hash = `/pet?id=${pet.animal_id}`;
+                    
                 };
     
                 card.innerHTML = `
