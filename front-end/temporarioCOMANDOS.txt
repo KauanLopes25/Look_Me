@@ -1,0 +1,4 @@
+comando no CONSOLE DO NAVEGADOR para verificar as partes que ainda não possuem link com a aplicação
+
+window.history.pushState({}, "", "/cadastro"); window.route();
+window.history.pushState({}, "", "/login"); window.route();
