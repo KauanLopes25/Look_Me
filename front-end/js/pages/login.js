@@ -5,6 +5,9 @@
 * Versão: 1.0
 * **********************************************************************/
 
+import { loginUsuario } from '../services/loginService.js';
+
+
 export const Login = {
     title: "ENTRAR",
     template: `
@@ -43,6 +46,28 @@ export const Login = {
             </div>
         `,
     init: () => {
+
+        const form = document.querySelector(".box-login");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+
+            const usuario = await loginUsuario(email, senha);
+
+            if (usuario) {
+                // Guarda o usuário completo para usar no perfil
+                window.usuarioLogado = usuario;
+
+                window.history.pushState({}, "", "/perfil");
+                route();
+            } else {
+                alert("Email ou senha incorretos");
+            }
+        });
+
         const input = document.getElementById('senha');
         const icon = document.getElementById('icon-senha');
 
@@ -53,14 +78,6 @@ export const Login = {
                 icon.classList.toggle('bi-eye');
                 icon.classList.toggle('bi-eye-slash');
             });
-        }    
-        
-        if(emailUsuario && senhaUsuaio) {
-            const iconPerfil = document.getElementsByTagName('<a href="/perfil"')
-            
-            iconPerfil.addEventListener('click', () => {
-                iconPerfil.href = '<a href="/login"'
-            })
         }
     }
 }

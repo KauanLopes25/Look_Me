@@ -11,6 +11,7 @@ export const Perfil = {
             <div class="perfil-container">
                 <div class="perfil-section">
                     <div class="photo-upload">
+                        <img id="foto-perfil" src="" alt="Foto do usuário" class="foto-perfil">
                         <div class="upload-icon">
                             <i class="bi bi-cloud-upload-fill"></i>
                         </div>
@@ -67,5 +68,40 @@ export const Perfil = {
                 window.route();
             });
         }
+
+        // --- PEGAR USUÁRIO LOGADO ---
+        const usuario = window.usuarioLogado;
+        if (!usuario) {
+            alert("Nenhum usuário logado!");
+            window.history.pushState({}, "", "/login");
+            return route();
+        }
+
+        // Selecionar os inputs
+        const inputs = document.querySelectorAll(".container-dados .input-padrao");
+
+        // Ordem dos inputs do seu HTML:
+        // 0 - Nome
+        // 1 - CEP  
+        // 2 - Data de nascimento
+        // 3 - Email
+        // 4 - Telefone
+
+        inputs[0].value = usuario.nome || "";
+        inputs[1].value = usuario.cep || "";
+        inputs[2].value = usuario.data_nascimento?.substring(0, 10) || "";
+        inputs[3].value = usuario.email || "";
+        inputs[4].value = usuario.telefone || "";
+
+        // Seleciona a imagem
+        const fotoPerfil = document.getElementById("foto-perfil");
+
+        // Se a API enviou uma URL válida, troca a foto
+        if (usuario.foto_url) {
+            fotoPerfil.src = usuario.foto_url;
+        }
     }
+
+
+
 };

@@ -15,6 +15,10 @@ document.addEventListener('click', (e) => {
     if (e.target.closest('.botao-mobile-filter')) return;
 
     const destino = link.getAttribute('href');
+   
+    e.preventDefault();
+        window.history.pushState({}, "", link.getAttribute('href'));
+        router();
 
     // Se clicar no perfil:
     if (destino === "/perfil") {
@@ -30,12 +34,6 @@ document.addEventListener('click', (e) => {
             router();
         }
     }
-    if (link) {
-        e.preventDefault();
-        window.history.pushState({}, "", link.getAttribute('href'));
-        router();
-    }
-
 });
 
 // Evento do botão voltar/avançar do navegador
