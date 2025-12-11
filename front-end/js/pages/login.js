@@ -5,7 +5,7 @@
 * Versão: 1.0
 * **********************************************************************/
 
-import { loginUsuario } from '../services/loginService.js';
+import { loginUsuario } from '../services/userService.js';
 
 
 export const Login = {

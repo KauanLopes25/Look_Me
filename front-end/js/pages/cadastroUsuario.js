@@ -5,7 +5,7 @@
 * Versão: 1.0
 * **********************************************************************/
 
-import { criarUsuario } from "../services/cadastroService.js";
+import { criarUsuario } from "../services/userService.js";
 import { router } from "../router.js";
 
 export const CadastroUsuario = {

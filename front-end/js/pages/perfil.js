@@ -5,6 +5,8 @@
 * Versão: 1.0
 * **********************************************************************/
 
+import { atualizarUsuario } from "../services/userService.js";
+
 export const Perfil = {
     title: "MEU PERFIL",
     template: `
@@ -42,36 +44,7 @@ export const Perfil = {
             </div>
         `,
     init: () => {
-        // upload de Foto
-        const uploadBox = document.querySelector('.perfil-section .photo-upload');
-        const fileInput = document.getElementById('file-input-perfil');
-
-        if (uploadBox && fileInput) {
-            uploadBox.addEventListener('click', () => {
-                fileInput.click();
-            });
-            fileInput.addEventListener('change', (e) => {
-                if (e.target.files && e.target.files[0]) {
-                    alert(`Foto selecionada: ${e.target.files[0].name}`);
-                }
-            });
-        }
-
-        // logica de Logout
-        const btnLogout = document.querySelector('.botao-logout');
-        if (btnLogout) {
-            btnLogout.addEventListener('click', () => {
-                // limpar sessao (simulando aqui)
-                alert('Você saiu do sistema.');
-                //redireciona para o Login
-                window.history.pushState({}, "", "/login");
-                // Remove usuario do storage
-                localStorage.removeItem("usuarioLogado");
-                window.route();
-            });
-        }
-
-        // --- PEGAR USUÁRIO LOGADO ---
+        // PEGAR USUÁRIO LOGADO 
         const usuario = window.usuarioLogado;
         if (!usuario) {
             alert("Nenhum usuário logado!");
@@ -79,15 +52,32 @@ export const Perfil = {
             return route();
         }
 
-        // Selecionar os inputs
-        const inputs = document.querySelectorAll(".container-dados .input-padrao");
 
-        // Ordem dos inputs do seu HTML:
-        // 0 - Nome
-        // 1 - CEP  
-        // 2 - Data de nascimento
-        // 3 - Email
-        // 4 - Telefone
+        // UPLOAD DE FOTO COM PREVIEW
+
+        const fileInput = document.getElementById("file-input-perfil");
+        const fotoPerfil = document.getElementById("foto-perfil");
+        let novaFoto = null; // <- armazenar a foto escolhida
+
+        // Clicar na área → abre o input
+        document.querySelector(".photo-upload").addEventListener("click", () => {
+            fileInput.click();
+        });
+
+        // Quando selecionar a foto
+        fileInput.addEventListener("change", (e) => {
+            if (e.target.files && e.target.files[0]) {
+                novaFoto = e.target.files[0];
+
+                // preview na hora
+                fotoPerfil.src = URL.createObjectURL(novaFoto);
+            }
+        });
+
+
+        //  PREENCHER CAMPOS
+
+        const inputs = document.querySelectorAll(".container-dados .input-padrao");
 
         inputs[0].value = usuario.nome || "";
         inputs[1].value = usuario.cep || "";
@@ -95,15 +85,38 @@ export const Perfil = {
         inputs[3].value = usuario.email || "";
         inputs[4].value = usuario.telefone || "";
 
-        // Seleciona a imagem
-        const fotoPerfil = document.getElementById("foto-perfil");
+        // BOTÃO SALVAR → Enviar PUT
 
-        // Se a API enviou uma URL válida, troca a foto
-        if (usuario.foto_url) {
-            fotoPerfil.src = usuario.foto_url;
-        }
+        const btnSalvar = document.querySelector(".actions-section button:nth-child(4)");
+        btnSalvar.addEventListener("click", async () => {
+
+            const formData = new FormData();
+
+            if (novaFoto) {
+                formData.append("image", novaFoto);
+            }
+
+            const dadosAtualizados = {
+                nome: inputs[0].value,
+                cep: inputs[1].value,
+                data_nascimento: inputs[2].value,
+                email: inputs[3].value,
+                telefone: inputs[4].value,
+                status_cadastro: 1,
+                senha: usuario.senha
+            };
+
+            formData.append("data", JSON.stringify(dadosAtualizados));
+
+            // AQUI CHAMA A API !!!
+            const usuarioAtualizado = await atualizarUsuario(usuario.email, formData);
+
+            if (usuarioAtualizado) {
+                alert("Perfil atualizado com sucesso!");
+                window.location.reload(); // recarrega a página do perfil
+            }
+
+        });
+
     }
-
-
-
-};
+}
