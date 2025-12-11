@@ -83,21 +83,25 @@ export const DetalhesPet = {
         </div>
     `,
     init: async () => {
-        console.log("Iniciando init de Detalhes...");
-
-        const params = new URLSearchParams(window.location.search);
+        
+        // Pega a string completa da hash (#/pet?id=3)
+        const hashString = window.location.hash; 
+        
+        // Separa pelo '?' para pegar a parte dos parâmetros (id=3)
+        const paramsPart = hashString.split('?')[1]; 
+        
+        // Cria o objeto URLSearchParams com essa parte
+        const params = new URLSearchParams(paramsPart);
         const id = params.get('id');
 
         if (!id) {
             alert("Erro: Nenhum ID de pet foi fornecido.");
-            // Se estiver usando History API, volte para a raiz assim:
-            window.history.pushState({}, "", "/");
-            window.route(); 
+            window.location.hash = "/"; // Redireciona para Home com Hash
             return;
         }
 
         try {
-            // 1. Busca dados do animal
+            // Busca dados do animal
             console.log(`Buscando animal ID: ${id}`);
             const pet = await lerAnimal(id);
             

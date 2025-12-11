@@ -7,21 +7,30 @@
 
 import { router } from './router.js';
 
-// Evento de navegação pelos links do menu
-document.addEventListener('click', (e) => {
-    const link = e.target.closest('.spa-link');
-    
-    if (e.target.closest('.botao-mobile-filter')) return;
+// Escuta a mudança de Hash na URL (Navegação)
+window.addEventListener('hashchange', router);
 
-    if (link) {
-        e.preventDefault();
-        window.history.pushState({}, "", link.getAttribute('href'));
+// Ao carregar a página (F5 ou Primeira vez)
+window.addEventListener('load', () => {
+    // Se a URL não tiver hash (ex: apenas localhost:8080), força ir para a Home (#/)
+    if (!window.location.hash) {
+        window.location.hash = '/';
+    } else {
+        // Se já tiver hash (ex: localhost:8080/#/anunciar), carrega a rota certa
         router();
     }
 });
 
-// Evento do botão voltar/avançar do navegador
-window.onpopstate = router;
+// Captura cliques em links com a classe .spa-link
+document.addEventListener('click', (e) => {
+    const link = e.target.closest('.spa-link');
+    
+    // Ignora botões que não são links de navegação
+    if (e.target.closest('.botao-mobile-filter')) return;
 
-// Inicia a aplicação
-router();
+    if (link) {
+        e.preventDefault();
+        // Muda o Hash. O evento 'hashchange' percebe e roda o router.
+        window.location.hash = link.getAttribute('href'); 
+    }
+});

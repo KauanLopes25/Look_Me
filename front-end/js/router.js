@@ -39,29 +39,36 @@ const routes = {
 };
 
 export const router = () => {
-    let path = window.location.pathname;
+    // Pega o hash da URL. Se vazio, assume '/'
+    // .slice(1) remove o caractere '#'
+    let hash = window.location.hash.slice(1) || '/';
 
-    if (path === '' || path === '/index.html') path = '/';
+    // Separa a rota dos parâmetros (ex: '/pet?id=1' vira apenas '/pet')
+    const routePath = hash.split('?')[0];
 
-    const route = routes[path] || routes[404];
+    // Busca a rota correspondente. Se não achar, vai para 404.
+    const route = routes[routePath] || routes[404];
 
     // Injeta HTML
-    document.getElementById('app').innerHTML = route.template;
+    const app = document.getElementById('app');
+    app.innerHTML = route.template;
 
+    // Atualiza Título da Aba
     const pageTitle = document.getElementById('page-title');
     if (pageTitle) pageTitle.innerText = route.title;
 
-    // Cabeçalho Secundário
+    // Controla o Cabeçalho Secundário (filtros)
     const cabecalhoSecundario = document.querySelector('.cabecalho-secundario');
     if (cabecalhoSecundario) {
-        if (path === '/') cabecalhoSecundario.style.display = 'flex';
-        else cabecalhoSecundario.style.display = 'none';
+        // Mostra apenas na Home ('/')
+        cabecalhoSecundario.style.display = (routePath === '/') ? 'flex' : 'none';
     }
 
-    // Inicializa a página
+    // Inicia Scripts da página
     if (route.init) {
         route.init();
     }
 };
 
+// Torna a função global para usar nos onlick="window.route()" se necessário
 window.route = router;

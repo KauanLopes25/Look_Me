@@ -126,10 +126,9 @@ export const Home = {
                 const card = document.createElement('div');
                 card.classList.add('card');
 
-                // ID na URL
                 card.onclick = () => {
-                    window.history.pushState({}, '', `/pet?id=${pet.animal_id}`);
-                    window.route();
+                    // Ao mudar o hash, o 'hashchange' no app.js dispara o router automaticamente
+                    window.location.hash = `/pet?id=${pet.animal_id}`;
                 };
 
                 card.innerHTML = `
