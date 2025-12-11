@@ -20,10 +20,12 @@ document.addEventListener('click', (e) => {
     if (destino === "/perfil") {
         if (emailUsuario && senhaUsuario) {
             // Usuário logado → deixa ir pro perfil
+            e.preventDefault();
             window.history.pushState({}, "", "/perfil");
             router();
         } else {
             // Usuário NÃO logado → manda pro login
+            e.preventDefault();
             window.history.pushState({}, "", "/login");
             router();
         }
