@@ -99,6 +99,7 @@ export async function atualizarUsuario(email, formData) {
         localStorage.setItem("usuarioLogado", JSON.stringify(result.usuario));
         console.log("URL PUT:", url);
         console.log("FormData:", [...formData.entries()]);
+        alert("Perfil atualizado com sucesso!");
         return result.usuario;
 
     } catch (error) {
