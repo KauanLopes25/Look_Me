@@ -84,7 +84,11 @@ export const Perfil = {
         inputs[2].value = usuario.data_nascimento?.substring(0, 10) || "";
         inputs[3].value = usuario.email || "";
         inputs[4].value = usuario.telefone || "";
-        fotoPerfil.src = usuario.url || "";
+
+        // FOTO ATUAL DO USUÁRIO
+        if (usuario.foto_url) {
+            fotoPerfil.src = usuario.foto_url;
+        }
 
         // BOTÃO SALVAR → Enviar PUT
 
@@ -117,6 +121,18 @@ export const Perfil = {
                 window.location.reload(); // recarrega a página do perfil
             }
 
+        });
+
+        // BOTÃO LOGOUT
+        const btnLogout = document.querySelector(".botao-logout");
+
+        btnLogout.addEventListener("click", () => {
+            localStorage.removeItem("usuarioLogado"); // apaga usuário
+            window.usuarioLogado = null;
+
+            alert("Você saiu da sua conta!");
+            window.history.pushState({}, "", "/login");
+            route();
         });
 
     }
