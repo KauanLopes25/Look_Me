@@ -699,6 +699,15 @@ textarea {
     margin-bottom: 30px;
 }
 
+.foto-perfil {
+    width: 180px;
+    height: 180px;
+    border-radius: 10%;
+    object-fit: cover;
+    z-index: 2;  
+    position: absolute;
+}
+
 /* Reutiliza estilo de upload mas específico para perfil se necessário */
 .perfil-section .photo-upload {
     background-color: #84b7cc;

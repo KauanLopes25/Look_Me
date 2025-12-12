@@ -5,6 +5,9 @@
 * Versão: 1.0
 * **********************************************************************/
 
+import { criarUsuario } from "../services/userService.js";
+import { router } from "../router.js";
+
 export const CadastroUsuario = {
     title: "CRIE SUA CONTA",
     template: `
@@ -15,7 +18,7 @@ export const CadastroUsuario = {
 
                 <div class="card-auth">
                     <div class="content-login">
-                        <img class="logo" src="/front-end/img/logo.png" alt="Logo do Site">
+                        <img class="logo" src="./img/logo.png" alt="Logo do Site">
 
                         <form class="box-login">
                             <h3 class="titulo-secao">INFORMAÇÕES</h3>
@@ -143,5 +146,43 @@ export const CadastroUsuario = {
         if (inputCep) {
             inputCep.addEventListener('focusout', pesquisarCep);
         }
+        // 🔹 LÓGICA DO FORMULÁRIO — CORREÇÃO PRINCIPAL
+        const form = document.querySelector(".box-login");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            // --- Criar o FormData ---
+            const formData = new FormData();
+
+            // Foto do usuário (se existir)
+            const fotoInput = document.getElementById("file-input-imagem");
+            if (fotoInput && fotoInput.files.length > 0) {
+                formData.append("image", fotoInput.files[0]);
+            }
+
+            // --- Coleta dos dados do usuário ---
+            const dadosUsuario = {
+                nome: document.querySelector('input[placeholder="Usuário"]').value,
+                email: document.querySelector('input[type="email"]').value,
+                senha: document.getElementById("criar-senha").value,
+                telefone: document.querySelector('input[placeholder="Telefone"]').value,
+                data_nascimento: "2003-12-17", // ajuste quando tiver input
+                status_cadastro: 1
+            };
+
+            formData.append("data", JSON.stringify(dadosUsuario));
+
+            // --- Enviar ---
+            const resposta = await criarUsuario(formData);
+
+            if (resposta) {
+                alert("Usuário cadastrado com sucesso!");
+                window.history.pushState({}, "", "/login");
+                router();
+            } else {
+                alert("Erro ao cadastrar usuário.");
+            }
+        });
     }
 };

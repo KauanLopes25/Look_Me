@@ -5,12 +5,15 @@
 * Versão: 1.0
 * **********************************************************************/
 
+import { atualizarUsuario } from "../services/userService.js";
+
 export const Perfil = {
     title: "MEU PERFIL",
     template: `
             <div class="perfil-container">
                 <div class="perfil-section">
                     <div class="photo-upload">
+                        <img id="foto-perfil" src="" alt="Foto do usuário" class="foto-perfil">
                         <div class="upload-icon">
                             <i class="bi bi-cloud-upload-fill"></i>
                         </div>
@@ -41,31 +44,96 @@ export const Perfil = {
             </div>
         `,
     init: () => {
-        // upload de Foto
-        const uploadBox = document.querySelector('.perfil-section .photo-upload');
-        const fileInput = document.getElementById('file-input-perfil');
-
-        if (uploadBox && fileInput) {
-            uploadBox.addEventListener('click', () => {
-                fileInput.click();
-            });
-            fileInput.addEventListener('change', (e) => {
-                if (e.target.files && e.target.files[0]) {
-                    alert(`Foto selecionada: ${e.target.files[0].name}`);
-                }
-            });
+        // PEGAR USUÁRIO LOGADO 
+        const usuario = window.usuarioLogado;
+        if (!usuario) {
+            alert("Nenhum usuário logado!");
+            window.location.hash = "/login";
+            return route();
         }
 
-        // logica de Logout
-        const btnLogout = document.querySelector('.botao-logout');
-        if (btnLogout) {
-            btnLogout.addEventListener('click', () => {
-                // limpar sessao (simulando aqui)
-                alert('Você saiu do sistema.');
-                //redireciona para o Login
-                window.history.pushState({}, "", "/login");
-                window.route();
-            });
+
+        // UPLOAD DE FOTO COM PREVIEW
+
+        const fileInput = document.getElementById("file-input-perfil");
+        const fotoPerfil = document.getElementById("foto-perfil");
+        let novaFoto = null; // <- armazenar a foto escolhida
+
+        // Clicar na área → abre o input
+        document.querySelector(".photo-upload").addEventListener("click", () => {
+            fileInput.click();
+        });
+
+        // Quando selecionar a foto
+        fileInput.addEventListener("change", (e) => {
+            if (e.target.files && e.target.files[0]) {
+                novaFoto = e.target.files[0];
+
+                // preview na hora
+                fotoPerfil.src = URL.createObjectURL(novaFoto);
+            }
+        });
+
+
+        //  PREENCHER CAMPOS
+
+        const inputs = document.querySelectorAll(".container-dados .input-padrao");
+
+        inputs[0].value = usuario.nome || "";
+        inputs[1].value = usuario.cep || "";
+        inputs[2].value = usuario.data_nascimento?.substring(0, 10) || "";
+        inputs[3].value = usuario.email || "";
+        inputs[4].value = usuario.telefone || "";
+
+        // FOTO ATUAL DO USUÁRIO
+        if (usuario.foto_url) {
+            fotoPerfil.src = usuario.foto_url;
         }
+
+        // BOTÃO SALVAR → Enviar PUT
+
+        const btnSalvar = document.querySelector(".actions-section button:nth-child(4)");
+        btnSalvar.addEventListener("click", async () => {
+
+            const formData = new FormData();
+
+            if (novaFoto) {
+                formData.append("image", novaFoto);
+            }
+
+            const dadosAtualizados = {
+                nome: inputs[0].value,
+                cep: inputs[1].value,
+                data_nascimento: inputs[2].value,
+                email: inputs[3].value,
+                telefone: inputs[4].value,
+                status_cadastro: 1,
+                senha: usuario.senha
+            };
+
+            formData.append("data", JSON.stringify(dadosAtualizados));
+
+            // AQUI CHAMA A API !!!
+            const usuarioAtualizado = await atualizarUsuario(usuario.email, formData);
+
+            if (usuarioAtualizado) {
+                alert("Perfil atualizado com sucesso!");
+                window.location.reload(); // recarrega a página do perfil
+            }
+
+        });
+
+        // BOTÃO LOGOUT
+        const btnLogout = document.querySelector(".botao-logout");
+
+        btnLogout.addEventListener("click", () => {
+            localStorage.removeItem("usuarioLogado"); // apaga usuário
+            window.usuarioLogado = null;
+
+            alert("Você saiu da sua conta!");
+            window.location.hash = "/login";
+            route();
+        });
+
     }
-};
+}

@@ -5,9 +5,13 @@
 * Versão: 1.0
 * **********************************************************************/
 
+import { loginUsuario } from '../services/userService.js';
+
+
 export const Login = {
     title: "ENTRAR",
     template: `
+            <!-- ADICIONEI A CLASSE 'login-mode' AQUI NA DIV WRAPPER -->
             <div class="cadastro-wrapper login-mode">
                 
                 <a href="/" class="spa-link botao-voltar">
@@ -17,7 +21,7 @@ export const Login = {
                 <div class="card-auth">
                     <div class="content-login">
                     
-                        <img class="logo" src="/front-end/img/logo.png" alt="Logo do Site">
+                        <img class="logo" src="./img/logo.png" alt="Logo do Site">
                     
                         <form class="box-login">
                             <div class="input-login">
@@ -42,6 +46,31 @@ export const Login = {
             </div>
         `,
     init: () => {
+
+        const form = document.querySelector(".box-login");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+
+            const usuario = await loginUsuario(email, senha);
+
+            if (usuario) {
+                // Guarda o usuário completo para usar no perfil
+                window.usuarioLogado = usuario;
+                // Salva o usuário inteiro no localStorage
+                localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+
+                //window.history.pushState({}, "", "/perfil");
+                window.location.hash = "/perfil";
+                route();
+            } else {
+                alert("Email ou senha incorretos");
+            }
+        });
+
         const input = document.getElementById('senha');
         const icon = document.getElementById('icon-senha');
 
@@ -54,4 +83,4 @@ export const Login = {
             });
         }
     }
-};
+}
