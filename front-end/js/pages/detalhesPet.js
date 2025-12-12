@@ -7,6 +7,7 @@
 
 import { lerAnimal } from '../services/animalService.js';
 import { adicionarFavorito, removerFavorito, verificarSeEhFavorito } from '../services/favoritesService.js';
+import { criarPedido } from '../services/orderService.js';
 
 export const DetalhesPet = {
     title: "DETALHES DO PET",
@@ -33,7 +34,7 @@ export const DetalhesPet = {
                                 <p><strong>Sexo:</strong> <span id="detalhe-sexo">...</span></p>
                                 <p><strong>Status:</strong> <span id="detalhe-status">...</span></p>
                             </div>
-                            <button class="botao-adote">QUERO ADOTAR</button>
+                            <button class="botao-adote" id="btn-adotar">QUERO ADOTAR</button>
                         </div>
                         
                         <button class="botao-favorito" id="btn-favoritar" disabled>
@@ -83,13 +84,13 @@ export const DetalhesPet = {
         </div>
     `,
     init: async () => {
-        
+
         // Pega a string completa da hash (#/pet?id=3)
-        const hashString = window.location.hash; 
-        
+        const hashString = window.location.hash;
+
         // Separa pelo '?' para pegar a parte dos parâmetros (id=3)
-        const paramsPart = hashString.split('?')[1]; 
-        
+        const paramsPart = hashString.split('?')[1];
+
         // Cria o objeto URLSearchParams com essa parte
         const params = new URLSearchParams(paramsPart);
         const id = params.get('id');
@@ -104,7 +105,7 @@ export const DetalhesPet = {
             // Busca dados do animal
             console.log(`Buscando animal ID: ${id}`);
             const pet = await lerAnimal(id);
-            
+
             if (!pet) {
                 throw new Error("Pet não encontrado na API.");
             }
@@ -114,7 +115,7 @@ export const DetalhesPet = {
             const mapPorte = { 1: 'Pequeno', 2: 'Médio', 3: 'Grande' };
             const mapIdade = { 1: 'Filhote', 2: 'Adulto', 3: 'Idoso' };
             const mapSexo = { 1: 'Macho', 2: 'Fêmea' };
-            const mapRaca = { 0: 'Sem raça', 1: 'Poodle', 2: 'Bulldog', 3: 'Siamês', 4: 'Persa', 5: 'Outros' }; 
+            const mapRaca = { 0: 'Sem raça', 1: 'Poodle', 2: 'Bulldog', 3: 'Siamês', 4: 'Persa', 5: 'Outros' };
 
             // Preenche HTML
             document.getElementById('detalhe-nome').innerText = pet.nome;
@@ -128,9 +129,9 @@ export const DetalhesPet = {
             document.getElementById('detalhe-porte').innerText = mapPorte[pet.porte_id] || pet.porte_id;
             document.getElementById('detalhe-idade').innerText = mapIdade[pet.idade_id] || pet.idade_id;
             document.getElementById('detalhe-sexo').innerText = mapSexo[pet.sexo_id] || pet.sexo_id;
-            
+
             document.getElementById('detalhe-status').innerText = pet.status_adocao === 1 ? 'Disponível' : 'Indisponível';
-            
+
             const imgEl = document.getElementById('detalhe-img');
             // Verifica se a URL é válida
             if (pet.foto_url && !pet.foto_url.includes('site.com')) {
@@ -147,28 +148,28 @@ export const DetalhesPet = {
             // LÓGICA DO FAVORITO 
             const btnFav = document.getElementById('btn-favoritar');
             const iconFav = btnFav.querySelector('i');
-            
+
             // Variável para guardar o ID do favorito
             let favoritoAtual = null;
 
             try {
                 console.log("Verificando favoritos...");
                 favoritoAtual = await verificarSeEhFavorito(pet.animal_id);
-                
+
                 if (favoritoAtual) {
                     iconFav.classList.remove('bi-heart');
                     iconFav.classList.add('bi-heart-fill');
                     iconFav.style.color = '#0475A8';
                 }
                 // Só habilita o botão se a verificação de favoritos funcionar
-                btnFav.disabled = false; 
+                btnFav.disabled = false;
 
             } catch (favError) {
                 console.warn("Erro ao verificar favoritos (API pode estar offline):", favError);
             }
 
             btnFav.addEventListener('click', async () => {
-                btnFav.disabled = true; 
+                btnFav.disabled = true;
                 console.log("--- INÍCIO DO CLIQUE NO FAVORITO ---");
 
                 try {
@@ -178,7 +179,7 @@ export const DetalhesPet = {
                     if (favoritoAtual) {
                         // === TENTATIVA DE REMOVER ===
                         console.log("Tentando REMOVER...");
-                        
+
                         // Tenta adivinhar o nome do ID que vem do banco
                         const idFav = favoritoAtual.id || favoritoAtual.id_favorito || favoritoAtual.favorito_id || favoritoAtual.codigo;
                         console.log("ID identificado para deleção:", idFav);
@@ -213,7 +214,7 @@ export const DetalhesPet = {
                             console.log("Recarregando lista para confirmar...");
                             favoritoAtual = await verificarSeEhFavorito(pet.animal_id);
                             console.log("Novo estado do favorito:", favoritoAtual);
-                            
+
                             iconFav.classList.replace('bi-heart', 'bi-heart-fill');
                             iconFav.style.color = '#0475A8';
                         } else {
@@ -226,6 +227,22 @@ export const DetalhesPet = {
                 } finally {
                     btnFav.disabled = false;
                     console.log("--- FIM DO CLIQUE ---");
+                }
+            });
+
+            // LÓGICA DE PEDIDO
+            const btnOrder = document.getElementById('btn-adotar');
+            if (pet.status_adocao !== 1) {
+                btnOrder.disabled = true;
+                btnOrder.innerText = "INDISPONÍVEL";
+            }
+
+            btnOrder.addEventListener('click', async () => {
+                if (confirm(`Deseja solicitar a adoção de ${pet.nome}?`)) {
+                    // O status inicial do pedido é 'PENDENTE' 
+                    const sucesso = await criarPedido('PENDENTE', pet.animal_id);
+                    if (sucesso) alert("Pedido de adoção enviado com sucesso!");
+                    else alert("Falha ao enviar o pedido. Verifique o console.");
                 }
             });
 

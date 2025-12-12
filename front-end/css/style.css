@@ -289,12 +289,6 @@ main {
     }
 }
 
-@media (min-width: 1444px) {
-    .cards {
-        max-height: 550px;
-    }
-}
-
 /* ANUNCIAR PET */
 
 .anunciar-container {
