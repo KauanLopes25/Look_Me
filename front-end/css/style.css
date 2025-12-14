@@ -1,4 +1,3 @@
-/* reset */
 * {
     margin: 0;
     padding: 0;
@@ -286,12 +285,6 @@ main {
         max-height: auto;
         align-items: start;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-}
-
-@media (min-width: 1444px) {
-    .cards {
-        max-height: 550px;
     }
 }
 
@@ -703,6 +696,15 @@ textarea {
     justify-items: center;
     gap: 20px;
     margin-bottom: 30px;
+}
+
+.foto-perfil {
+    width: 180px;
+    height: 180px;
+    border-radius: 10%;
+    object-fit: cover;
+    z-index: 2;  
+    position: absolute;
 }
 
 /* Reutiliza estilo de upload mas específico para perfil se necessário */

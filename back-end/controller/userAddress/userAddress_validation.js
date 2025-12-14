@@ -80,11 +80,7 @@ async function userAddressDataValidation(userAddress, contentType) {
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof userAddress.usuario_id !== "number" ||
-            userAddress.usuario_id == '' ||
-            userAddress.usuario_id == undefined ||
-            userAddress.usuario_id == null ||
-            userAddress.usuario_id.length > 2) {
+            typeof userAddress.usuario_id !== "number") {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de usuario_id incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }

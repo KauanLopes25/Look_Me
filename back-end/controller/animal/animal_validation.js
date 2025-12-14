@@ -71,72 +71,47 @@ async function animalDataValidation(animal) {
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof animal.status_adocao !== "number" ||
-            animal.status_adocao == null ) {
+            typeof animal.status_adocao !== "number") {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de status_adocao incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof animal.status_castracao !== "number" ||
-            animal.status_castracao == '' ||
-            animal.status_castracao == undefined ||
-            animal.status_castracao == null ) {
+            typeof animal.status_castracao !== "number") {
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de status_castracao incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof animal.status_cadastro !== "number" ||
-            animal.status_cadastro == '' ||
-            animal.status_cadastro == undefined ||
-            animal.status_cadastro == null ){
+            typeof animal.status_cadastro !== "number"){
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de status_cadastro incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof animal.porte_id !== "number" ||
-            animal.porte_id == '' ||
-            animal.porte_id == undefined ||
-            animal.porte_id == null ){
+            typeof animal.porte_id !== "number"){
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de porte_id incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof animal.raca_id !== "number" ||
-            animal.raca_id == '' ||
-            animal.raca_id == undefined ||
-            animal.raca_id == null ){
+            typeof animal.raca_id !== "number"){
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de raca_id incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof animal.especie_id !== "number" ||
-            animal.especie_id == '' ||
-            animal.especie_id == undefined ||
-            animal.especie_id == null ){
+            typeof animal.especie_id !== "number"){
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de especie_id incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof animal.idade_id !== "number" ||
-            animal.idade_id == '' ||
-            animal.idade_id == undefined ||
-            animal.idade_id == null ){
+            typeof animal.idade_id !== "number"){
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de idade_id incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof animal.sexo_id !== "number" ||
-            animal.sexo_id == '' ||
-            animal.sexo_id == undefined ||
-            animal.sexo_id == null ){
+            typeof animal.sexo_id !== "number"){
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de sexo_id incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
         else if (
-            typeof animal.usuario_id !== "number" ||
-            animal.usuario_id == '' ||
-            animal.usuario_id == undefined ||
-            animal.usuario_id == null ){
+            typeof animal.usuario_id !== "number"){
             MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Formato de usuario_id incorreto]'
             return MESSAGES.ERROR_REQUIRED_FIELDS
         }
