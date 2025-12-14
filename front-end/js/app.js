@@ -1,27 +1,26 @@
 /* *********************************************************************
 * Objetivo: Ponto de entrada da aplicação
 * Data: 04/12/2025
-* Autor: Marcelo Vieira
+* Autor: Marcelo Vieira e Kauan Lopes
 * Versão: 1.0
 * **********************************************************************/
 
 import { router } from './router.js';
 
-// Escuta a mudança de Hash na URL (Navegação)
+//Navegação: Quando o Hash mudar, roda o roteador (que fará a verificação de login)
 window.addEventListener('hashchange', router);
 
-// Ao carregar a página (F5 ou Primeira vez)
+//Carregamento Inicial
 window.addEventListener('load', () => {
-    // Se a URL não tiver hash (ex: apenas localhost:8080), força ir para a Home (#/)
+    // Se a URL não tiver hash, força ir para a Home (#/)
     if (!window.location.hash) {
         window.location.hash = '/';
     } else {
-        // Se já tiver hash (ex: localhost:8080/#/anunciar), carrega a rota certa
         router();
     }
 });
 
-// Captura cliques em links com a classe .spa-link
+// Captura cliques em links (.spa-link)
 document.addEventListener('click', (e) => {
     const link = e.target.closest('.spa-link');
     
@@ -30,7 +29,11 @@ document.addEventListener('click', (e) => {
 
     if (link) {
         e.preventDefault();
-        // Muda o Hash. O evento 'hashchange' percebe e roda o router.
-        window.location.hash = link.getAttribute('href'); 
+        
+        const href = link.getAttribute('href');
+        
+        // O evento 'hashchange' dispara o router.
+        // O router verifica se está logado. Se não estiver, o router redireciona pro login.
+        window.location.hash = href; 
     }
 });

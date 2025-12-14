@@ -146,13 +146,13 @@ export const CadastroUsuario = {
         if (inputCep) {
             inputCep.addEventListener('focusout', pesquisarCep);
         }
-        // 🔹 LÓGICA DO FORMULÁRIO — CORREÇÃO PRINCIPAL
+        //LÓGICA DO FORMULÁRIO — CORREÇÃO PRINCIPAL
         const form = document.querySelector(".box-login");
 
         form.addEventListener("submit", async (event) => {
             event.preventDefault();
 
-            // --- Criar o FormData ---
+            //Criar o FormData
             const formData = new FormData();
 
             // Foto do usuário (se existir)
@@ -161,7 +161,7 @@ export const CadastroUsuario = {
                 formData.append("image", fotoInput.files[0]);
             }
 
-            // --- Coleta dos dados do usuário ---
+            // Coleta dos dados do usuário 
             const dadosUsuario = {
                 nome: document.querySelector('input[placeholder="Usuário"]').value,
                 email: document.querySelector('input[type="email"]').value,
@@ -173,7 +173,7 @@ export const CadastroUsuario = {
 
             formData.append("data", JSON.stringify(dadosUsuario));
 
-            // --- Enviar ---
+            // Enviar 
             const resposta = await criarUsuario(formData);
 
             if (resposta) {

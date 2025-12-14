@@ -5,7 +5,7 @@
 * Versão: 1.0
 * **********************************************************************/
 
-import { lerTodosAnimais } from '../services/animalService.js'; // Assumindo que você criou essa função
+import { lerTodosAnimais } from '../services/animalService.js'; 
 
 export const Home = {
     title: "NOSSOS PETS",

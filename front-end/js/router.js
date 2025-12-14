@@ -1,6 +1,6 @@
 /* *********************************************************************
-* Objetivo: Centralizar a configuração das rotas.
-* Data: 04/12/2025
+* Objetivo: Configuração de rotas BLINDADA E SEGURA (Fix JSON Error)
+* Data: 14/12/2025
 * Autor: Marcelo Vieira
 * Versão: 1.0
 * **********************************************************************/
@@ -10,13 +10,13 @@ import { Home } from './pages/home.js';
 import { Anunciar } from './pages/anunciar.js';
 import { DetalhesPet } from './pages/detalhesPet.js';
 import { CadastroUsuario} from './pages/cadastroUsuario.js';
-import { DetalhesPedido } from './pages/detalhesPedido.js'
-import { Favoritos } from './pages/favoritos.js'
-import { Login } from './pages/login.js'
-import { MeusPedidos } from './pages/meusPedidos.js'
-import { MeusPets } from './pages/meusPets.js'
-import { Notificacoes } from './pages/notificacoes.js'
-import { Perfil } from './pages/perfil.js'
+import { DetalhesPedido } from './pages/detalhesPedido.js';
+import { Favoritos } from './pages/favoritos.js';
+import { Login } from './pages/login.js';
+import { MeusPedidos } from './pages/meusPedidos.js';
+import { MeusPets } from './pages/meusPets.js';
+import { Notificacoes } from './pages/notificacoes.js';
+import { Perfil } from './pages/perfil.js';
 
 // Define as rotas
 const routes = {
@@ -34,41 +34,93 @@ const routes = {
     "/perfil": Perfil,
     404: {
         title: "Página não encontrada",
-        template: `<h2>Erro 404</h2>`
+        template: `
+            <div style="text-align: center; margin-top: 50px;">
+                <h2>Erro 404</h2>
+                <p>Página não encontrada.</p>
+                <a href="#/" style="color: white; text-decoration: underline;">Voltar para Home</a>
+            </div>
+        `,
+        init: () => {}
     }
 };
 
-export const router = () => {
-    // Pega o hash da URL. Se vazio, assume '/'
-    // .slice(1) remove o caractere '#'
-    let hash = window.location.hash.slice(1) || '/';
+// LISTA DE ROTAS PROTEGIDAS
+const rotasProtegidas = [
+    "/perfil", 
+    "/favoritos", 
+    "/notificacoes", 
+    "/meuspets", 
+    "/meuspedidos", 
+    "/detalhespedido", 
+    "/anunciar"
+];
 
-    // Separa a rota dos parâmetros (ex: '/pet?id=1' vira apenas '/pet')
+// Função auxiliar para ler JSON sem quebrar o site
+function getUsuarioLogado() {
+    try {
+        const jsonUser = localStorage.getItem("usuarioLogado");
+        
+        // Verifica se é nulo ou a string "undefined" (que causa erro)
+        if (!jsonUser || jsonUser === "undefined") {
+            return null;
+        }
+
+        return JSON.parse(jsonUser);
+    } catch (error) {
+        console.error("Erro ao ler usuário do cache:", error);
+        // Se estiver corrompido, limpa para não travar mais
+        localStorage.removeItem("usuarioLogado");
+        return null;
+    }
+}
+
+export const router = () => {
+    // Pega o hash
+    let hash = window.location.hash.slice(1) || '/';
     const routePath = hash.split('?')[0];
 
-    // Busca a rota correspondente. Se não achar, vai para 404.
+    // PROTEÇÃO DE ROTA
+    if (rotasProtegidas.includes(routePath)) {
+        // Usa a função segura criada acima
+        const usuarioLogado = getUsuarioLogado();
+
+        if (!usuarioLogado) {
+            alert("Você precisa estar logado para acessar esta página.");
+            window.location.hash = '/login';
+            return; 
+        }
+    }
+
+    // Busca a rota
     const route = routes[routePath] || routes[404];
 
     // Injeta HTML
     const app = document.getElementById('app');
-    app.innerHTML = route.template;
+    if (app) {
+        app.innerHTML = route.template;
+    }
 
-    // Atualiza Título da Aba
+    // Atualiza Título
     const pageTitle = document.getElementById('page-title');
     if (pageTitle) pageTitle.innerText = route.title;
 
-    // Controla o Cabeçalho Secundário (filtros)
+    // Cabeçalho Secundário
     const cabecalhoSecundario = document.querySelector('.cabecalho-secundario');
     if (cabecalhoSecundario) {
-        // Mostra apenas na Home ('/')
         cabecalhoSecundario.style.display = (routePath === '/') ? 'flex' : 'none';
     }
 
-    // Inicia Scripts da página
+    //INICIALIZAÇÃO
     if (route.init) {
-        route.init();
+        setTimeout(async () => {
+            try {
+                await route.init();
+            } catch (error) {
+                console.error(`ERRO CRÍTICO NA ROTA ${routePath}:`, error);
+            }
+        }, 0);
     }
 };
 
-// Torna a função global para usar nos onlick="window.route()" se necessário
 window.route = router;

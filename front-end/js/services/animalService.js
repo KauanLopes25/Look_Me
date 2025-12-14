@@ -1,5 +1,5 @@
 /* *********************************************************************
-* Objetivo: Lógica de fetch (CRUD).
+* Objetivo: Lógica de fetch (CRUD) de animais
 * Data: 09/12/2025
 * Autor: Marcelo Vieira
 * Versão: 1.0
@@ -84,6 +84,35 @@ export async function lerTodosAnimais() {
         return [];
     } catch (error) {
         console.error(error);
+        return [];
+    }
+}
+
+export async function listarAnimaisPorUsuario(idUsuario) {
+
+    const url = `${API_URL_ANIMAIS}usuario/${idUsuario}`; 
+    
+    console.log("🔍 Buscando pets em:", url);
+
+    try {
+        const response = await fetch(url);
+        
+        if (response.ok) {
+            const data = await response.json();
+            
+            // Verifica onde a lista está escondida no JSON
+            if (data.items && data.items.animal) {
+                return data.items.animal;
+            } else if (Array.isArray(data)) {
+                return data;
+            } else if (data.data) {
+                return data.data;
+            }
+            return [];
+        }
+        return [];
+    } catch (error) {
+        console.error("Erro ao listar animais do usuário:", error);
         return [];
     }
 }

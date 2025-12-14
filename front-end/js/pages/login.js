@@ -7,7 +7,6 @@
 
 import { loginUsuario } from '../services/userService.js';
 
-
 export const Login = {
     title: "ENTRAR",
     template: `
